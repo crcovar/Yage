@@ -16,9 +16,9 @@ public class Level {
 	    this.spawn = new SpawnPoint(4,20, this.parent);
 	    this.player = player;
 	    Platform p1 = new Platform(this.parent);
-	    Platform p2 = new Platform(18, 28, 3, this.parent);
-	    Platform p3 = new Platform(25,26,2, this.parent);
-	    Platform p4 = new Platform(20, 23, 4, this.parent);
+	    Platform p2 = new Platform(18, 28, 3, 1, this.parent);
+	    Platform p3 = new Platform(25,26,2, 1, this.parent);
+	    Platform p4 = new Platform(20, 23, 4, 1, this.parent);
 	    DeathZone d1 = new DeathZone();
 	    DeathZone d2 = new DeathZone(22,27,6,2,true, this.parent);
 	    VictoryZone v = new VictoryZone(20,18, this.parent);
