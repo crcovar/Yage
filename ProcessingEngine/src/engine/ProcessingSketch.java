@@ -7,6 +7,11 @@ import processing.core.*;
  *
  */
 public class ProcessingSketch extends PApplet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6142886135378656379L;
+
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
