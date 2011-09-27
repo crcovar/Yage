@@ -9,10 +9,11 @@ import engine.Player;
  */
 public class Platform implements TileObject {
 
-	public Platform(int x,int y,int tiles, PApplet p) {
+	public Platform(int x, int y, int w, int h, PApplet p) {
 		this.x = x;
 		this.y = y;
-		this.t_width=tiles;
+		this.t_width = w;
+		this.t_height = h;
 		this.parent = p;
 	}  
 	  
@@ -20,6 +21,7 @@ public class Platform implements TileObject {
 		this.x=0;
 		this.y=29;
 		this.t_width = 40;
+		this.t_height = 1;
 		this.parent = p;
 	}
 	  
@@ -65,7 +67,9 @@ public class Platform implements TileObject {
 		parent.fill(0,0,0);
 		parent.stroke(255,0,0);
 		for(int i=0; i<t_width; i++){
-			parent.rect(x*TILE_SIZE + (i*TILE_SIZE),y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+			for(int j=0;j<t_height;j++) {
+				parent.rect(x*TILE_SIZE + (i*TILE_SIZE),y*TILE_SIZE + (j*TILE_SIZE),TILE_SIZE,TILE_SIZE);
+			}
 		}
 	
 	}
@@ -73,6 +77,7 @@ public class Platform implements TileObject {
 	private int x;
 	private int y;
 	private int t_width;
+	private int t_height;
 	
 	private PApplet parent;
 }

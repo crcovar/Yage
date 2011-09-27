@@ -17,7 +17,7 @@ public class ProcessingSketch extends PApplet {
 		frameRate(30);
 		  
 		player = new Player(this);
-		level1 = new Level(player,this);
+		level1 = new Level(player,"scripts/level1",this);
 		level1.startLevel();
 	}
 	
@@ -51,7 +51,7 @@ public class ProcessingSketch extends PApplet {
 	}
 	
 	public static void main(String [] args) {
-		PApplet.main(new String[] { "--present", "engine.ProcessingSketch" });
+		PApplet.main(new String[] { "engine.ProcessingSketch" });
 	}
 	
 	private Player player;
