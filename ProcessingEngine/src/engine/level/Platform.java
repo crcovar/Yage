@@ -28,7 +28,7 @@ public class Platform implements TileObject {
 	public int getTopBound() { return y*TILE_SIZE; }
 	public int getLeftBound() { return x*TILE_SIZE; }
 	public int getRightBound() { return (x*TILE_SIZE + t_width*TILE_SIZE); }
-	public int getBottomBound() { return (y*TILE_SIZE + TILE_SIZE); }
+	public int getBottomBound() { return (y*TILE_SIZE + t_height*TILE_SIZE); }
 	  
 	public boolean collide(Player p) {
 		int leftBound = p.getLeftBound();
