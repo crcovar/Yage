@@ -1,6 +1,11 @@
-package engine.level;
+package engine;
 
-import engine.Player;
+import engine.tileobject.DeathZone;
+import engine.tileobject.Platform;
+import engine.tileobject.SpawnPoint;
+import engine.tileobject.TileObject;
+import engine.tileobject.VictoryZone;
+
 import java.util.LinkedList;
 import java.io.*;
 

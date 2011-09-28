@@ -1,7 +1,6 @@
 package engine;
 
-import engine.level.SpawnPoint;
-import engine.level.Level;
+import engine.tileobject.SpawnPoint;
 
 import processing.core.PApplet;
 

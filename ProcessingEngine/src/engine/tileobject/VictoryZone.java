@@ -1,4 +1,4 @@
-package engine.level;
+package engine.tileobject;
 
 import engine.Player;
 import processing.core.PApplet;
