@@ -8,8 +8,8 @@ import java.io.*;
 import java.util.LinkedList;
 
 /**
+ * Handles file loading of Games/mods (no mod support yet)
  * @author Charles Covar
- *
  */
 public class Game {
 	public Game(String name, Player player, PApplet parent) {
@@ -53,6 +53,11 @@ public class Game {
 		
 	}
 	
+	/**
+	 * Pops the next level name from the stack, then reads the corresponding file
+	 * and loads the level into memory
+	 * @return newly constructed level, already started
+	 */
 	public Level nextLevel() {
 		if(this.levels.isEmpty())
 			return null;
