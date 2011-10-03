@@ -16,8 +16,10 @@ public class ProcessingSketch extends PApplet {
 		frameRate(30);
 		  
 		player = new Player(this);
-		level1 = new Level(player,"scripts/level1",this);
-		level1.startLevel();
+		game = new Game("csc481",player,this);
+		//currentLevel = new Level(player,"scripts/level1",this);
+		//currentLevel.startLevel();
+		currentLevel = game.nextLevel();
 	}
 	
 	public boolean checkKey(int k) { 
@@ -37,16 +39,16 @@ public class ProcessingSketch extends PApplet {
 	
 	public void draw() {
 		if(checkKey('a') || checkKey('A')) {
-		    level1.movePlayer(Level.LEFT);
+		    currentLevel.movePlayer(Level.LEFT);
 		}
 		if(checkKey('d') || checkKey('D')) {
-		    level1.movePlayer(Level.RIGHT);
+		    currentLevel.movePlayer(Level.RIGHT);
 		}
-		if(checkKey(' ')) level1.movePlayer(Level.UP);
+		if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
 		  
 		background(0,0,0);
-		level1.update();
-		level1.draw();
+		currentLevel.update();
+		currentLevel.draw();
 	}
 	
 	public static void main(String [] args) {
@@ -54,7 +56,8 @@ public class ProcessingSketch extends PApplet {
 	}
 	
 	private Player player;
-	private Level level1;
+	private Game game;
+	private Level currentLevel;
 
 	private boolean[] keys = new boolean[526];
 
