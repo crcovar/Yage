@@ -52,7 +52,7 @@ public class VictoryZone implements TileObject {
 	  
 	public void draw() { 
 		parent.fill(0,0,0);
-		parent.stroke(0,255,0);
+		parent.stroke(255,255,0);
 		for(int i=0; i<t_width; i++){
 			for(int j=0;j<t_height;j++) {
 				parent.rect(x*TILE_SIZE + (i*TILE_SIZE),y*TILE_SIZE + (j*TILE_SIZE),TILE_SIZE,TILE_SIZE);
