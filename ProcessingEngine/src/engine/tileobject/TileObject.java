@@ -3,7 +3,7 @@
  */
 package engine.tileobject;
 
-import engine.Player;
+import engine.character.Player;
 
 /**
  * @author Charles Covar (covar1@gmail.com)

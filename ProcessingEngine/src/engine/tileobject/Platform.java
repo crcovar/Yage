@@ -2,7 +2,7 @@ package engine.tileobject;
 
 import processing.core.PApplet;
 import engine.GameObject;
-import engine.Player;
+import engine.character.Player;
 
 /**
  * @author Charles Covar (covar1@gmail.com)

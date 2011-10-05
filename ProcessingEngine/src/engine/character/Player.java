@@ -1,6 +1,9 @@
-package engine;
+package engine.character;
 
 
+import engine.GameObject;
+import engine.Level;
+import engine.SpawnPoint;
 import processing.core.PApplet;
 
 /**

@@ -1,5 +1,6 @@
 package engine;
 
+import engine.character.Player;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
 import engine.tileobject.TileObject;

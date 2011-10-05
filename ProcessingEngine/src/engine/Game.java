@@ -7,6 +7,8 @@ import processing.core.PApplet;
 import java.io.*;
 import java.util.LinkedList;
 
+import engine.character.Player;
+
 /**
  * Handles file loading of Games/mods (no mod support yet)
  * @author Charles Covar (covar1@gmail.com)

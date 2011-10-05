@@ -1,7 +1,7 @@
 package engine.tileobject;
 
 import engine.GameObject;
-import engine.Player;
+import engine.character.Player;
 import processing.core.PApplet;
 
 /**
