@@ -15,7 +15,7 @@ import processing.core.PApplet;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class Level {
+public class Level extends GameObject {
 	/**
 	 * Reads in a level from a file and builds it out.
 	 * @param player

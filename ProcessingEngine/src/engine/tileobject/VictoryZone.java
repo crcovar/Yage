@@ -1,5 +1,6 @@
 package engine.tileobject;
 
+import engine.GameObject;
 import engine.Player;
 import processing.core.PApplet;
 
@@ -7,7 +8,7 @@ import processing.core.PApplet;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class VictoryZone implements TileObject {
+public class VictoryZone extends GameObject implements TileObject {
 
 	public VictoryZone(int x, int y, PApplet p) {
 		this.x = x;

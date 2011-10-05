@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * Handles file loading of Games/mods (no mod support yet)
  * @author Charles Covar
  */
-public class Game {
+public class Game extends GameObject {
 	public Game(String name, Player player, PApplet parent) {
 		this.name = name;
 		this.levels = new LinkedList<String>();

@@ -3,6 +3,7 @@
  */
 package engine.tileobject;
 
+import engine.GameObject;
 import engine.Player;
 import processing.core.PApplet;
 
@@ -10,7 +11,7 @@ import processing.core.PApplet;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class DeathZone implements TileObject {
+public class DeathZone extends GameObject implements TileObject {
 	  
 	public DeathZone(int x, int y, int w, int h, boolean draw, PApplet p) {
 		this.x = x;

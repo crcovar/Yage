@@ -8,7 +8,7 @@ import processing.core.PApplet;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class Player {
+public class Player extends GameObject {
 	public Player(PApplet p) {
 	    this.movement = new boolean[4];
 	    this.velocityX = 0;

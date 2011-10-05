@@ -3,13 +3,15 @@
  */
 package engine.tileobject;
 
+import engine.GameObject;
+import engine.Player;
 import processing.core.PApplet;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class SpawnPoint { 
+public class SpawnPoint extends GameObject { 
 	public SpawnPoint(int x, int y, PApplet p) {
 		this.x = x;
 		this.y = y;

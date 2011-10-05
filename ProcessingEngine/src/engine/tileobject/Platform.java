@@ -1,13 +1,14 @@
 package engine.tileobject;
 
 import processing.core.PApplet;
+import engine.GameObject;
 import engine.Player;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class Platform implements TileObject {
+public class Platform extends GameObject implements TileObject {
 
 	public Platform(int x, int y, int w, int h, PApplet p) {
 		this.x = x;

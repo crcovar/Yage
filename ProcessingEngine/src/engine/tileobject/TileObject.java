@@ -6,7 +6,7 @@ package engine.tileobject;
 import engine.Player;
 
 /**
- * @author Covar
+ * @author Charles Covar (covar1@gmail.com)
  *
  */
 public interface TileObject {
