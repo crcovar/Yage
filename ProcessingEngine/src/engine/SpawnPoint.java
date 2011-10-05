@@ -11,6 +11,8 @@ import processing.core.PApplet;
  */
 public class SpawnPoint extends GameObject { 
 	public SpawnPoint(int x, int y, PApplet p) {
+		super();
+		
 		this.x = x;
 		this.y = y;
 		

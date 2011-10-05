@@ -14,6 +14,8 @@ import processing.core.PApplet;
 public class DeathZone extends GameObject implements TileObject {
 	  
 	public DeathZone(int x, int y, int w, int h, boolean draw, PApplet p) {
+		super();
+		
 		this.x = x;
 		this.y = y;
 		this.t_width=w;
@@ -23,6 +25,8 @@ public class DeathZone extends GameObject implements TileObject {
 	}
 	  
 	public DeathZone() {
+		super();
+		
 		this.x = -3;
 		this.y = 32;
 		this.t_width = 45;

@@ -22,6 +22,8 @@ public class Level extends GameObject {
 	 * @param parent
 	 */
 	public Level(Player player, String file, PApplet parent) {
+		super();
+		
 		this.parent = parent;
 		this.player = player;
 		this.tiles = new LinkedList<TileObject>();
@@ -91,6 +93,8 @@ public class Level extends GameObject {
 		
 	}
 	public Level(Player player, PApplet parent) {
+		super();
+		
 		this.parent = parent;
 		
 	    this.spawn = new SpawnPoint(4,20, this.parent);

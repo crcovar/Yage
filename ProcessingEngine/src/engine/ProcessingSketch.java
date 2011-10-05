@@ -2,7 +2,7 @@ package engine;
 import processing.core.*;
 
 /**
- * @author Charles Covar
+ * @author Charles Covar (covar1@gmail.com)
  *
  */
 public class ProcessingSketch extends PApplet {

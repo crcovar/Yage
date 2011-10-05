@@ -11,6 +11,8 @@ import processing.core.PApplet;
 public class VictoryZone extends GameObject implements TileObject {
 
 	public VictoryZone(int x, int y, PApplet p) {
+		super();
+		
 		this.x = x;
 		this.y = y;
 		this.t_width=2;

@@ -11,6 +11,8 @@ import engine.Player;
 public class Platform extends GameObject implements TileObject {
 
 	public Platform(int x, int y, int w, int h, PApplet p) {
+		super();
+		
 		this.x = x;
 		this.y = y;
 		this.t_width = w;
@@ -19,6 +21,8 @@ public class Platform extends GameObject implements TileObject {
 	}  
 	  
 	public Platform(PApplet p) {
+		super();
+		
 		this.x=0;
 		this.y=29;
 		this.t_width = 40;

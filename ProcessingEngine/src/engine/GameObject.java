@@ -9,5 +9,13 @@ package engine;
  *
  */
 public abstract class GameObject {
-
+	protected int gUId;
+	private static int numGameObjects = 0;
+	
+	public GameObject() {
+		this.gUId = numGameObjects;
+		numGameObjects++;
+	}
+	
+	
 }

@@ -9,6 +9,8 @@ import processing.core.PApplet;
  */
 public class Player extends GameObject {
 	public Player(PApplet p) {
+		super();
+		
 	    this.movement = new boolean[4];
 	    this.velocityX = 0;
 	    this.velocityY = 0;
