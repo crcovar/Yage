@@ -48,6 +48,8 @@ public class ProcessingSketch extends PApplet {
 		  
 		background(0,0,0);
 		currentLevel.update();
+		if(currentLevel.reachedVictory())
+			currentLevel = game.nextLevel();
 		currentLevel.draw();
 	}
 	

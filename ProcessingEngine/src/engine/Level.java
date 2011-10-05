@@ -116,6 +116,7 @@ public class Level extends GameObject {
 	public void startLevel() {
 	   player.setSpawn(spawn);
 	   player.moveToSpawn();
+	   this.victory = false;
 	}
 	
 	public void movePlayer(int direction) {
@@ -128,8 +129,14 @@ public class Level extends GameObject {
 		player.update();
 		
 		for(TileObject t : tiles) {
-			t.collide(player);
+			if(t.collide(player) && t instanceof VictoryZone) {
+				this.victory = true;
+			}
 		}
+	}
+	
+	public boolean reachedVictory() {
+		return this.victory;
 	}
 	
 	public void draw() {
@@ -147,6 +154,8 @@ public class Level extends GameObject {
 	private SpawnPoint spawn;
 	private Player player;
 	private LinkedList<TileObject> tiles;
+	
+	private boolean victory;
 	
 	private PApplet parent;
 
