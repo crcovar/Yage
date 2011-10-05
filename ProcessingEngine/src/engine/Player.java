@@ -1,6 +1,5 @@
 package engine;
 
-import engine.tileobject.SpawnPoint;
 
 import processing.core.PApplet;
 

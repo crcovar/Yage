@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 /**
  * Handles file loading of Games/mods (no mod support yet)
- * @author Charles Covar
+ * @author Charles Covar (covar1@gmail.com)
  */
 public class Game extends GameObject {
 	public Game(String name, Player player, PApplet parent) {
