@@ -11,7 +11,7 @@ import processing.core.PApplet;
  * TODO: Write java doc for boundary methods. Remove magic numbers.
  * Use constants to define movement speeds, bounding boxes, etc.
  */
-public class Player extends GameObject {
+public class Player extends GameObject implements Character {
 	/**
 	 * Constructor, takes in PApplet object for rendering
 	 * @param p PApplet that runs the graphics and input
@@ -98,6 +98,10 @@ public class Player extends GameObject {
 		movement[Level.UP] = true;
 	}
 	
+	public void moveDown() {
+		gravity();
+	}
+	
 	public int getTopBound() { return (centerY-this.radius); }
 	public int getSmallTopBound() { return centerY - this.radius/2; }
 	public int getBottomBound() { return (centerY+this.radius); }
@@ -131,7 +135,7 @@ public class Player extends GameObject {
 	 * What to do when the player's left side collides with something
 	 * @param bound right of the object hit
 	 */
-	public void collideLeft(int bound ) {
+	public void collideLeft(int bound) {
 		centerX = bound+this.radius;
 		velocityX = 0;
 	}
