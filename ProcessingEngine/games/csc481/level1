@@ -1,14 +1,14 @@
 #This is a simple script for building levels.
 # As you can see it supports line comments, just put a '#' at the start of any line to comment it out.
 # technically any line that doesn't start with a TileObject should just get passed over, but it's good practice to comment.
-Uncomented lines that can't be parsed are still checked, so it's technically slower to leave them blank. Plus you can more easily introduce
-#bugs.
+# Uncommented lines that can't be parsed are still checked, and will introduce bugs
 
 # SpawnPoints take 2 parameters an x position and a y position. it's a 1x1 tile placed at that location used for spawning the player.
 SpawnPoint x=4 y=20
 
-# your default Platform. rungs accross the bottom of the screen 1 unit high. Not really useful if you want something more complex
+# your default Platform. rungs across the bottom of the screen 1 unit high. Not really useful if you want something more complex
 Platform
+
 # These platforms are more flexible, you pass the (x,y) coordinates of the top left most tile then the number of tiles it expands
 # towards the right and bottom.
 Platform x=18 y=28 width=3 height=1
@@ -18,10 +18,12 @@ Platform x=20 y=23 width=4 height=1
 # Default DeathZone makes an invisible death pit below the screen. extends out past the screen in both directions and is several tiles
 # deep, in an attempt to ensure catching the player when he falls
 DeathZone
-# When you add parameters to a DeathZone the first four are identical to the Platform, the last paramter tells you if you draw the object.
+
+# When you add parameters to a DeathZone the first four are identical to the Platform, the last parameter tells you if you draw the object.
 # So yes you can have invisible DeathZones throughout your level. 
-DeathZone 22 27 6 2 true
+DeathZone x=22 y=27 width=6 height=2 draw=true
 
 # VictoryZone requires 2 parameters, (x,y) coordinates which will place a 2x2 square. parameters are for the top left tile.
-VictoryZone 20 18
+VictoryZone x=20 y=18
+
 Platform x=0 y=20 width=1 height=9

@@ -15,4 +15,6 @@ public interface TileObject {
 	public boolean collide(Player p);
 	  
 	public void draw();
+
+	public boolean setParam(String name, String value);
 }

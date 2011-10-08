@@ -3,13 +3,15 @@
  */
 package engine;
 
+import engine.character.Player;
+import engine.tileobject.TileObject;
 import processing.core.PApplet;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class SpawnPoint extends GameObject { 
+public class SpawnPoint extends GameObject implements TileObject { 
 	public SpawnPoint(PApplet p) {
 		super();
 		
@@ -19,13 +21,21 @@ public class SpawnPoint extends GameObject {
 		this.parent = p;
 	}
 	
-	public boolean setParam(String name, int value) {
+	public boolean setParam(String name, String value) {
 		String n = name.toLowerCase();
+		int v;
+		
+		try {
+			v = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
 		if(n.equals("x")) {
-			this.x = value;
+			this.x = v;
 			return true;
 		} else if(n.equals("y")) {
-			this.y = value;
+			this.y = v;
 			return true;
 		}
 		
@@ -34,7 +44,12 @@ public class SpawnPoint extends GameObject {
 	  
 	public int getX() { return x * TILE_SIZE; }
 	public int getY() { return y * TILE_SIZE; } 
-	  
+	
+	public boolean collide(Player p) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public void draw() {
 		this.parent.fill(0,0,0);
 		this.parent.stroke(255,255,255);
@@ -46,4 +61,5 @@ public class SpawnPoint extends GameObject {
 	private final int TILE_SIZE = 16;
 	
 	private PApplet parent;
+
 }

@@ -30,19 +30,27 @@ public class Platform extends GameObject implements TileObject {
 		this.parent = p;
 	}
 	
-	public boolean setParam(String name, int value) {
+	public boolean setParam(String name, String value) {
 		String n = name.toLowerCase();
+		int v;
+		
+		try {
+			v = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
 		if(n.equals("x")) {
-			this.x = value;
+			this.x = v;
 			return true;
 		} else if(n.equals("y")) {
-			this.y = value;
+			this.y = v;
 			return true;
 		} else if(n.equals("width")) {
-			this.t_width = value;
+			this.t_width = v;
 			return true;
 		} else if(n.equals("height")) {
-			this.t_height = value;
+			this.t_height = v;
 			return true;
 		}
 		

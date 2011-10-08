@@ -18,6 +18,5 @@ public abstract class GameObject {
 	}
 	
 	public boolean setParam(String name, String value) { return false; }
-	public boolean setParam(String name, int value) { return false; }
 	
 }

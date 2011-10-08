@@ -6,8 +6,8 @@ Platform x=20 y=28 width=15 height=2
 DeathZone
 # When you add parameters to a DeathZone the first four are identical to the Platform, the last paramter tells you if you draw the object.
 # So yes you can have invisible DeathZones throughout your level. 
-DeathZone 22 27 6 2 true
+DeathZone x=22 y=27 width=6 height=2 draw=true
 
 # VictoryZone requires 2 parameters, (x,y) coordinates which will place a 2x2 square. parameters are for the top left tile.
-VictoryZone 20 18
+VictoryZone x=20 y=18
 Platform x=0 y=20 width=1 height=9

@@ -10,14 +10,35 @@ import processing.core.PApplet;
  */
 public class VictoryZone extends GameObject implements TileObject {
 
-	public VictoryZone(int x, int y, PApplet p) {
+	public VictoryZone(PApplet p) {
 		super();
 		
-		this.x = x;
-		this.y = y;
+		this.x = 0;
+		this.y = 0;
 		this.t_width=2;
 		this.t_height=2;
 		this.parent = p;
+	}
+	
+	public boolean setParam(String name, String value) {
+		String n = name.toLowerCase();
+		int v;
+		
+		try {
+			v = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		if(n.equals("x")) {
+			this.x = v;
+			return true;
+		} else if(n.equals("y")) {
+			this.y = v;
+			return true;
+		}
+		
+		return false;
 	}
 	  
 	public boolean collide(Player p) {

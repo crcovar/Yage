@@ -24,7 +24,7 @@ public class DeathZone extends GameObject implements TileObject {
 		this.parent = p;
 	}
 	  
-	public DeathZone() {
+	public DeathZone(PApplet p) {
 		super();
 		
 		this.x = -3;
@@ -32,7 +32,43 @@ public class DeathZone extends GameObject implements TileObject {
 		this.t_width = 45;
 		this.t_height = 8;
 		this.draw = false;
-		this.parent = null;
+		this.parent = p;
+	}
+	
+	public boolean setParam(String name, String value) {
+		String n = name.toLowerCase();
+		int v;
+		
+		if(n.equals("draw")) { 
+			if(value.toLowerCase().equals("true"))
+				this.draw = true;
+			else
+				this.draw = false;
+			
+			return true;
+		}
+	
+		try {
+			v = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		if(n.equals("x")) {
+			this.x = v;
+			return true;
+		} else if(n.equals("y")) {
+			this.y = v;
+			return true;
+		} else if (n.equals("width")) {
+			this.t_width = v;
+			return true;
+		} else if(n.equals("height")) {
+			this.t_height = v;
+			return true;
+		}
+	
+		return false;
 	}
 	  
 	public boolean collide(Player p) {
