@@ -46,23 +46,23 @@ public class Level extends GameObject {
 				
 				if(lineArray.length > 0) {
 					if(lineArray[0].equals("Platform")) {
-						Platform p;
+						Platform p = new Platform(this.parent);
 						if(lineArray.length > 1) {
-							p = new Platform(Integer.parseInt(lineArray[1]),
-									Integer.parseInt(lineArray[2]),
-									Integer.parseInt(lineArray[3]),
-									Integer.parseInt(lineArray[4]), this.parent);
-						} else {
-							p = new Platform(this.parent);
+							for(int i=1;i<lineArray.length;i++) {
+								String[] params = lineArray[i].split("=");
+								p.setParam(params[0], Integer.parseInt(params[1]));
+							}
 						}
-						
 						this.tiles.add(p);
-						
 					}
 					else if(lineArray[0].equals("SpawnPoint")) {
-						SpawnPoint s = new SpawnPoint(Integer.parseInt(lineArray[1]),
-														Integer.parseInt(lineArray[2]),
-														this.parent);
+						SpawnPoint s = new SpawnPoint(this.parent);
+						if(lineArray.length > 1) {
+							for(int i=1;i<lineArray.length;i++) {
+								String[] params = lineArray[i].split("=");
+								s.setParam(params[0], Integer.parseInt(params[1]));
+							}
+						}
 						this.spawn = s; // leaving it like this to ease addition of multiple spawns
 					}
 					else if(lineArray[0].equals("DeathZone")) {
@@ -98,7 +98,7 @@ public class Level extends GameObject {
 		
 		this.parent = parent;
 		
-	    this.spawn = new SpawnPoint(4,20, this.parent);
+	    this.spawn = new SpawnPoint(this.parent);
 	    this.player = player;
 	    Platform p1 = new Platform(this.parent);
 	    Platform p2 = new Platform(18, 28, 3, 1, this.parent);

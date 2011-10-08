@@ -17,5 +17,7 @@ public abstract class GameObject {
 		numGameObjects++;
 	}
 	
+	public boolean setParam(String name, String value) { return false; }
+	public boolean setParam(String name, int value) { return false; }
 	
 }

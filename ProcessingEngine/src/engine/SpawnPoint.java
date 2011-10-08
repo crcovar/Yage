@@ -10,13 +10,26 @@ import processing.core.PApplet;
  *
  */
 public class SpawnPoint extends GameObject { 
-	public SpawnPoint(int x, int y, PApplet p) {
+	public SpawnPoint(PApplet p) {
 		super();
 		
-		this.x = x;
-		this.y = y;
+		this.x = 0;
+		this.y = 0;
 		
 		this.parent = p;
+	}
+	
+	public boolean setParam(String name, int value) {
+		String n = name.toLowerCase();
+		if(n.equals("x")) {
+			this.x = value;
+			return true;
+		} else if(n.equals("y")) {
+			this.y = value;
+			return true;
+		}
+		
+		return false;
 	}
 	  
 	public int getX() { return x * TILE_SIZE; }
@@ -29,6 +42,7 @@ public class SpawnPoint extends GameObject {
 	}
 	
 	private int x, y;
+	
 	private final int TILE_SIZE = 16;
 	
 	private PApplet parent;

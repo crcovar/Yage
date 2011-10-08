@@ -175,7 +175,7 @@ public class Player extends GameObject implements Character {
 		parent.fill(255,255,255);
 		parent.ellipse(centerX,centerY,this.radius*2,this.radius*2);
 	}
-
+	
 	private int velocityX;
 	private int velocityY;
 	private boolean[] movement;
