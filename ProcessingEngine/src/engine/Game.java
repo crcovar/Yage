@@ -14,12 +14,12 @@ import engine.character.Player;
  * @author Charles Covar (covar1@gmail.com)
  */
 public class Game extends GameObject {
-	public Game(String name, Player player, PApplet parent) {
+	public Game(String name, Player player, PApplet parent) {		
 		this.name = name;
 		this.levels = new LinkedList<String>();
 		this.player = player;
 		this.parent = parent;
-		
+
 		File dir = new File("games/"+name);
 		FileReader reader = null;
 		
@@ -69,7 +69,7 @@ public class Game extends GameObject {
 			return l;
 		}
 	}
-	
+
 	private String name;
 	private LinkedList<String> levels;
 	private Player player;
