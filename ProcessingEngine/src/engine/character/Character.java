@@ -3,7 +3,7 @@
  */
 package engine.character;
 
-import engine.SpawnPoint;
+import engine.tileobject.SpawnPoint;
 
 /**
  * @author Charles Covar (covar1@gmail.com)

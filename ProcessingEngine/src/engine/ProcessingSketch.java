@@ -12,6 +12,9 @@ public class ProcessingSketch extends PApplet {
 	 */
 	private static final long serialVersionUID = -6142886135378656379L;
 
+	/**
+	 * Sets the screen size, locks the framerate and initializes values.
+	 */
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
@@ -22,21 +25,35 @@ public class ProcessingSketch extends PApplet {
 		currentLevel = game.nextLevel();
 	}
 	
-	public boolean checkKey(int k) { 
+	/**
+	 * Checks to see if a key on the keyboard has been pressed
+	 * @param k char of the key we want to check
+	 * @return true if the key is pressed, else false
+	 */
+	public boolean checkKey(char k) { 
 		if (keys.length >= k) {
 			return keys[k];
 		}
 		return false;
 	}
 
+	/**
+	 * Event trigger. When a key is pressed the value of the key is set to true in our array
+	 */
 	public void keyPressed() {
 		keys[keyCode] = true;
 	}
 
+	/**
+	 * Event trigger. Sets the value of the key in our array to false.
+	 */
 	public void keyReleased() {
 		keys[keyCode] = false;
 	}
 	
+	/**
+	 * Main game loop. Processing will call this method as often as the frame rate calls for it.
+	 */
 	public void draw() {
 		if(checkKey('a') || checkKey('A')) {
 		    currentLevel.movePlayer(Level.LEFT);
@@ -53,6 +70,10 @@ public class ProcessingSketch extends PApplet {
 		currentLevel.draw();
 	}
 	
+	/**
+	 * Main method of the engine. Creates a new Processing Applet and passes our ProcessingSketch class
+	 * @param args
+	 */
 	public static void main(String [] args) {
 		PApplet.main(new String[] { "engine.ProcessingSketch" });
 	}

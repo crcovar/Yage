@@ -1,10 +1,10 @@
 /**
  * 
  */
-package engine;
+package engine.tileobject;
 
+import engine.GameObject;
 import engine.character.Player;
-import engine.tileobject.TileObject;
 import processing.core.PApplet;
 
 /**
