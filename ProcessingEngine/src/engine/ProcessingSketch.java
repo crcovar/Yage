@@ -18,8 +18,7 @@ public class ProcessingSketch extends PApplet {
 		  
 		player = new Player(this);
 		game = new Game("csc481",player,this);
-		//currentLevel = new Level(player,"scripts/level1",this);
-		//currentLevel.startLevel();
+
 		currentLevel = game.nextLevel();
 	}
 	
