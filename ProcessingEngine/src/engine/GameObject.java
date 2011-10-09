@@ -19,4 +19,5 @@ public abstract class GameObject {
 	
 	public boolean setParam(String name, String value) { return false; }
 	
+	public boolean processMessage(String name, String msg) { return false; }
 }
