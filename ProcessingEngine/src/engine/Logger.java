@@ -15,7 +15,24 @@ public class Logger extends GameObject {
 	 */
 	public Logger() {
 		super();
-		EventManager.getInstance().registerListener("logger", this);
+		
+		this.out = null;
+		
+		EventManager.getInstance().registerListener("log", this);
+		try {
+			this.out = new PrintWriter(logFile);
+			processMessage("log","--Start of Log--");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void finalize() throws Throwable {
+		try {
+			this.out.close();
+		} finally {
+			super.finalize();
+		}
 	}
 	
 	/**
@@ -23,8 +40,9 @@ public class Logger extends GameObject {
 	 * @return True if the message gets processed
 	 */
 	public boolean processMessage(String name, String msg) {
-		if(name.equals("logger")) {
-			return log(msg);
+		if(name.equals("log")) {
+			log(msg);
+			return true;
 		}
 		return false;
 	}
@@ -34,17 +52,14 @@ public class Logger extends GameObject {
 	 * @param msg message to log
 	 * @return true if writing to file is successful
 	 */
-	private boolean log(String msg) {
-		try {
-			PrintWriter out = new PrintWriter(logFile);
-			out.println(msg);
-			out.close();
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+	public void log(String msg) {
+		if(this.out != null) {
+			this.out.println(msg);
+			this.out.flush();
 		}
 	}
+	
+	private PrintWriter out;
 	
 	private final String logFile = "out.log";
 }

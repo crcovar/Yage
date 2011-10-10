@@ -18,7 +18,9 @@ public class ProcessingSketch extends PApplet {
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
-		  
+		
+		this.logger = new Logger();
+		
 		player = new Player(this);
 		game = new Game("csc481",player,this);
 
@@ -81,6 +83,7 @@ public class ProcessingSketch extends PApplet {
 	private Player player;
 	private Game game;
 	private Level currentLevel;
+	private Logger logger;
 
 	private boolean[] keys = new boolean[526];
 
