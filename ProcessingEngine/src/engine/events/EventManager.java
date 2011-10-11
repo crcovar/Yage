@@ -1,9 +1,11 @@
 /**
  * 
  */
-package engine;
+package engine.events;
 
 import java.util.HashMap;
+
+import engine.GameObject;
 
 /**
  * Singleton class for managing events

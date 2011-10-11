@@ -5,6 +5,8 @@ package engine;
 
 import java.io.*;
 
+import engine.events.EventManager;
+
 /**
  * @author Charles Covar (covar1@gmail.com)
  *

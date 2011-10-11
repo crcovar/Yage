@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.LinkedList;
 
 import engine.character.Player;
+import engine.events.EventManager;
 
 /**
  * Handles file loading of Games/mods (no mod support yet)
