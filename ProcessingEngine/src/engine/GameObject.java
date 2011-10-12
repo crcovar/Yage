@@ -17,7 +17,11 @@ public abstract class GameObject {
 	 * When object is destroyed decrement the game counter
 	 */
 	public void finalize() throws Throwable {
+		try {
 		numGameObjects--;
+		} finally {
+			super.finalize();
+		}
 	}
 	
 	/**
