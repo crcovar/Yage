@@ -7,7 +7,7 @@ import engine.tileobject.SpawnPoint;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: Write javadoc
  */
 public interface Character {
 	

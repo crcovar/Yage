@@ -1,6 +1,3 @@
-/**
- * 
- */
 package engine;
 
 import processing.core.PApplet;
@@ -13,8 +10,16 @@ import engine.events.EventManager;
 /**
  * Handles file loading of Games/mods (no mod support yet)
  * @author Charles Covar (covar1@gmail.com)
+ * TODO: Add support for mods (mod directory)
+ * TODO: Support multiple players
  */
 public class Game extends GameObject {
+	/**
+	 * Constructor
+	 * @param name The name of the game to load
+	 * @param player Player object who will be playing the game
+	 * @param parent <code>PApplet</code> used for drawing
+	 */
 	public Game(String name, Player player, PApplet parent) {		
 		this.name = name;
 		this.levels = new LinkedList<String>();

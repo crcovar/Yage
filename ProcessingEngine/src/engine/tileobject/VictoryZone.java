@@ -6,7 +6,7 @@ import processing.core.PApplet;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: write javadoc
  */
 public class VictoryZone extends GameObject implements TileObject {
 

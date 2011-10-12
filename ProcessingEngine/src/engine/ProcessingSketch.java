@@ -5,7 +5,7 @@ import processing.core.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: use the EventManager to better modularize the subsystems 
  */
 public class ProcessingSketch extends PApplet {
 	/**

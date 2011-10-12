@@ -8,7 +8,8 @@ import processing.core.PApplet;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- * TODO: Write java doc for boundary methods. Remove magic numbers.
+ * TODO: Write java doc for boundary methods.
+ * TODO: Remove magic numbers.
  * Use constants to define movement speeds, bounding boxes, etc.
  */
 public class Player extends GameObject implements Character {

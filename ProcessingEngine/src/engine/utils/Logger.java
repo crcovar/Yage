@@ -1,6 +1,3 @@
-/**
- * 
- */
 package engine.utils;
 
 import java.io.*;
@@ -10,7 +7,7 @@ import engine.events.EventManager;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: add support for appending to the log instead of starting fresh every startup
  */
 public class Logger extends GameObject {
 	/**

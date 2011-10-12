@@ -1,6 +1,3 @@
-/**
- * 
- */
 package engine.tileobject;
 
 import engine.GameObject;
@@ -9,7 +6,7 @@ import processing.core.PApplet;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: write javadoc
  */
 public class SpawnPoint extends GameObject implements TileObject { 
 	public SpawnPoint(PApplet p) {

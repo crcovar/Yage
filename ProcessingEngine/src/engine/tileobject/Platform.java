@@ -6,19 +6,9 @@ import engine.character.Player;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: write javadoc
  */
 public class Platform extends GameObject implements TileObject {
-
-	public Platform(int x, int y, int w, int h, PApplet p) {
-		super();
-		
-		this.x = x;
-		this.y = y;
-		this.t_width = w;
-		this.t_height = h;
-		this.parent = p;
-	}  
 	  
 	public Platform(PApplet p) {
 		super();
