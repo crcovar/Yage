@@ -13,7 +13,6 @@ import java.net.*;
  * TODO: send messages to clients
  * TODO: override processMessage() to process registered events
  * TODO: pass messages sent from clients to other systems
- * TODO: write javadoc
  */
 public class Server extends GameObject {
 	/**
