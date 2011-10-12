@@ -9,15 +9,20 @@ package engine;
  *
  */
 public abstract class GameObject {
-	protected int gUId;
-	private static int numGameObjects = 0;
 	
 	public GameObject() {
 		this.gUId = numGameObjects;
 		numGameObjects++;
 	}
 	
+	public void finalize() throws Throwable {
+		numGameObjects--;
+	}
+	
 	public boolean setParam(String name, String value) { return false; }
 	
 	public boolean processMessage(String name, String msg) { return false; }
+	
+	protected int gUId;
+	private static int numGameObjects = 0;
 }

@@ -1,10 +1,11 @@
 /**
  * 
  */
-package engine;
+package engine.utils;
 
 import java.io.*;
 
+import engine.GameObject;
 import engine.events.EventManager;
 
 /**

@@ -1,5 +1,6 @@
 package engine;
 import engine.character.Player;
+import engine.utils.Logger;
 import processing.core.*;
 
 /**
