@@ -4,6 +4,8 @@ import engine.GameObject;
 import engine.events.EventManager;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.*;
 
 /**
@@ -30,12 +32,15 @@ public class Client extends GameObject {
 	public Client(String host, int port) {
 		super();
 		
+		//register as listener for our events
 		EventManager.getInstance().registerListener("toserver", this);
 		
 		this.socket = null;
 		
 		try {
 			this.socket = new Socket(host,port);
+			this.input = this.socket.getInputStream();
+			this.output = this.socket.getOutputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,10 +52,14 @@ public class Client extends GameObject {
 	public void finalize() throws Throwable {
 		try {
 			this.socket.close();
+			this.input.close();
+			this.output.close();
 		} finally {
 			super.finalize();
 		}
 	}
 	
 	private Socket socket;
+	private InputStream input;
+	private OutputStream output;
 }
