@@ -52,7 +52,7 @@ public class Logger extends GameObject {
 	 * @param msg message to log
 	 * @return true if writing to file is successful
 	 */
-	public void log(String msg) {
+	private void log(String msg) {
 		if(this.out != null) {
 			this.out.println(msg);
 			this.out.flush();

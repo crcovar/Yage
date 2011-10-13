@@ -18,7 +18,7 @@ public abstract class GameObject {
 	 */
 	public void finalize() throws Throwable {
 		try {
-		numGameObjects--;
+			numGameObjects--;
 		} finally {
 			super.finalize();
 		}
