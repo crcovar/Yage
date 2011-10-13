@@ -10,7 +10,6 @@ import java.net.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- * TODO: connect to Server
  * TODO: process messages from Server
  * TODO: override processMessage() to process registered events
  * TODO: send messages to Server
