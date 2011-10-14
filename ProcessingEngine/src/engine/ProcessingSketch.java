@@ -71,16 +71,11 @@ public class ProcessingSketch extends PApplet {
 	 * Main game loop. Processing will call this method as often as the frame rate calls for it.
 	 */
 	public void draw() {
-		if(checkKey('a') || checkKey('A')) {
-		    currentLevel.movePlayer(Level.LEFT);
-		}
-		if(checkKey('d') || checkKey('D')) {
-		    currentLevel.movePlayer(Level.RIGHT);
-		}
-		if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
-		
 		EventManager.getInstance().sendEvent("clear", null);
-		if(currentLevel.reachedVictory()) {
+		if (currentLevel == null) {
+			fill(255,255,255);
+			text("YOU WIN",300,235);
+		} else if(currentLevel.reachedVictory()) {
 			if(this.replay == null)
 				this.replay = new Replay("replay" + this.recorder.gUId);
 			if(!this.replay.isDone()) {
@@ -103,6 +98,14 @@ public class ProcessingSketch extends PApplet {
 				currentLevel = game.nextLevel();
 			}
 		} else {
+			if(checkKey('a') || checkKey('A')) {
+			    currentLevel.movePlayer(Level.LEFT);
+			}
+			if(checkKey('d') || checkKey('D')) {
+			    currentLevel.movePlayer(Level.RIGHT);
+			}
+			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
+			
 			currentLevel.update();
 			currentLevel.draw();
 		}

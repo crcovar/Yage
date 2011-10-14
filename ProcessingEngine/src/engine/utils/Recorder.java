@@ -52,4 +52,5 @@ public class Recorder extends GameObject {
 	}
 	
 	private PrintWriter out;
+
 }

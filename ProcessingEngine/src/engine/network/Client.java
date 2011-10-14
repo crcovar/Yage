@@ -9,9 +9,6 @@ import java.net.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- * TODO: process messages from Server
- * TODO: override processMessage() to process registered events
- * TODO: send messages to Server
  * TODO: pass messages from Server to other systems
  */
 public class Client extends GameObject implements Runnable{
