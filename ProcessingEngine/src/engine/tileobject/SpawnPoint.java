@@ -44,13 +44,15 @@ public class SpawnPoint extends GameObject implements TileObject {
 	}
 	  
 	public int getX() { return x * TILE_SIZE; }
-	public int getY() { return y * TILE_SIZE; } 
+	public int getY() { return y * TILE_SIZE; }
+	public int getWidth() { return 1; }
+	public int getHeight() { return 1; }
 	
 	public boolean collide(Player p) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+		
 	public void draw() {
 		this.parent.fill(0,0,0);
 		this.parent.stroke(255,255,255);

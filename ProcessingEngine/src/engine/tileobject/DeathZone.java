@@ -2,7 +2,8 @@ package engine.tileobject;
 
 import engine.GameObject;
 import engine.character.Player;
-import processing.core.PApplet;
+import engine.events.EventManager;
+import engine.events.EventMessage;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -10,7 +11,7 @@ import processing.core.PApplet;
  */
 public class DeathZone extends GameObject implements TileObject {
 	
-	public DeathZone(PApplet p) {
+	public DeathZone() {
 		super();
 		
 		this.x = -3;
@@ -18,7 +19,6 @@ public class DeathZone extends GameObject implements TileObject {
 		this.t_width = 45;
 		this.t_height = 8;
 		this.draw = false;
-		this.parent = p;
 	}
 	
 	public boolean setParam(String name, String value) {
@@ -93,16 +93,15 @@ public class DeathZone extends GameObject implements TileObject {
 		
 		return collided;
 	}
+	
+	public int getX() { return this.x; }
+	public int getY() { return this.y; }
+	public int getWidth() { return this.t_width; }
+	public int getHeight() { return this.t_height; }
 	  
 	public void draw() { 
 		if(draw) {
-			parent.fill(0,0,0);
-			parent.stroke(0,0,255);
-			for(int i=0; i<t_width; i++){
-				for(int j=0;j<t_height;j++) {
-					parent.rect(x*TILE_SIZE + (i*TILE_SIZE),y*TILE_SIZE + (j*TILE_SIZE),TILE_SIZE,TILE_SIZE);
-				}
-			}
+			EventManager.getInstance().sendEvent("draw", new EventMessage(this));
 		} // end if
 	
 	}
@@ -119,5 +118,4 @@ public class DeathZone extends GameObject implements TileObject {
 	private int t_height;
 	  
 	private boolean draw;
-	private PApplet parent;
 }

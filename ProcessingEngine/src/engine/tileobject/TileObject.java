@@ -9,7 +9,7 @@ import engine.character.Player;
  * @author Charles Covar (covar1@gmail.com)
  */
 public interface TileObject {
-	public final int TILE_SIZE = 16;
+	public static final int TILE_SIZE = 16;
 	
 	/**
 	 * Check to see if a Character collides with a TileObject
@@ -36,4 +36,9 @@ public interface TileObject {
 	 * @return String of the objects parameters
 	 */
 	public String printParams();
+	
+	public int getX();
+	public int getY();
+	public int getWidth();
+	public int getHeight();
 }

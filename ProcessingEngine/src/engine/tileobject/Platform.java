@@ -88,6 +88,11 @@ public class Platform extends GameObject implements TileObject {
 	    
 		return collided;
 	}
+	
+	public int getX() { return this.x; }
+	public int getY() { return this.y; }
+	public int getWidth() { return this.t_width; }
+	public int getHeight() { return this.t_height; }
 	  
 	public void draw() {
 		parent.fill(0,0,0);
