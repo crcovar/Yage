@@ -61,11 +61,22 @@ public class Replay extends GameObject {
 	 */
 	public boolean isDone() { return this.done; }
 	
+	/**
+	 * Toggle the speed to play replays at
+	 */
 	public void toggleSpeed() {
 		if(this.speed == Replay.DOUBLE)
 			this.speed = Replay.HALF;
 		else
 			this.speed++;
+	}
+	
+	/**
+	 * Get the speed play replays at
+	 * @return Either half speed, normal, or double
+	 */
+	public int getSpeed() {
+		return this.speed;
 	}
 	
 	public void update() {
@@ -121,6 +132,7 @@ public class Replay extends GameObject {
 		switch (this.speed) {
 		case Replay.HALF:
 		case Replay.NORMAL:
+		case Replay.DOUBLE:
 			for(GameObject obj : this.objects.values()) {
 				if(obj instanceof Character) {
 					((Character) obj).draw();
@@ -128,8 +140,6 @@ public class Replay extends GameObject {
 					((TileObject) obj).draw();
 				}
 			}
-			break;
-		case Replay.DOUBLE:
 			break;
 		default:break;
 		}

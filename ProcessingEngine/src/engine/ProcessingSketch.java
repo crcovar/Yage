@@ -62,6 +62,9 @@ public class ProcessingSketch extends PApplet {
 	 */
 	public void keyReleased() {
 		keys[keyCode] = false;
+		
+		if(keyCode == 't' && this.replay != null)
+			this.replay.toggleSpeed();
 	}
 	
 	/**
@@ -81,13 +84,24 @@ public class ProcessingSketch extends PApplet {
 			if(this.replay == null)
 				this.replay = new Replay("replay" + this.recorder.gUId);
 			if(!this.replay.isDone()) {
-				fill(255,255,255);
-				text("REPLAY",10,20);
 				// update and draw the replay
+				fill(255,255,255);
+				if(this.replay.getSpeed() == Replay.HALF) {
+					frameRate(15);
+					text("REPLAY 1/2x",10,20);
+				}else if (this.replay.getSpeed() == Replay.NORMAL) {
+					frameRate(30);
+					text("REPLAY 1x",10,20);
+				} else if (this.replay.getSpeed() == Replay.DOUBLE) {
+					frameRate(60);
+					text("REPLAY 2x",10,20);
+				}
 				this.replay.update();
 				this.replay.draw();
-			} else
-			currentLevel = game.nextLevel();
+			} else {
+				frameRate(30);
+				currentLevel = game.nextLevel();
+			}
 		} else {
 			currentLevel.update();
 			currentLevel.draw();
