@@ -46,12 +46,12 @@ public class EventManager extends GameObject {
 	/**
 	 * Fires off an event to the <code>EventManager</code> which will then pass it to the right <code>GameObject</code>
 	 * @param name Event you're sending
-	 * @param msg event details
+	 * @param event event details
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
-	public boolean sendEvent(String name, String msg) {
+	public boolean sendEvent(String name, Event event) {
 		if(this.listeners.containsKey(name)) {
-			return this.listeners.get(name).processMessage(name, msg);
+			return this.listeners.get(name).processMessage(name, event);
 		}
 		
 		return false;
