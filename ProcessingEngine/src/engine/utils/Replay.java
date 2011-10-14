@@ -31,6 +31,7 @@ public class Replay extends GameObject {
 		super();
 		
 		this.done = false;
+		this.speed = Replay.NORMAL;
 		
 		this.reader = null;
 		this.in = null;
@@ -59,6 +60,7 @@ public class Replay extends GameObject {
 	 * @return true if there is no more replay to play
 	 */
 	public boolean isDone() { return this.done; }
+	
 	
 	public void update() {
 		try {
@@ -118,6 +120,11 @@ public class Replay extends GameObject {
 	}
 	
 	private boolean done;
+	private int speed;
+	
+	public static final int NORMAL = 1;
+	public static final int HALF = 0;
+	public static final int DOUBLE = 2;
 	
 	private FileReader reader;
 	private BufferedReader in;
