@@ -2,20 +2,19 @@ package engine.tileobject;
 
 import engine.GameObject;
 import engine.character.Player;
-import processing.core.PApplet;
+import engine.events.EventManager;
+import engine.events.EventMessage;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  * TODO: write javadoc
  */
 public class SpawnPoint extends GameObject implements TileObject { 
-	public SpawnPoint(PApplet p) {
+	public SpawnPoint() {
 		super();
 		
 		this.x = 0;
 		this.y = 0;
-		
-		this.parent = p;
 	}
 	
 	public boolean setParam(String name, String value) {
@@ -54,15 +53,11 @@ public class SpawnPoint extends GameObject implements TileObject {
 	}
 		
 	public void draw() {
-		this.parent.fill(0,0,0);
-		this.parent.stroke(255,255,255);
-		this.parent.rect(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+		EventManager.getInstance().sendEvent("draw", new EventMessage(this));
 	}
 	
 	private int x, y;
 	
 	private final int TILE_SIZE = 16;
-	
-	private PApplet parent;
 
 }
