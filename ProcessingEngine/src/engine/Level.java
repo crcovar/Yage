@@ -53,7 +53,7 @@ public class Level extends GameObject {
 					TileObject t = null;
 					String obj = lineArray[0].toLowerCase();
 					if(obj.equals("platform"))
-						t = new Platform(this.parent);
+						t = new Platform();
 					else if(obj.equals("deathzone"))
 						t = new DeathZone();
 					else if(obj.equals("victoryzone"))

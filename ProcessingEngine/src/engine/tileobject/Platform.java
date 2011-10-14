@@ -1,8 +1,9 @@
 package engine.tileobject;
 
-import processing.core.PApplet;
 import engine.GameObject;
 import engine.character.Player;
+import engine.events.EventManager;
+import engine.events.EventMessage;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -10,14 +11,13 @@ import engine.character.Player;
  */
 public class Platform extends GameObject implements TileObject {
 	  
-	public Platform(PApplet p) {
+	public Platform() {
 		super();
 		
 		this.x=0;
 		this.y=29;
 		this.t_width = 40;
 		this.t_height = 1;
-		this.parent = p;
 	}
 	
 	public boolean setParam(String name, String value) {
@@ -95,20 +95,11 @@ public class Platform extends GameObject implements TileObject {
 	public int getHeight() { return this.t_height; }
 	  
 	public void draw() {
-		parent.fill(0,0,0);
-		parent.stroke(255,0,0);
-		for(int i=0; i<t_width; i++){
-			for(int j=0;j<t_height;j++) {
-				parent.rect(x*TILE_SIZE + (i*TILE_SIZE),y*TILE_SIZE + (j*TILE_SIZE),TILE_SIZE,TILE_SIZE);
-			}
-		}
-	
+		EventManager.getInstance().sendEvent("draw", new EventMessage("draw", this));	
 	}
 	
 	private int x;
 	private int y;
 	private int t_width;
 	private int t_height;
-	
-	private PApplet parent;
 }
