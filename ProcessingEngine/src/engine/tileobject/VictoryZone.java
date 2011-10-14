@@ -2,7 +2,8 @@ package engine.tileobject;
 
 import engine.GameObject;
 import engine.character.Player;
-import processing.core.PApplet;
+import engine.events.EventManager;
+import engine.events.EventMessage;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -10,14 +11,13 @@ import processing.core.PApplet;
  */
 public class VictoryZone extends GameObject implements TileObject {
 
-	public VictoryZone(PApplet p) {
+	public VictoryZone() {
 		super();
 		
 		this.x = 0;
 		this.y = 0;
 		this.t_width=2;
 		this.t_height=2;
-		this.parent = p;
 	}
 	
 	public boolean setParam(String name, String value) {
@@ -84,14 +84,7 @@ public class VictoryZone extends GameObject implements TileObject {
 	public int getHeight() { return this.t_height; }
 	  
 	public void draw() { 
-		parent.fill(0,0,0);
-		parent.stroke(255,255,0);
-		for(int i=0; i<t_width; i++){
-			for(int j=0;j<t_height;j++) {
-				parent.rect(x*TILE_SIZE + (i*TILE_SIZE),y*TILE_SIZE + (j*TILE_SIZE),TILE_SIZE,TILE_SIZE);
-			}
-		}
-	
+		EventManager.getInstance().sendEvent("draw", new EventMessage(this));
 	}
 	
 	private int getTopBound() { return y*TILE_SIZE; }
@@ -104,6 +97,4 @@ public class VictoryZone extends GameObject implements TileObject {
 	  
 	private int t_width;
 	private int t_height;
-	
-	private PApplet parent;
 }

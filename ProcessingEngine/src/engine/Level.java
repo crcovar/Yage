@@ -57,7 +57,7 @@ public class Level extends GameObject {
 					else if(obj.equals("deathzone"))
 						t = new DeathZone();
 					else if(obj.equals("victoryzone"))
-						t = new VictoryZone(this.parent);
+						t = new VictoryZone();
 					else if(obj.equals("spawnpoint"))
 						t = new SpawnPoint(this.parent);
 					else {
