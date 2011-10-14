@@ -2,6 +2,7 @@ package engine.network;
 
 import engine.GameObject;
 import engine.events.EventManager;
+import engine.events.EventMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,8 @@ public class Client extends GameObject {
 		super();
 		
 		//register as listener for our events
-		EventManager.getInstance().registerListener("toserver", this);
+		this.eventManager = EventManager.getInstance();
+		this.eventManager.registerListener("toserver", this);
 		
 		this.socket = null;
 		
@@ -40,6 +42,7 @@ public class Client extends GameObject {
 			this.socket = new Socket(host,port);
 			this.input = this.socket.getInputStream();
 			this.output = this.socket.getOutputStream();
+			this.eventManager.sendEvent("log",new EventMessage("Client connected to server"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,6 +60,8 @@ public class Client extends GameObject {
 			super.finalize();
 		}
 	}
+	
+	private EventManager eventManager;
 	
 	private Socket socket;
 	private InputStream input;

@@ -32,7 +32,6 @@ public class Replay extends GameObject {
 		
 		this.done = false;
 		this.speed = Replay.NORMAL;
-		
 		this.reader = null;
 		this.in = null;
 		
@@ -44,6 +43,7 @@ public class Replay extends GameObject {
 		}
 		
 		this.objects = new HashMap<Integer, GameObject>();
+		this.objectsBackBuffer = null;
 	}
 	
 	public void finalize() throws Throwable {
@@ -61,11 +61,19 @@ public class Replay extends GameObject {
 	 */
 	public boolean isDone() { return this.done; }
 	
+	public void toggleSpeed() {
+		if(this.speed == Replay.DOUBLE)
+			this.speed = Replay.HALF;
+		else
+			this.speed++;
+	}
 	
 	public void update() {
 		try {
 			String line = in.readLine();
 			if(line != null) {
+				this.objectsBackBuffer = (HashMap<Integer, GameObject>) this.objects.clone();
+				
 				//do parsing				
 				String[] lineArray = line.split(" ");
 				String[] parameterArray = lineArray[1].split("=");
@@ -110,12 +118,20 @@ public class Replay extends GameObject {
 	}
 	
 	public void draw() {
-		for(GameObject obj : this.objects.values()) {
-			if(obj instanceof Character) {
-				((Character) obj).draw();
-			} else if(obj instanceof TileObject) {
-				((TileObject) obj).draw();
+		switch (this.speed) {
+		case Replay.HALF:
+		case Replay.NORMAL:
+			for(GameObject obj : this.objects.values()) {
+				if(obj instanceof Character) {
+					((Character) obj).draw();
+				} else if(obj instanceof TileObject) {
+					((TileObject) obj).draw();
+				}
 			}
+			break;
+		case Replay.DOUBLE:
+			break;
+		default:break;
 		}
 	}
 	
@@ -128,6 +144,8 @@ public class Replay extends GameObject {
 	
 	private FileReader reader;
 	private BufferedReader in;
+	
+	private HashMap<Integer,GameObject> objectsBackBuffer;
 	private HashMap<Integer,GameObject> objects;
 
 }

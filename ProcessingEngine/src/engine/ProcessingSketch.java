@@ -1,6 +1,7 @@
 package engine;
 import engine.character.Player;
 import engine.events.EventManager;
+import engine.network.*;
 import engine.utils.Logger;
 import engine.utils.Recorder;
 import engine.utils.Replay;
@@ -30,6 +31,9 @@ public class ProcessingSketch extends PApplet {
 		
 		player = new Player();
 		game = new Game("csc481",player,this);
+		
+		this.server = new Server();
+		this.client = new Client();
 
 		currentLevel = game.nextLevel();
 	}
@@ -106,6 +110,9 @@ public class ProcessingSketch extends PApplet {
 	private Renderer renderer;
 	private Replay replay;
 
+	private Server server;
+	private Client client;
+	
 	private boolean[] keys = new boolean[526];
 
 }

@@ -2,6 +2,7 @@ package engine.network;
 
 import engine.GameObject;
 import engine.events.EventManager;
+import engine.events.EventMessage;
 
 import java.io.IOException;
 import java.net.*;
@@ -14,7 +15,7 @@ import java.net.*;
  * TODO: override processMessage() to process registered events
  * TODO: pass messages sent from clients to other systems
  */
-public class Server extends GameObject {
+public class Server extends GameObject implements Runnable {
 	/**
 	 * Default Constructor. Sets default port number
 	 */
@@ -29,12 +30,15 @@ public class Server extends GameObject {
 	public Server(int port) {
 		super();
 		
-		EventManager.getInstance().registerListener("toclient", this);
+		this.eventManager = EventManager.getInstance();
+		this.eventManager.registerListener("toclient", this);
 		
 		this.serverSocket = null;
 		
 		try {
 			this.serverSocket = new ServerSocket(port);
+			Thread t = new Thread(this);
+			t.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,10 +51,28 @@ public class Server extends GameObject {
 	public void finalize() throws Throwable {
 		try {
 			this.serverSocket.close();
+			this.connection.close();
 		} finally {
 			super.finalize();
 		}
 	}
 	
+	@Override
+	public void run() {
+		if(connection == null) {
+			try{
+				this.connection = this.serverSocket.accept();
+				this.eventManager.sendEvent("log",new EventMessage("Server recieved connection"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private EventManager eventManager;
+	
 	private ServerSocket serverSocket;
+	private Socket connection;
+
 }
