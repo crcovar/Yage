@@ -111,6 +111,8 @@ public class Level extends GameObject {
 		   
 		   this.eventManager.sendEvent("record", e);
 	   }
+	   
+	   this.eventManager.sendEvent("record", new EventMessage("SpawnPoint",this.spawn));
 	}
 	
 	public void movePlayer(int direction) {
