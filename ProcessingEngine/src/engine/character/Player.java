@@ -215,7 +215,8 @@ public class Player extends GameObject implements Character {
 	 * All the rendering calls for the Player
 	 */
 	public void draw() {
-		spawn.draw();
+		if(spawn != null)
+			spawn.draw();
 		EventManager.getInstance().sendEvent("draw",new EventMessage("character", this));
 	}
 	
