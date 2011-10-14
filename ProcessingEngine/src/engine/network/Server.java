@@ -4,7 +4,7 @@ import engine.GameObject;
 import engine.events.EventManager;
 import engine.events.EventMessage;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -35,6 +35,10 @@ public class Server extends GameObject implements Runnable {
 		
 		this.serverSocket = null;
 		
+		this.connection = null;
+		this.in = null;
+		this.out = null;
+		
 		try {
 			this.serverSocket = new ServerSocket(port);
 			Thread t = new Thread(this);
@@ -63,6 +67,8 @@ public class Server extends GameObject implements Runnable {
 			try{
 				this.connection = this.serverSocket.accept();
 				this.eventManager.sendEvent("log",new EventMessage("Server recieved connection"));
+				this.in = this.connection.getInputStream();
+				this.out = this.connection.getOutputStream();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -74,5 +80,8 @@ public class Server extends GameObject implements Runnable {
 	
 	private ServerSocket serverSocket;
 	private Socket connection;
+	
+	private InputStream in;
+	private OutputStream out;
 
 }
