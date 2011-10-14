@@ -9,7 +9,7 @@ import engine.character.Player;
  * @author Charles Covar (covar1@gmail.com)
  */
 public interface TileObject {
-	final int TILE_SIZE = 16;
+	public final int TILE_SIZE = 16;
 	
 	/**
 	 * Check to see if a Character collides with a TileObject

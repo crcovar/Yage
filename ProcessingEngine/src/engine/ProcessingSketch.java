@@ -1,5 +1,6 @@
 package engine;
 import engine.character.Player;
+import engine.events.EventManager;
 import engine.utils.Logger;
 import engine.utils.Recorder;
 import processing.core.*;
@@ -23,6 +24,7 @@ public class ProcessingSketch extends PApplet {
 		
 		this.logger = new Logger();
 		this.recorder = new Recorder();
+		this.renderer = new Renderer(this);
 		
 		player = new Player(this);
 		game = new Game("csc481",player,this);
@@ -68,7 +70,8 @@ public class ProcessingSketch extends PApplet {
 		}
 		if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
 		  
-		background(0,0,0);
+		//background(0,0,0);
+		EventManager.getInstance().sendEvent("clear", null);
 		currentLevel.update();
 		if(currentLevel.reachedVictory())
 			currentLevel = game.nextLevel();
@@ -88,6 +91,7 @@ public class ProcessingSketch extends PApplet {
 	private Level currentLevel;
 	private Logger logger;
 	private Recorder recorder;
+	private Renderer renderer;
 
 	private boolean[] keys = new boolean[526];
 
