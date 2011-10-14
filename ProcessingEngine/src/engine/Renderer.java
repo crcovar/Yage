@@ -3,6 +3,8 @@ package engine;
 import engine.events.EventManager;
 import engine.events.EventMessage;
 import engine.tileobject.*;
+import engine.character.*;
+import engine.character.Character;
 import processing.core.PApplet;
 
 /**
@@ -32,7 +34,10 @@ public class Renderer extends GameObject {
 			this.clear();
 			return true;
 		} else if(name.equals("draw")) {
-			return this.draw((TileObject) event.getObject());
+			if(event.getMessage().equals("character"))
+				return this.draw((Character) event.getObject());
+			else
+				return this.draw((TileObject) event.getObject());
 		}
 		return false;
 	}
@@ -42,6 +47,15 @@ public class Renderer extends GameObject {
 	 */
 	private void clear() {
 		this.parent.background(0,0,0);
+	}
+	
+	private boolean draw(Character c) {
+		if(c instanceof Player) {
+			parent.stroke(255,255,255);
+			parent.fill(255,255,255);
+			parent.ellipse(c.getX(),c.getY(),c.getRadius()*2,c.getRadius()*2);
+		}
+		return false;
 	}
 	
 	private boolean draw(TileObject t) {

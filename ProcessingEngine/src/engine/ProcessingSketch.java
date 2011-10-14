@@ -26,7 +26,7 @@ public class ProcessingSketch extends PApplet {
 		this.recorder = new Recorder();
 		this.renderer = new Renderer(this);
 		
-		player = new Player(this);
+		player = new Player();
 		game = new Game("csc481",player,this);
 
 		currentLevel = game.nextLevel();

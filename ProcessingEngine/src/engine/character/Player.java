@@ -3,8 +3,9 @@ package engine.character;
 
 import engine.GameObject;
 import engine.Level;
+import engine.events.EventManager;
+import engine.events.EventMessage;
 import engine.tileobject.SpawnPoint;
-import processing.core.PApplet;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -17,7 +18,7 @@ public class Player extends GameObject implements Character {
 	 * Constructor, takes in PApplet object for rendering
 	 * @param p PApplet that runs the graphics and input
 	 */
-	public Player(PApplet p) {
+	public Player() {
 		super();
 		
 	    this.movement = new boolean[4];
@@ -28,7 +29,37 @@ public class Player extends GameObject implements Character {
 	    this.spawn = null;
 	    this.centerX = 16; //spawn.getX() + this.radius;
 	    this.centerY = 16; //spawn.getY() + this.radius;
-	    this.parent = p;
+	}
+	
+	/**
+	 * Set instance variable of game object
+	 * @param name name of the instance variable
+	 * @param value Value of the parameter to set
+	 * @return true if the parameter exists and value was set correctly
+	 */
+	public boolean setParam(String name, String value) {
+		String n = name.toLowerCase();
+		int v;
+		
+		try {
+			v = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		if(n.equals("x")) {
+			this.centerX = v;
+			return true;
+		} else if(n.equals("y")) {
+			this.centerY = v;
+			return true;
+		} else if(n.equals("radius")) {
+			this.radius = v;
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -39,6 +70,10 @@ public class Player extends GameObject implements Character {
 	public String printParams() {
 		return super.printParams() + " x="+this.centerX+" y="+this.centerY+" radius="+this.radius;
 	}
+	
+	public int getX() { return this.centerX; }
+	public int getY() { return this.centerY; }
+	public int getRadius() { return this.radius; }
 	
 	/**
 	 * Set the player's current spawn point
@@ -181,9 +216,7 @@ public class Player extends GameObject implements Character {
 	 */
 	public void draw() {
 		spawn.draw();
-		parent.stroke(255,255,255);
-		parent.fill(255,255,255);
-		parent.ellipse(centerX,centerY,this.radius*2,this.radius*2);
+		EventManager.getInstance().sendEvent("draw",new EventMessage("character", this));
 	}
 	
 	private int velocityX;
@@ -196,7 +229,5 @@ public class Player extends GameObject implements Character {
 	
 	private SpawnPoint spawn;
 	
-	private PApplet parent;
-	 
 	private final int MAX_JUMP = 8;
 }

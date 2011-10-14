@@ -11,6 +11,10 @@ import engine.tileobject.SpawnPoint;
  */
 public interface Character {
 	
+	public int getX();
+	public int getY();
+	public int getRadius();
+	
 	public void setSpawn(SpawnPoint s);
 	public void death();
 	
