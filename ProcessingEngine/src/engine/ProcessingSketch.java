@@ -1,6 +1,7 @@
 package engine;
 import engine.character.Player;
 import engine.utils.Logger;
+import engine.utils.Recorder;
 import processing.core.*;
 
 /**
@@ -21,6 +22,7 @@ public class ProcessingSketch extends PApplet {
 		frameRate(30);
 		
 		this.logger = new Logger();
+		this.recorder = new Recorder();
 		
 		player = new Player(this);
 		game = new Game("csc481",player,this);
@@ -85,6 +87,7 @@ public class ProcessingSketch extends PApplet {
 	private Game game;
 	private Level currentLevel;
 	private Logger logger;
+	private Recorder recorder;
 
 	private boolean[] keys = new boolean[526];
 

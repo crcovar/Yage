@@ -6,23 +6,23 @@ import engine.GameObject;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class Event {
-	public Event() {
+public class EventMessage {
+	public EventMessage() {
 		this.msg = "";
 		this.object = null;
 	}
 	
-	public Event(String message) {
+	public EventMessage(String message) {
 		this();
 		this.msg = message;
 	}
 	
-	public Event(GameObject object) {
+	public EventMessage(GameObject object) {
 		this();
 		this.object = object;
 	}
 	
-	public Event(String message, GameObject object) {
+	public EventMessage(String message, GameObject object) {
 		this.msg = message;
 		this.object = object;
 	}

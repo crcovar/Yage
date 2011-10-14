@@ -1,6 +1,8 @@
 package engine;
 
 import engine.character.Player;
+import engine.events.EventMessage;
+import engine.events.EventManager;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
 import engine.tileobject.SpawnPoint;
@@ -29,6 +31,8 @@ public class Level extends GameObject {
 		this.parent = parent;
 		this.player = player;
 		this.tiles = new LinkedList<TileObject>();
+		
+		this.eventManager = EventManager.getInstance();
 		
 		try {
 			FileReader reader = new FileReader(file);
@@ -87,6 +91,26 @@ public class Level extends GameObject {
 	   player.setSpawn(spawn);
 	   player.moveToSpawn();
 	   this.victory = false;
+	   
+	   // record the platforms (since they only need to record once)
+	   for(TileObject t : this.tiles) {
+		   EventMessage e = new EventMessage();
+		   if(t instanceof DeathZone) {
+			   e.setMessage("DeathZone");
+			   e.setObject((DeathZone) t);
+		   } else if(t instanceof Platform) {
+			   e.setMessage("Platform");
+			   e.setObject((Platform) t);
+		   } else if(t instanceof SpawnPoint) {
+			   e.setMessage("SpawnPoint");
+			   e.setObject((SpawnPoint) t);
+		   } else if(t instanceof VictoryZone) {
+			   e.setMessage("VictoryZone");
+			   e.setObject((VictoryZone) t);
+		   }
+		   
+		   this.eventManager.sendEvent("record", e);
+	   }
 	}
 	
 	public void movePlayer(int direction) {
@@ -103,6 +127,9 @@ public class Level extends GameObject {
 				this.victory = true;
 			}
 		}
+		
+		// record the players position
+		this.eventManager.sendEvent("record", new EventMessage("Player",this.player));
 	}
 	
 	public boolean reachedVictory() {
@@ -114,6 +141,9 @@ public class Level extends GameObject {
 			t.draw();
 		}
 		player.draw();
+		
+		this.parent.fill(255,255,255);
+		this.parent.text("LIVE",10,20);
 	}
 	
 	public static final int UP = 0;
@@ -124,6 +154,8 @@ public class Level extends GameObject {
 	private SpawnPoint spawn;
 	private Player player;
 	private LinkedList<TileObject> tiles;
+	
+	private EventManager eventManager;
 	
 	private boolean victory;
 	

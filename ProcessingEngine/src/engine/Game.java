@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.LinkedList;
 
 import engine.character.Player;
-import engine.events.Event;
+import engine.events.EventMessage;
 import engine.events.EventManager;
 
 /**
@@ -48,7 +48,7 @@ public class Game extends GameObject {
 		if(reader == null) {
 			for(String s: dir.list()) {
 				this.levels.add(s);
-				this.eventManager.sendEvent("log", new Event("found level " + s));
+				this.eventManager.sendEvent("log", new EventMessage("found level " + s));
 			}
 		} else {
 			BufferedReader in = new BufferedReader(reader);
@@ -56,7 +56,7 @@ public class Game extends GameObject {
 				String line = in.readLine();
 				while(line != null) {
 					this.levels.add(line);
-					this.eventManager.sendEvent("log", new Event("found level " + line));
+					this.eventManager.sendEvent("log", new EventMessage("found level " + line));
 					line = in.readLine();
 				}
 			} catch (IOException e) {
@@ -73,14 +73,14 @@ public class Game extends GameObject {
 	 */
 	public Level nextLevel() {
 		if(this.levels.isEmpty()) {
-			this.eventManager.sendEvent("log", new Event("No more Levels to load"));
+			this.eventManager.sendEvent("log", new EventMessage("No more Levels to load"));
 			return null;
 		}
 		else {
-			this.eventManager.sendEvent("log", new Event("Loading next level from file..."));
+			this.eventManager.sendEvent("log", new EventMessage("Loading next level from file..."));
 			Level l = new Level(this.player, "games/"+this.name+"/"+this.levels.pop(),this.parent);
 			l.startLevel();
-			this.eventManager.sendEvent("log", new Event("level loaded and initialized successfully"));
+			this.eventManager.sendEvent("log", new EventMessage("level loaded and initialized successfully"));
 			return l;
 		}
 	}

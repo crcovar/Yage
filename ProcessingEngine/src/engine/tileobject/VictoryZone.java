@@ -40,6 +40,10 @@ public class VictoryZone extends GameObject implements TileObject {
 		
 		return false;
 	}
+	
+	public String printParams() {
+		return super.printParams() + " x="+this.x+" y="+this.y+" width="+this.t_width+" height="+this.t_height;
+	}
 	  
 	public boolean collide(Player p) {
 		int leftBound = p.getSmallLeftBound();

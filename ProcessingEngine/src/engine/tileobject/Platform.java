@@ -46,6 +46,10 @@ public class Platform extends GameObject implements TileObject {
 		
 		return false;
 	}
+	
+	public String printParams() {
+		return super.printParams() + " x="+this.x+" y="+this.y+" width="+this.t_width+" height="+this.t_height;
+	}
 	  
 	public int getTopBound() { return y*TILE_SIZE; }
 	public int getLeftBound() { return x*TILE_SIZE; }

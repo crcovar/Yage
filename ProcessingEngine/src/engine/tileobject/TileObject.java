@@ -30,4 +30,10 @@ public interface TileObject {
 	 * @return true if the parameter exists and value was set correctly
 	 */
 	public boolean setParam(String name, String value);
+	
+	/**
+	 * Prints the parameters and their values
+	 * @return String of the objects parameters
+	 */
+	public String printParams();
 }

@@ -49,7 +49,7 @@ public class EventManager extends GameObject {
 	 * @param event event details
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
-	public boolean sendEvent(String name, Event event) {
+	public boolean sendEvent(String name, EventMessage event) {
 		if(this.listeners.containsKey(name)) {
 			return this.listeners.get(name).processMessage(name, event);
 		}

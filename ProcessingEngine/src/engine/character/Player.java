@@ -32,6 +32,15 @@ public class Player extends GameObject implements Character {
 	}
 	
 	/**
+	 * Prints the parameters of the Player
+	 * @return String of Player's parameters parsable by the scripting engine
+	 * TODO: List all params.
+	 */
+	public String printParams() {
+		return super.printParams() + " x="+this.centerX+" y="+this.centerY+" radius="+this.radius;
+	}
+	
+	/**
 	 * Set the player's current spawn point
 	 * @param s
 	 */

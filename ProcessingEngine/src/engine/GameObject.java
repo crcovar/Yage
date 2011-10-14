@@ -1,6 +1,6 @@
 package engine;
 
-import engine.events.Event;
+import engine.events.EventMessage;
 
 /**
  * Superclass of the engine
@@ -35,12 +35,18 @@ public abstract class GameObject {
 	public boolean setParam(String name, String value) { return false; }
 	
 	/**
+	 * Outputs a string listing all of a <code>GameObject</code>'s parameters in a format readable by the scripting parsers
+	 * @return String of all the parameters in the <code>GameObject</code>
+	 */
+	public String printParams() { return "GUId="+ this.gUId; }
+	
+	/**
 	 * Process a message that was sent from the event manager
 	 * @param name Type of Event that was sent
 	 * @param event message to process
 	 * @return true if the event message was processed successfully
 	 */
-	public boolean processMessage(String name, Event event) { return false; }
+	public boolean processMessage(String name, EventMessage event) { return false; }
 	
 	protected int gUId;
 	private static int numGameObjects = 0;
