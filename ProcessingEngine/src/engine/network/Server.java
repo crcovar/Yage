@@ -9,9 +9,7 @@ import java.net.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- * TODO: Accept connections from clients
  * TODO: process messages from clients
- * TODO: send messages to clients
  * TODO: override processMessage() to process registered events
  * TODO: pass messages sent from clients to other systems
  */
@@ -69,11 +67,27 @@ public class Server extends GameObject implements Runnable {
 				this.eventManager.sendEvent("log",new EventMessage("Server recieved connection"));
 				this.in = this.connection.getInputStream();
 				this.out = this.connection.getOutputStream();
+				
+				BufferedReader reader = new BufferedReader(new InputStreamReader(this.in));
+				while(true) {
+					System.out.println(reader.readLine());
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
+	}
+	
+	public boolean processMessage(String name, EventMessage event) {
+		if(name.equals("toclient")) {
+			if(this.out != null) {
+				PrintWriter pw = new PrintWriter(this.out,true);
+				pw.println(event.getMessage());
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private EventManager eventManager;

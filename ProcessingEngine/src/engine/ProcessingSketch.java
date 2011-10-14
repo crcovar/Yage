@@ -63,7 +63,7 @@ public class ProcessingSketch extends PApplet {
 	public void keyReleased() {
 		keys[keyCode] = false;
 		
-		if(keyCode == 't' && this.replay != null)
+		if((keyCode == 't' || keyCode == 'T') && this.replay != null)
 			this.replay.toggleSpeed();
 	}
 	

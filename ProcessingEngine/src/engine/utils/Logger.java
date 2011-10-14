@@ -57,6 +57,8 @@ public class Logger extends GameObject {
 		if(this.out != null) {
 			this.out.println(msg);
 			this.out.flush();
+			
+			EventManager.getInstance().sendEvent("toserver", new EventMessage(msg));
 		}
 	}
 	
