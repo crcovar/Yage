@@ -30,7 +30,7 @@ public class ProcessingSketch extends PApplet {
 		this.replay = null;
 		
 		player = new Player();
-		game = new Game("csc481",player,this);
+		game = new Game("csc481",player);
 		
 		this.server = new Server();
 		this.client = new Client();
@@ -107,6 +107,10 @@ public class ProcessingSketch extends PApplet {
 			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
 			
 			currentLevel.update();
+			
+			fill(255,255,255);
+			text("LIVE",10,20);
+			
 			currentLevel.draw();
 		}
 	}

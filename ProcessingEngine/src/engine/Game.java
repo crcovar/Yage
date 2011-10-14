@@ -1,6 +1,5 @@
 package engine;
 
-import processing.core.PApplet;
 import java.io.*;
 import java.util.LinkedList;
 
@@ -21,12 +20,10 @@ public class Game extends GameObject {
 	 * @param player Player object who will be playing the game
 	 * @param parent <code>PApplet</code> used for drawing
 	 */
-	public Game(String name, Player player, PApplet parent) {		
+	public Game(String name, Player player) {		
 		this.name = name;
 		this.levels = new LinkedList<String>();
 		this.player = player;
-		this.parent = parent;
-		
 		this.eventManager = EventManager.getInstance();
 
 		File dir = new File("games/"+name);
@@ -78,7 +75,7 @@ public class Game extends GameObject {
 		}
 		else {
 			this.eventManager.sendEvent("log", new EventMessage("Loading next level from file..."));
-			Level l = new Level(this.player, "games/"+this.name+"/"+this.levels.pop(),this.parent);
+			Level l = new Level(this.player, "games/"+this.name+"/"+this.levels.pop());
 			l.startLevel();
 			this.eventManager.sendEvent("log", new EventMessage("level loaded and initialized successfully"));
 			return l;
@@ -89,6 +86,5 @@ public class Game extends GameObject {
 	private String name;
 	private LinkedList<String> levels;
 	private Player player;
-	private PApplet parent;
 
 }

@@ -12,8 +12,6 @@ import engine.tileobject.VictoryZone;
 import java.util.LinkedList;
 import java.io.*;
 
-import processing.core.PApplet;
-
 /**
  * @author Charles Covar (covar1@gmail.com)
  * TODO: write javadoc
@@ -23,12 +21,11 @@ public class Level extends GameObject {
 	 * Reads in a level from a file and builds it out.
 	 * @param player
 	 * @param file
-	 * @param parent
+
 	 */
-	public Level(Player player, String file, PApplet parent) {
+	public Level(Player player, String file) {
 		super();
 		
-		this.parent = parent;
 		this.player = player;
 		this.tiles = new LinkedList<TileObject>();
 		
@@ -143,9 +140,6 @@ public class Level extends GameObject {
 			t.draw();
 		}
 		player.draw();
-		
-		this.parent.fill(255,255,255);
-		this.parent.text("LIVE",10,20);
 	}
 	
 	public static final int UP = 0;
@@ -160,7 +154,5 @@ public class Level extends GameObject {
 	private EventManager eventManager;
 	
 	private boolean victory;
-	
-	private PApplet parent;
 
 }
