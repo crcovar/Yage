@@ -1,6 +1,7 @@
 package engine;
+
 import engine.character.Player;
-import engine.events.EventManager;
+import engine.events.*;
 import engine.network.*;
 import engine.utils.Logger;
 import engine.utils.Recorder;
@@ -23,6 +24,8 @@ public class ProcessingSketch extends PApplet {
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
+		
+		this.eventManager = EventManager.getInstance();
 		
 		this.logger = new Logger();
 		this.recorder = new Recorder();
@@ -71,25 +74,24 @@ public class ProcessingSketch extends PApplet {
 	 * Main game loop. Processing will call this method as often as the frame rate calls for it.
 	 */
 	public void draw() {
-		EventManager.getInstance().sendEvent("clear", null);
+		this.eventManager.sendEvent("clear", null);
+		
 		if (currentLevel == null) {
-			fill(255,255,255);
-			text("YOU WIN",300,235);
+			this.eventManager.sendEvent("text", new RenderEvent("YOU WIN",302,235));
 		} else if(currentLevel.reachedVictory()) {
 			if(this.replay == null)
 				this.replay = new Replay("replay" + this.recorder.gUId);
 			if(!this.replay.isDone()) {
 				// update and draw the replay
-				fill(255,255,255);
 				if(this.replay.getSpeed() == Replay.HALF) {
 					frameRate(15);
-					text("REPLAY 1/2x",10,20);
+					this.eventManager.sendEvent("text", new RenderEvent("REPLAY 1/2x",10,20));
 				}else if (this.replay.getSpeed() == Replay.NORMAL) {
 					frameRate(30);
-					text("REPLAY 1x",10,20);
+					this.eventManager.sendEvent("text", new RenderEvent("REPLAY 1x",10,20));
 				} else if (this.replay.getSpeed() == Replay.DOUBLE) {
 					frameRate(60);
-					text("REPLAY 2x",10,20);
+					this.eventManager.sendEvent("text", new RenderEvent("REPLAY 2x",10,20));
 				}
 				this.replay.update();
 				this.replay.draw();
@@ -108,8 +110,7 @@ public class ProcessingSketch extends PApplet {
 			
 			currentLevel.update();
 			
-			fill(255,255,255);
-			text("LIVE",10,20);
+			this.eventManager.sendEvent("text", new RenderEvent("LIVE",10,20));
 			
 			currentLevel.draw();
 		}
@@ -126,6 +127,8 @@ public class ProcessingSketch extends PApplet {
 	private Player player;
 	private Game game;
 	private Level currentLevel;
+	
+	private EventManager eventManager;
 	@SuppressWarnings("unused")
 	private Logger logger;
 	private Recorder recorder;

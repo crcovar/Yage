@@ -3,7 +3,7 @@ package engine.tileobject;
 import engine.GameObject;
 import engine.character.Player;
 import engine.events.EventManager;
-import engine.events.EventMessage;
+import engine.events.RenderEvent;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -84,7 +84,7 @@ public class VictoryZone extends GameObject implements TileObject {
 	public int getHeight() { return this.t_height; }
 	  
 	public void draw() { 
-		EventManager.getInstance().sendEvent("draw", new EventMessage(this));
+		EventManager.getInstance().sendEvent("draw", new RenderEvent("VictoryZone", this.x, this.y, this.t_width, this.t_height));
 	}
 	
 	private int getTopBound() { return y*TILE_SIZE; }

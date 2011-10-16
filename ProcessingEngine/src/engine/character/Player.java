@@ -4,7 +4,7 @@ package engine.character;
 import engine.GameObject;
 import engine.Level;
 import engine.events.EventManager;
-import engine.events.EventMessage;
+import engine.events.RenderEvent;
 import engine.tileobject.SpawnPoint;
 
 /**
@@ -217,7 +217,7 @@ public class Player extends GameObject implements Character {
 	public void draw() {
 		if(spawn != null)
 			spawn.draw();
-		EventManager.getInstance().sendEvent("draw",new EventMessage("character", this));
+		EventManager.getInstance().sendEvent("draw",new RenderEvent("player", this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
 	private int velocityX;
