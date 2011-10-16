@@ -1,6 +1,3 @@
-/**
- * 
- */
 package engine.utils;
 
 import java.io.BufferedReader;
@@ -43,7 +40,6 @@ public class Replay extends GameObject {
 		}
 		
 		this.objects = new HashMap<Integer, GameObject>();
-		this.objectsBackBuffer = null;
 	}
 	
 	public void finalize() throws Throwable {
@@ -79,13 +75,11 @@ public class Replay extends GameObject {
 		return this.speed;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void update() {
 		try {
 			String line = in.readLine();
 			if(line != null) {
-				this.objectsBackBuffer = (HashMap<Integer, GameObject>) this.objects.clone();
-				
+
 				//do parsing				
 				String[] lineArray = line.split(" ");
 				String[] parameterArray = lineArray[1].split("=");
@@ -155,8 +149,7 @@ public class Replay extends GameObject {
 	
 	private FileReader reader;
 	private BufferedReader in;
-	
-	private HashMap<Integer,GameObject> objectsBackBuffer;
+
 	private HashMap<Integer,GameObject> objects;
 
 }

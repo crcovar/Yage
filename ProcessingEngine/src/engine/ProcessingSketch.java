@@ -126,12 +126,16 @@ public class ProcessingSketch extends PApplet {
 	private Player player;
 	private Game game;
 	private Level currentLevel;
+	@SuppressWarnings("unused")
 	private Logger logger;
 	private Recorder recorder;
+	@SuppressWarnings("unused")
 	private Renderer renderer;
 	private Replay replay;
 
+	@SuppressWarnings("unused")
 	private Server server;
+	@SuppressWarnings("unused")
 	private Client client;
 	
 	private boolean[] keys = new boolean[526];
