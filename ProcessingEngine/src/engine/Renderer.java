@@ -49,48 +49,52 @@ public class Renderer extends GameObject {
 		this.parent.background(0,0,0);
 	}
 	
+	/**
+	 * Draws a <code>Character</code> to the screen
+	 * @param c any class that implements <code>Character</code>
+	 * @return true if character is drawn
+	 */
 	private boolean draw(Character c) {
 		if(c instanceof Player) {
 			parent.stroke(255,255,255);
 			parent.fill(255,255,255);
 			parent.ellipse(c.getX(),c.getY(),c.getRadius()*2,c.getRadius()*2);
+			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Draw a <code>TileObject</code> to the screen
+	 * @param t any class that implements <code>TileOjbect</code>
+	 * @return true if the object is draw to the screen
+	 */
 	private boolean draw(TileObject t) {
 		parent.fill(0,0,0);
-		if(t instanceof DeathZone) {
-			parent.stroke(0,0,255);
-			for(int i=0; i<t.getWidth(); i++){
-				for(int j=0;j<t.getHeight();j++) {
-					parent.rect(t.getX()*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),t.getY()*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE),TileObject.TILE_SIZE,TileObject.TILE_SIZE);
-				}
-			}
-			return true;
-		} else if (t instanceof Platform) {
-			parent.stroke(255,0,0);
-			for(int i=0; i<t.getWidth(); i++){
-				for(int j=0;j<t.getHeight();j++) {
-					parent.rect(t.getX()*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),t.getY()*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE),TileObject.TILE_SIZE,TileObject.TILE_SIZE);
-				}
-			}
-			return true;
-		} else if (t instanceof VictoryZone) {
-			parent.stroke(255,255,0);
-			for(int i=0; i<t.getWidth(); i++){
-				for(int j=0;j<t.getHeight();j++) {
-					parent.rect(t.getX()*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),t.getY()*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE),TileObject.TILE_SIZE,TileObject.TILE_SIZE);
-				}
-			}
-			return true;
-		} else if(t instanceof SpawnPoint) {
+		
+		if(t instanceof SpawnPoint) {
 			this.parent.stroke(255,255,255);
 			this.parent.rect(t.getX(),t.getY(),TileObject.TILE_SIZE,TileObject.TILE_SIZE);
 			return true;
+		} else {
+			if(t instanceof DeathZone) {
+				parent.stroke(0,0,255);
+			} else if (t instanceof Platform) {
+				parent.stroke(255,0,0);
+			} else if (t instanceof VictoryZone) {
+				parent.stroke(255,255,0);
+			} else {
+				return false;
+			}
+			
+			for(int i=0; i<t.getWidth(); i++){
+				for(int j=0;j<t.getHeight();j++) {
+					parent.rect(t.getX()*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),t.getY()*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE),TileObject.TILE_SIZE,TileObject.TILE_SIZE);
+				}
+			}
+			return true;
 		}
-		return false;
 	}
 
-	PApplet parent;
+	private PApplet parent;
 }
