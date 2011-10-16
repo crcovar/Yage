@@ -78,7 +78,8 @@ public class Replay extends GameObject {
 	public int getSpeed() {
 		return this.speed;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	public void update() {
 		try {
 			String line = in.readLine();
