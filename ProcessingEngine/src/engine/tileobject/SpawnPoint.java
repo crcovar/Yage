@@ -39,7 +39,7 @@ public class SpawnPoint extends GameObject implements TileObject {
 	}
 	
 	public String printParams() {
-		return super.printParams() + " x="+this.x+" y="+this.y;
+		return super.printParams() + " x="+this.x+" y="+this.y + " width=1 height=1";
 	}
 	  
 	public int getX() { return x * TILE_SIZE; }

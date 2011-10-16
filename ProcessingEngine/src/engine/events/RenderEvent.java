@@ -38,6 +38,35 @@ public class RenderEvent extends EventMessage {
 		this.setMessage(msg);
 	}
 	
+	public boolean setParam(String name, String value) {
+		
+		int v = 0;
+		try {
+			v =Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		if(name.equals("x")) {
+			this.x = v;
+			return true;
+		} else if(name.equals("y")) {
+			this.y = v;
+			return true;
+		} else if(name.equals("width") || name.equals("w")) {
+			this.width = v;
+			return true;
+		} else if(name.equals("height") || name.equals("h")) {
+			this.height = v;
+			return true;
+		} else if(name.equals("radius") || name.equals("r")) {
+			this.width = v*2;
+			this.height = v*2;
+			return true;
+		} else
+			return false;
+	}
+	
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getWidth() { return width; }

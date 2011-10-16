@@ -7,13 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import engine.GameObject;
-import engine.tileobject.DeathZone;
-import engine.tileobject.Platform;
-import engine.tileobject.SpawnPoint;
-import engine.tileobject.TileObject;
-import engine.tileobject.VictoryZone;
-import engine.character.Character;
-import engine.character.Player;
+import engine.events.EventManager;
+import engine.events.RenderEvent;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -39,7 +34,7 @@ public class Replay extends GameObject {
 			e.printStackTrace();
 		}
 		
-		this.objects = new HashMap<Integer, GameObject>();
+		this.objects = new HashMap<Integer, RenderEvent>();
 	}
 	
 	public void finalize() throws Throwable {
@@ -90,28 +85,23 @@ public class Replay extends GameObject {
 					key = Integer.parseInt(parameterArray[1]);
 
 				// now check if there's already an object at the key
+				// if there's not add it to the HashMap
 				if(!this.objects.containsKey(key)) {
-					GameObject t = null;
-					String obj = lineArray[0].toLowerCase();
-					if(obj.equals("platform"))
-						t = new Platform();
-					else if(obj.equals("deathzone"))
-						t = new DeathZone();
-					else if(obj.equals("victoryzone"))
-						t = new VictoryZone();
-					else if(obj.equals("spawnpoint"))
-						t = new SpawnPoint();
-					else if (obj.equals("player"))
-						t = new Player();
+					RenderEvent r = new RenderEvent();
+					r.setMessage(lineArray[0]);
 					
-					this.objects.put(key, t);
+					this.objects.put(key, r);
 				}
 				
 				// we have something at the key so just set the parameters
 				if(lineArray.length > 2) {
 					for(int i=2;i<lineArray.length;i++) {
 						parameterArray = lineArray[i].split("=");
-						this.objects.get(key).setParam(parameterArray[0], parameterArray[1]);
+						if(parameterArray[0].equals("draw")) {
+							if(parameterArray[1].equals("false"))
+								this.objects.remove(key);
+						} else
+							this.objects.get(key).setParam(parameterArray[0], parameterArray[1]);
 					}
 				}
 			} else {
@@ -128,12 +118,8 @@ public class Replay extends GameObject {
 		case Replay.HALF:
 		case Replay.NORMAL:
 		case Replay.DOUBLE:
-			for(GameObject obj : this.objects.values()) {
-				if(obj instanceof Character) {
-					((Character) obj).draw();
-				} else if(obj instanceof TileObject) {
-					((TileObject) obj).draw();
-				}
+			for(RenderEvent obj : this.objects.values()) {
+				EventManager.getInstance().sendEvent("draw", obj);
 			}
 			break;
 		default:break;
@@ -150,6 +136,6 @@ public class Replay extends GameObject {
 	private FileReader reader;
 	private BufferedReader in;
 
-	private HashMap<Integer,GameObject> objects;
+	private HashMap<Integer,RenderEvent> objects;
 
 }
