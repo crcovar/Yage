@@ -2,8 +2,6 @@ package engine;
 
 import engine.events.*;
 import engine.tileobject.*;
-import engine.character.*;
-import engine.character.Character;
 import processing.core.PApplet;
 
 /**
