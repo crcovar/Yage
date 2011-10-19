@@ -14,14 +14,12 @@ import java.io.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- * TODO: write javadoc
  */
 public class Level extends GameObject {
 	/**
 	 * Reads in a level from a file and builds it out.
 	 * @param player
 	 * @param file
-
 	 */
 	public Level(Player player, String file) {
 		super();
@@ -84,6 +82,10 @@ public class Level extends GameObject {
 		
 	}
 	
+	/**
+	 * Set the player to spawn at the levels spawn point, move the player there
+	 * Make victory false, and record static elements of the level
+	 */
 	public void startLevel() {
 	   player.setSpawn(spawn);
 	   player.moveToSpawn();
@@ -112,12 +114,19 @@ public class Level extends GameObject {
 	   this.eventManager.sendEvent("record", new EventMessage("SpawnPoint",this.spawn));
 	}
 	
+	/**
+	 * Tell the player to move
+	 * @param direction Direction to move the player in
+	 */
 	public void movePlayer(int direction) {
 		if(direction == UP) player.moveUp();
 		else if(direction == LEFT) player.moveLeft();
 		else if(direction == RIGHT) player.moveRight();
 	}
 	
+	/**
+	 * Updates the player and any objects in the level. Mostly collision detection.
+	 */
 	public void update() {
 		player.update();
 		
@@ -131,10 +140,17 @@ public class Level extends GameObject {
 		this.eventManager.sendEvent("record", new EventMessage("Player",this.player));
 	}
 	
+	/**
+	 * Checks to see if the player reached the end of the level
+	 * @return true if the player reaches a <code>VictoryZone</code>
+	 */
 	public boolean reachedVictory() {
 		return this.victory;
 	}
 	
+	/**
+	 * Draw every object in the level. First any <code>TileObject</code> then the player
+	 */
 	public void draw() {
 		for(TileObject t : tiles) {
 			t.draw();
