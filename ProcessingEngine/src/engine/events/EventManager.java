@@ -4,6 +4,7 @@
 package engine.events;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import engine.GameObject;
 
@@ -19,7 +20,7 @@ public class EventManager extends GameObject {
 	 */
 	private EventManager() {
 		super();
-		this.listeners = new HashMap<String,GameObject>();
+		this.listeners = new HashMap<String,LinkedList<GameObject>>();
 	}
 	
 	/**
@@ -40,7 +41,12 @@ public class EventManager extends GameObject {
 	 * @param listener <code>GameObject</code> to register to respond to the event
 	 */
 	public void registerListener(String name, GameObject listener) {
-		this.listeners.put(name, listener);
+		if(this.listeners.containsKey(name)) {
+			this.listeners.get(name).add(listener);
+		} else {
+			this.listeners.put(name, new LinkedList<GameObject>());
+			this.listeners.get(name).add(listener);
+		}
 	}
 	
 	/**
@@ -51,13 +57,17 @@ public class EventManager extends GameObject {
 	 */
 	public boolean sendEvent(String name, EventMessage event) {
 		if(this.listeners.containsKey(name)) {
-			return this.listeners.get(name).processMessage(name, event);
+			for(GameObject g : this.listeners.get(name)) {
+				if(!g.processMessage(name, event))
+					return false;
+			}
+			return true;
 		}
 		
 		return false;
 	}
 	
-	private HashMap<String,GameObject> listeners;
+	private HashMap<String,LinkedList<GameObject>> listeners;
 	
 	private static EventManager instance = null;
 }
