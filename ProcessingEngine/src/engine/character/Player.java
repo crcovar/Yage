@@ -39,10 +39,10 @@ public class Player extends GameObject implements Character {
 	 */
 	public boolean setParam(String name, String value) {
 		String n = name.toLowerCase();
-		int v;
+		short v;
 		
 		try {
-			v = Integer.parseInt(value);
+			v = Short.parseShort(value);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return false;
@@ -220,15 +220,15 @@ public class Player extends GameObject implements Character {
 		EventManager.getInstance().sendEvent("draw",new RenderEvent("player", this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
-	private int velocityX;
-	private int velocityY;
+	private short velocityX;
+	private short velocityY;
 	private boolean[] movement;
 	private int centerX;
 	private int centerY;
-	private int radius;
-	private int jumpTimer;
+	private short radius;
+	private short jumpTimer;
 	
 	private SpawnPoint spawn;
 	
-	private final int MAX_JUMP = 8;
+	private final short MAX_JUMP = 8;
 }

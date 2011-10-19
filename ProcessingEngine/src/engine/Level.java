@@ -118,7 +118,7 @@ public class Level extends GameObject {
 	 * Tell the player to move
 	 * @param direction Direction to move the player in
 	 */
-	public void movePlayer(int direction) {
+	public void movePlayer(short direction) {
 		if(direction == UP) player.moveUp();
 		else if(direction == LEFT) player.moveLeft();
 		else if(direction == RIGHT) player.moveRight();
@@ -158,10 +158,10 @@ public class Level extends GameObject {
 		player.draw();
 	}
 	
-	public static final int UP = 0;
-	public static final int DOWN = 1;
-	public static final int LEFT = 2;
-	public static final int RIGHT = 3;
+	public static final short UP = 0;
+	public static final short DOWN = 1;
+	public static final short LEFT = 2;
+	public static final short RIGHT = 3;
 	
 	private SpawnPoint spawn;
 	private Player player;
