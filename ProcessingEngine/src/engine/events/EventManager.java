@@ -1,6 +1,3 @@
-/**
- * 
- */
 package engine.events;
 
 import java.util.HashMap;
@@ -11,7 +8,6 @@ import engine.GameObject;
 /**
  * Singleton class for managing events
  * @author Charles Covar (covar1@gmail.com)
- * TODO: Add support for multiple listeners responding to the same event
  */
 public class EventManager extends GameObject {
 
