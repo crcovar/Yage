@@ -20,6 +20,7 @@ public class Logger extends GameObject {
 		this.out = null;
 		
 		EventManager.getInstance().registerListener("log", this);
+		
 		try {
 			this.out = new PrintWriter(logFile);
 			processMessage("log",new EventMessage("--Start of Log--"));
@@ -45,6 +46,7 @@ public class Logger extends GameObject {
 			log(event.getMessage());
 			return true;
 		}
+		
 		return false;
 	}
 	
