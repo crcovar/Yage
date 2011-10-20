@@ -2,6 +2,7 @@ package engine;
 
 import engine.character.Player;
 import engine.events.*;
+import engine.menu.GameList;
 import engine.network.*;
 import engine.utils.Logger;
 import engine.utils.Recorder;
@@ -66,8 +67,10 @@ public class ProcessingSketch extends PApplet {
 	public void keyReleased() {
 		keys[keyCode] = false;
 		
-		if((keyCode == 't' || keyCode == 'T') && this.replay != null)
+		if((keyCode == 't' || keyCode == 'T') && gameState == GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
+		if(keyCode == ' ' && gameState == GAME_STATE_MENU)
+			gameState = GAME_STATE_LEVEL;
 	}
 	
 	/**
@@ -75,10 +78,32 @@ public class ProcessingSketch extends PApplet {
 	 */
 	public void draw() {
 		this.eventManager.sendEvent("clear", null);
-		
-		if (currentLevel == null) {
-			this.eventManager.sendEvent("text", new RenderEvent("YOU WIN",302,235));
-		} else if(currentLevel.reachedVictory()) {
+				
+		switch (gameState) {
+		case GAME_STATE_MENU:
+			GameList.getInstance().draw();
+			break;
+		case GAME_STATE_LEVEL:
+			if(currentLevel.reachedVictory()) {
+				gameState = GAME_STATE_REPLAY;
+				break;
+			}
+			
+			if(checkKey('a') || checkKey('A')) {
+			    currentLevel.movePlayer(Level.LEFT);
+			}
+			if(checkKey('d') || checkKey('D')) {
+			    currentLevel.movePlayer(Level.RIGHT);
+			}
+			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
+			
+			currentLevel.update();
+			
+			this.eventManager.sendEvent("text", new RenderEvent("LIVE",10,20));
+			
+			currentLevel.draw();
+			break;
+		case GAME_STATE_REPLAY:
 			if(this.replay == null)
 				this.replay = new Replay("replay" + this.recorder.gUId);
 			if(!this.replay.isDone()) {
@@ -98,22 +123,17 @@ public class ProcessingSketch extends PApplet {
 			} else {
 				frameRate(30);
 				currentLevel = game.nextLevel();
+				if(currentLevel == null)
+					gameState = GAME_STATE_END;
+				else
+					gameState = GAME_STATE_LEVEL;
 			}
-		} else {
-			if(checkKey('a') || checkKey('A')) {
-			    currentLevel.movePlayer(Level.LEFT);
-			}
-			if(checkKey('d') || checkKey('D')) {
-			    currentLevel.movePlayer(Level.RIGHT);
-			}
-			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
-			
-			currentLevel.update();
-			
-			this.eventManager.sendEvent("text", new RenderEvent("LIVE",10,20));
-			
-			currentLevel.draw();
+			break;
+		case GAME_STATE_END:
+			this.eventManager.sendEvent("text", new RenderEvent("YOU WIN",302,235));
+			break;
 		}
+
 	}
 	
 	/**
@@ -127,6 +147,12 @@ public class ProcessingSketch extends PApplet {
 	private Player player;
 	private Game game;
 	private Level currentLevel;
+	
+	private short gameState = 0;
+	private static final short GAME_STATE_MENU = 0;
+	private static final short GAME_STATE_LEVEL = 1;
+	private static final short GAME_STATE_REPLAY = 2;
+	private static final short GAME_STATE_END = 3;
 	
 	private EventManager eventManager;
 	@SuppressWarnings("unused")
