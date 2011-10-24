@@ -9,7 +9,7 @@ import java.io.*;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class DirList extends GameObject {
+public class DirList extends Menu {
 	private DirList() {
 		File dir = new File("games");
 		if(dir.isDirectory())
