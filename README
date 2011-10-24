@@ -2,12 +2,15 @@ This is the source code to the Game Engine I am building for N.C. State's CSC481
 
 The main game loop is in ProcessingSketch.java so run that class file and you should be good to go.
 
-Controls:
-Move left: A
-Move right: D
-Toggle replay: T
-Jump: space
+Controls
+--------
+* Move left: A
+* Move right: D
+* Toggle replay: T
+* Jump: space
 
+How To Play
+-----------
 Avoid the water and reach for the sun. Beat all the levels and win.
 
 When you complete a level you will get to view a replay of your playthrough. You can toggle the speed between 1/2x, 1x, and 2x. After that the next level in the game will load.
