@@ -1,11 +1,8 @@
-/**
- * 
- */
 package engine.events;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- *
+ * TODO: Write javadoc
  */
 public class RenderEvent extends EventMessage {
 	
