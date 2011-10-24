@@ -34,12 +34,12 @@ public class ProcessingSketch extends PApplet {
 		this.replay = null;
 		
 		player = new Player();
-		game = new Game("csc481",player);
+		//game = new Game("csc481",player);
 		
 		this.server = new Server();
 		this.client = new Client();
 
-		currentLevel = game.nextLevel();
+		//currentLevel = game.nextLevel();
 	}
 	
 	/**
@@ -69,8 +69,18 @@ public class ProcessingSketch extends PApplet {
 		
 		if((keyCode == 't' || keyCode == 'T') && gameState == GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
-		if(keyCode == ' ' && gameState == GAME_STATE_MENU)
+		if(keyCode == ' ' && gameState == GAME_STATE_MENU) {
+			this.game = new Game(GameList.getInstance().getSelected(), this.player);
+			this.currentLevel = game.nextLevel();
 			gameState = GAME_STATE_LEVEL;
+		}
+		if(keyCode == 's' || keyCode == 'S' && gameState == GAME_STATE_MENU) {
+			GameList.getInstance().nextMenuItem();
+		}
+		if(keyCode == 'w' || keyCode == 'W' && gameState == GAME_STATE_MENU) {
+			GameList.getInstance().previousMenuItem();
+		}
+
 	}
 	
 	/**
@@ -81,7 +91,7 @@ public class ProcessingSketch extends PApplet {
 				
 		switch (gameState) {
 		case GAME_STATE_MENU:
-			GameList.getInstance().draw();
+			GameList.getInstance().draw();			
 			break;
 		case GAME_STATE_LEVEL:
 			if(currentLevel.reachedVictory()) {

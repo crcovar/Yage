@@ -19,6 +19,7 @@ public class Renderer extends GameObject {
 		EventManager.getInstance().registerListener("draw", this);
 		EventManager.getInstance().registerListener("clear", this);
 		EventManager.getInstance().registerListener("text", this);
+		EventManager.getInstance().registerListener("selectedtext", this);
 	}
 	
 	/**
@@ -45,6 +46,9 @@ public class Renderer extends GameObject {
 				return this.draw(re.getMessage(), re.getX(), re.getY(), re.getWidth(), re.getHeight());
 		} else if(name.equals("text") && re != null) {
 			this.text(re.getMessage(), re.getX(), re.getY());
+			return true;
+		} else if(name.equals("selectedtext") && re != null) {
+			this.selectedText(re.getMessage(), re.getX(), re.getY());
 			return true;
 		}
 		return false;
@@ -89,6 +93,11 @@ public class Renderer extends GameObject {
 	
 	private void text(String text, int x, int y) {
 		this.parent.fill(255,255,255);
+		this.parent.text(text,x,y);
+	}
+	
+	private void selectedText(String text, int x, int y) {
+		this.parent.fill(255,255,0);
 		this.parent.text(text,x,y);
 	}
 

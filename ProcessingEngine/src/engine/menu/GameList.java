@@ -25,11 +25,19 @@ public class GameList extends GameObject {
 		this.selected = (short) ((this.selected == 0) ? this.gameList.length - 1 : this.selected - 1);
 	}
 	
+	public String getSelected() {
+		return this.gameList[this.selected];
+	}
+	
 	public void draw() {
 		EventManager em = EventManager.getInstance();
 		
 		for(short i=0; i<this.gameList.length;i++) {
-			em.sendEvent("text", new RenderEvent(this.gameList[i],50, 20+(i*20)));
+			RenderEvent re = new RenderEvent(this.gameList[i],50,20+(i*20));
+			if(i == this.selected)
+				em.sendEvent("selectedtext", re);
+			else
+				em.sendEvent("text", re);
 		}
 	}
 	
