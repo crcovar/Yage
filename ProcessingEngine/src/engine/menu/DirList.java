@@ -9,8 +9,8 @@ import java.io.*;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class GameList extends GameObject {
-	private GameList() {
+public class DirList extends GameObject {
+	private DirList() {
 		File dir = new File("games");
 		if(dir.isDirectory())
 			this.gameList = dir.list();
@@ -41,14 +41,14 @@ public class GameList extends GameObject {
 		}
 	}
 	
-	public static GameList getInstance() {
+	public static DirList getInstance() {
 		if(instance == null)
-			instance = new GameList();
+			instance = new DirList();
 		return instance;
 	}
 	
 	private short selected;
 	private String[] gameList;
 	
-	private static GameList instance;
+	private static DirList instance;
 }

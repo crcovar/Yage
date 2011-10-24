@@ -2,7 +2,7 @@ package engine;
 
 import engine.character.Player;
 import engine.events.*;
-import engine.menu.GameList;
+import engine.menu.DirList;
 import engine.network.*;
 import engine.utils.Logger;
 import engine.utils.Recorder;
@@ -70,15 +70,15 @@ public class ProcessingSketch extends PApplet {
 		if((keyCode == 't' || keyCode == 'T') && gameState == GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
 		if(keyCode == ' ' && gameState == GAME_STATE_MENU) {
-			this.game = new Game(GameList.getInstance().getSelected(), this.player);
+			this.game = new Game(DirList.getInstance().getSelected(), this.player);
 			this.currentLevel = game.nextLevel();
 			gameState = GAME_STATE_LEVEL;
 		}
 		if(keyCode == 's' || keyCode == 'S' && gameState == GAME_STATE_MENU) {
-			GameList.getInstance().nextMenuItem();
+			DirList.getInstance().nextMenuItem();
 		}
 		if(keyCode == 'w' || keyCode == 'W' && gameState == GAME_STATE_MENU) {
-			GameList.getInstance().previousMenuItem();
+			DirList.getInstance().previousMenuItem();
 		}
 
 	}
@@ -91,7 +91,7 @@ public class ProcessingSketch extends PApplet {
 				
 		switch (gameState) {
 		case GAME_STATE_MENU:
-			GameList.getInstance().draw();			
+			DirList.getInstance().draw();			
 			break;
 		case GAME_STATE_LEVEL:
 			if(currentLevel.reachedVictory()) {
