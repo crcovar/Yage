@@ -69,10 +69,14 @@ public class ProcessingSketch extends PApplet {
 		
 		if((keyCode == 't' || keyCode == 'T') && gameState == GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
-		if(keyCode == ' ' && gameState == GAME_STATE_MENU) {
-			this.game = new Game(DirList.getInstance().getSelected(), this.player);
-			this.currentLevel = game.nextLevel();
-			gameState = GAME_STATE_LEVEL;
+		if(keyCode == ' ') {
+			if(gameState == GAME_STATE_MENU) {
+				this.game = new Game(DirList.getInstance().getSelected(), this.player);
+				this.currentLevel = game.nextLevel();
+				gameState = GAME_STATE_LEVEL;
+			} else if(gameState == GAME_STATE_END) {
+				gameState = GAME_STATE_MENU;
+			}
 		}
 		if(keyCode == 's' || keyCode == 'S' && gameState == GAME_STATE_MENU) {
 			DirList.getInstance().nextMenuItem();

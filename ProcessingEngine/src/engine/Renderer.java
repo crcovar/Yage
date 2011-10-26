@@ -3,6 +3,7 @@ package engine;
 import engine.events.*;
 import engine.tileobject.*;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -15,7 +16,26 @@ public class Renderer extends GameObject {
 	 */
 	public Renderer(PApplet p) {
 		this.parent = p;
+		PImage tilemap = this.parent.loadImage("assets/tilemap.png");
 		
+		// only support a single row tilemap right now
+		this.tiles = new PImage[tilemap.width/TileObject.TILE_SIZE];
+		tilemap.loadPixels();
+		
+		// build out the array of tiles from the tilemap
+		for(int i=0; i<this.tiles.length;i++) {
+			this.tiles[i] = this.parent.createImage(TileObject.TILE_SIZE, TileObject.TILE_SIZE, this.parent.RGB);
+			this.tiles[i].loadPixels();
+			for(int y=0;y<TileObject.TILE_SIZE;y++) {
+				for(int x=0;x<TileObject.TILE_SIZE;x++) {
+					this.tiles[i].pixels[x+y * this.tiles[i].width] = tilemap.pixels[(x + i*TileObject.TILE_SIZE) + y * tilemap.width];
+				}
+			}
+			
+			this.tiles[i].updatePixels();
+		}
+		
+		// register our events
 		EventManager.getInstance().registerListener("draw", this);
 		EventManager.getInstance().registerListener("clear", this);
 		EventManager.getInstance().registerListener("text", this);
@@ -58,7 +78,7 @@ public class Renderer extends GameObject {
 	 * Used for processing the clear event. Draws the screen black
 	 */
 	private void clear() {
-		this.parent.background(0,0,0);
+		this.parent.background(34,155,221);
 	}
 	
 	private void drawEllipse(int x, int y, int w, int h) {
@@ -69,22 +89,23 @@ public class Renderer extends GameObject {
 	
 	private boolean draw(String tileObject, int x, int y, int w, int h) {
 		String s = tileObject.toLowerCase();
-		this.parent.fill(0,0,0);
 		
-		if(s.equals("deathzone")) {
-			parent.stroke(0,0,255);
-		} else if (s.equals("platform")) {
-			parent.stroke(255,0,0);
+		int tileIndex = 0;
+		
+		if (s.equals("platform")) {
+			tileIndex = 0;
+		} else if(s.equals("deathzone")) {
+			tileIndex = 1;
 		} else if (s.equals("spawnpoint")) {
-			parent.stroke(255,255,255);
+			tileIndex = 2;
 		} else if (s.equals("victoryzone")) {
-			parent.stroke(255,255,0);
+			tileIndex = 3;
 		} else
 			return false;
 		
 		for(int i=0; i<w; i++){
 			for(int j=0;j<h;j++) {
-				parent.rect(x*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),y*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE),TileObject.TILE_SIZE,TileObject.TILE_SIZE);
+				this.parent.image(this.tiles[tileIndex], x*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),y*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE));
 			}
 		}
 		
@@ -102,4 +123,5 @@ public class Renderer extends GameObject {
 	}
 
 	private PApplet parent;
+	private PImage[] tiles;
 }
