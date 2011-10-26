@@ -26,8 +26,6 @@ public class ProcessingSketch extends PApplet {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
-		this.menuSelectLock = false;
-		
 		this.eventManager = EventManager.getInstance();
 		
 		this.logger = new Logger();
@@ -55,6 +53,11 @@ public class ProcessingSketch extends PApplet {
 		}
 		return false;
 	}
+	
+	public void resetKeys() {
+		for(int i=0;i<this.keys.length;i++)
+			this.keys[i] = false;
+	}
 
 	/**
 	 * Event trigger. When a key is pressed the value of the key is set to true in our array
@@ -66,21 +69,18 @@ public class ProcessingSketch extends PApplet {
 	/**
 	 * Event trigger. Sets the value of the key in our array to false.
 	 */
-	public void keyReleased() {
-		keys[keyCode] = false;
-		
+	public void keyReleased() {		
 		if((keyCode == 't' || keyCode == 'T') && gameState == GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
 		if(keyCode == ' ') {
-			if(gameState == GAME_STATE_MENU) {
+			if(gameState == GAME_STATE_MENU && checkKey(' ')) {
 				this.game = new Game(DirList.getInstance().getSelected(), this.player);
 				this.currentLevel = game.nextLevel();
 				gameState = GAME_STATE_LEVEL;
-			} else if(this.menuSelectLock)
-				this.menuSelectLock = !this.menuSelectLock; 
-			else if(gameState == GAME_STATE_END) {
+				resetKeys();
+			} else if(gameState == GAME_STATE_END && checkKey(' ')) {
 				gameState = GAME_STATE_MENU;
-				//this.menuSelectLock = true;
+				resetKeys();
 			}
 		}
 		if(keyCode == 's' || keyCode == 'S' && gameState == GAME_STATE_MENU) {
@@ -89,7 +89,8 @@ public class ProcessingSketch extends PApplet {
 		if(keyCode == 'w' || keyCode == 'W' && gameState == GAME_STATE_MENU) {
 			DirList.getInstance().previousMenuItem();
 		}
-
+		
+		keys[keyCode] = false;
 	}
 	
 	/**
@@ -105,6 +106,7 @@ public class ProcessingSketch extends PApplet {
 		case GAME_STATE_LEVEL:
 			if(currentLevel.reachedVictory()) {
 				gameState = GAME_STATE_REPLAY;
+				resetKeys();
 				break;
 			}
 			
@@ -144,11 +146,10 @@ public class ProcessingSketch extends PApplet {
 				currentLevel = game.nextLevel();
 				if(currentLevel == null) {
 					gameState = GAME_STATE_END;
-					if(checkKey(' '))
-						menuSelectLock = true;
 				}
 				else
 					gameState = GAME_STATE_LEVEL;
+				resetKeys();
 			}
 			break;
 		case GAME_STATE_END:
@@ -165,8 +166,6 @@ public class ProcessingSketch extends PApplet {
 	public static void main(String [] args) {
 		PApplet.main(new String[] { "engine.ProcessingSketch" });
 	}
-	
-	private boolean menuSelectLock;
 	
 	private Player player;
 	private Game game;
