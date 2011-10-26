@@ -26,6 +26,8 @@ public class ProcessingSketch extends PApplet {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
+		this.menuSelectLock = false;
+		
 		this.eventManager = EventManager.getInstance();
 		
 		this.logger = new Logger();
@@ -74,8 +76,11 @@ public class ProcessingSketch extends PApplet {
 				this.game = new Game(DirList.getInstance().getSelected(), this.player);
 				this.currentLevel = game.nextLevel();
 				gameState = GAME_STATE_LEVEL;
-			} else if(gameState == GAME_STATE_END) {
+			} else if(this.menuSelectLock)
+				this.menuSelectLock = !this.menuSelectLock; 
+			else if(gameState == GAME_STATE_END) {
 				gameState = GAME_STATE_MENU;
+				//this.menuSelectLock = true;
 			}
 		}
 		if(keyCode == 's' || keyCode == 'S' && gameState == GAME_STATE_MENU) {
@@ -137,8 +142,11 @@ public class ProcessingSketch extends PApplet {
 			} else {
 				frameRate(30);
 				currentLevel = game.nextLevel();
-				if(currentLevel == null)
+				if(currentLevel == null) {
 					gameState = GAME_STATE_END;
+					if(checkKey(' '))
+						menuSelectLock = true;
+				}
 				else
 					gameState = GAME_STATE_LEVEL;
 			}
@@ -157,6 +165,8 @@ public class ProcessingSketch extends PApplet {
 	public static void main(String [] args) {
 		PApplet.main(new String[] { "engine.ProcessingSketch" });
 	}
+	
+	private boolean menuSelectLock;
 	
 	private Player player;
 	private Game game;
