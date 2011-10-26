@@ -22,6 +22,7 @@ public class Player extends GameObject implements Character {
 		super();
 		
 	    this.movement = new boolean[4];
+	    this.direction = RIGHT;
 	    this.velocityX = 0;
 	    this.velocityY = 0;
 	    this.radius = 8;
@@ -209,6 +210,12 @@ public class Player extends GameObject implements Character {
 	    movement[Level.LEFT] = false;
 	    movement[Level.RIGHT] = false;
 	    movement[Level.UP] = false;
+	    
+	    // set the direction
+	    if(this.velocityX > 0)
+	    	this.direction = RIGHT;
+	    else if(this.velocityX < 0)
+	    	this.direction = LEFT;
 	}
 	
 	/**
@@ -223,6 +230,7 @@ public class Player extends GameObject implements Character {
 	private short velocityX;
 	private short velocityY;
 	private boolean[] movement;
+	private byte direction; // true if facing right
 	private int centerX;
 	private int centerY;
 	private short radius;
@@ -230,5 +238,7 @@ public class Player extends GameObject implements Character {
 	
 	private SpawnPoint spawn;
 	
+	private final byte RIGHT = 0;
+	private final byte LEFT = 1;
 	private final short MAX_JUMP = 8;
 }
