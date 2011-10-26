@@ -1,6 +1,5 @@
 package engine.menu;
 
-import engine.GameObject;
 import engine.events.*;
 
 import java.io.*;
