@@ -188,7 +188,6 @@ public class ProcessingSketch extends PApplet {
 	private Renderer renderer;
 	private Replay replay;
 
-	@SuppressWarnings("unused")
 	private Server server;
 	@SuppressWarnings("unused")
 	private Client client;

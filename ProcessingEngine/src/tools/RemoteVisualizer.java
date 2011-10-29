@@ -17,14 +17,12 @@ public class RemoteVisualizer extends PApplet {
 
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
-		noLoop();
 		
 		this.eventManager = EventManager.getInstance();
 		
 		new Logger("out2.log");
-		
-		this.renderer = new Renderer(this);
-		this.client = new Client();
+		new Renderer(this);
+		new Client();
 		
 	}
 
@@ -39,8 +37,9 @@ public class RemoteVisualizer extends PApplet {
 		PApplet.main(new String[] { "tools.RemoteVisualizer" });
 
 	}
+	
+	private static final long serialVersionUID = 3848447693892875865L;
 
+	@SuppressWarnings("unused")
 	private EventManager eventManager;
-	private Renderer renderer; 
-	private Client client;
 }

@@ -83,9 +83,11 @@ public class Client extends GameObject implements Runnable{
 	public void run() {
 		try {
 			while(true) {
-				String name = (String) this.input.readObject();
-				EventMessage event = (EventMessage) this.input.readObject();
-				this.eventManager.sendEvent(name, event);
+				if(this.input != null) {
+					String name = (String) this.input.readObject();
+					EventMessage event = (EventMessage) this.input.readObject();
+					this.eventManager.sendEvent(name, event);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
