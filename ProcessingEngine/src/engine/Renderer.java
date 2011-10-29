@@ -3,6 +3,7 @@ package engine;
 import engine.events.*;
 import engine.tileobject.*;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 
 /**
@@ -24,7 +25,7 @@ public class Renderer extends GameObject {
 		
 		// build out the array of tiles from the tilemap
 		for(int i=0; i<this.tiles.length;i++) {
-			this.tiles[i] = this.parent.createImage(TileObject.TILE_SIZE, TileObject.TILE_SIZE, this.parent.RGB);
+			this.tiles[i] = this.parent.createImage(TileObject.TILE_SIZE, TileObject.TILE_SIZE, PConstants.RGB);
 			this.tiles[i].loadPixels();
 			for(int y=0;y<TileObject.TILE_SIZE;y++) {
 				for(int x=0;x<TileObject.TILE_SIZE;x++) {
