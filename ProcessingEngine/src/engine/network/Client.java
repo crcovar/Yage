@@ -51,9 +51,9 @@ public class Client extends GameObject implements Runnable{
 	 */
 	public void finalize() throws Throwable {
 		try {
-			this.socket.close();
 			this.input.close();
 			this.output.close();
+			this.socket.close();
 		} finally {
 			super.finalize();
 		}
@@ -79,6 +79,7 @@ public class Client extends GameObject implements Runnable{
 				try {
 					this.output.writeObject(name);
 					this.output.writeObject(event);
+					this.output.flush();
 				} catch (IOException e) {
 					this.eventManager.sendEvent("log", new EventMessage("Unable to send object to server"));
 					e.printStackTrace();

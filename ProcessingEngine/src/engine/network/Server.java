@@ -50,8 +50,12 @@ public class Server extends GameObject implements Runnable {
 	 */
 	public void finalize() throws Throwable {
 		try {
-			this.serverSocket.close();
+			this.os.close();
+			this.is.close();
+			this.out.close();
+			this.in.close();
 			this.connection.close();
+			this.serverSocket.close();
 		} finally {
 			super.finalize();
 		}
@@ -85,6 +89,7 @@ public class Server extends GameObject implements Runnable {
 			if(this.out != null) {
 				this.out.writeObject(name);
 				this.out.writeObject(event);
+				this.out.flush();
 				return true;
 			} else
 				return false;
