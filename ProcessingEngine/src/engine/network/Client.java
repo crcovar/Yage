@@ -35,8 +35,26 @@ public class Client extends GameObject implements Runnable{
 		
 		try {
 			this.socket = new Socket(host,port);
-			this.input = new ObjectInputStream(this.socket.getInputStream());
-			this.output = new ObjectOutputStream(this.socket.getOutputStream());
+			try{
+				this.input = new ObjectInputStream(this.socket.getInputStream());
+			} catch (IOException e) {
+				EventMessage m = new EventMessage("Unable to Create ObjectInputStream");
+				this.eventManager.sendEvent("log", m);
+				m.setMessage(e.getMessage());
+				this.eventManager.sendEvent("log", m);
+				this.input = null;
+			}
+			
+			try{
+				this.output = new ObjectOutputStream(this.socket.getOutputStream());
+			} catch (IOException e) {
+				EventMessage m = new EventMessage("Unable to Create ObjectOutputStream");
+				this.eventManager.sendEvent("log", m);
+				m.setMessage(e.getMessage());
+				this.eventManager.sendEvent("log", m);
+				this.output = null;
+			}
+			
 			this.eventManager.sendEvent("log",new EventMessage("Client connected to server"));
 			
 			new Thread(this).start();
@@ -51,9 +69,12 @@ public class Client extends GameObject implements Runnable{
 	 */
 	public void finalize() throws Throwable {
 		try {
-			this.input.close();
-			this.output.close();
-			this.socket.close();
+			if(this.input != null)
+				this.input.close();
+			if(this.output != null)
+				this.output.close();
+			if(this.socket != null)
+				this.socket.close();
 		} finally {
 			super.finalize();
 		}
@@ -78,6 +99,7 @@ public class Client extends GameObject implements Runnable{
 			if(this.output != null) {
 				try {
 					this.output.writeObject(name);
+					this.output.flush();
 					this.output.writeObject(event);
 					this.output.flush();
 				} catch (IOException e) {

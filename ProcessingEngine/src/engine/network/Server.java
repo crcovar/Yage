@@ -6,6 +6,7 @@ import engine.events.EventMessage;
 
 import java.io.*;
 import java.net.*;
+import java.util.LinkedList;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -30,10 +31,7 @@ public class Server extends GameObject implements Runnable {
 		this.eventManager.registerListener("toclient", this);
 		
 		this.serverSocket = null;
-		
-		this.connection = null;
-		this.in = null;
-		this.out = null;
+		this.connections = new LinkedList<Connection>();
 		
 		try {
 			this.serverSocket = new ServerSocket(port);
@@ -50,12 +48,8 @@ public class Server extends GameObject implements Runnable {
 	 */
 	public void finalize() throws Throwable {
 		try {
-			this.os.close();
-			this.is.close();
-			this.out.close();
-			this.in.close();
-			this.connection.close();
-			this.serverSocket.close();
+			if(this.serverSocket != null)
+				this.serverSocket.close();
 		} finally {
 			super.finalize();
 		}
@@ -63,21 +57,13 @@ public class Server extends GameObject implements Runnable {
 	
 	@Override
 	public void run() {
-		if(connection == null) {
-			try{
-				this.connection = this.serverSocket.accept();
-				this.eventManager.sendEvent("log",new EventMessage("Server recieved connection"));
-				is = this.connection.getInputStream();
-				this.in = new ObjectInputStream(is);
-				os = this.connection.getOutputStream();
-				this.out = new ObjectOutputStream(os);
-				
-				while(true) {
-					String name = (String) this.in.readObject();
-					EventMessage event = (EventMessage) this.in.readObject();
-					this.eventManager.sendEvent(name, event);
-				}
-			} catch (Exception e) {
+		while(true) {
+			try {
+				Socket s = this.serverSocket.accept();
+				Connection c = new Connection(s);
+				this.connections.add(c);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -85,28 +71,15 @@ public class Server extends GameObject implements Runnable {
 	}
 	
 	public boolean processMessage(String name, EventMessage event) {
-		try {
-			if(this.out != null) {
-				this.out.writeObject(name);
-				this.out.writeObject(event);
-				this.out.flush();
-				return true;
-			} else
-				return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+		for(Connection c : this.connections) {
+			c.processMessage(name, event);
 		}
+		return true;
 	}
 	
 	private EventManager eventManager;
 	
 	private ServerSocket serverSocket;
-	private Socket connection;
-	
-	private InputStream is;
-	private OutputStream os;
-	private ObjectInputStream in;
-	private ObjectOutputStream out;
+	private LinkedList<Connection> connections;
 
 }
