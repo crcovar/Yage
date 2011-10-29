@@ -61,6 +61,8 @@ public class Server extends GameObject implements Runnable {
 			try {
 				Socket s = this.serverSocket.accept();
 				Connection c = new Connection(s);
+				Thread t = new Thread(c);
+				t.start();
 				this.connections.add(c);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

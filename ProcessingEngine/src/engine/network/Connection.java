@@ -65,6 +65,18 @@ public class Connection extends GameObject implements Runnable {
 				EventManager.getInstance().sendEvent("log", m);
 				this.in = null;
 			}
+			
+			try {
+				while(true) {
+					if(this.in != null) {
+						String name = (String) this.in.readObject();
+						EventMessage event = (EventMessage) this.in.readObject();
+						EventManager.getInstance().sendEvent(name, event);
+					}
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		} catch (IOException e) {
 			EventMessage m = new EventMessage("Unable to get InputStream");
 			EventManager.getInstance().sendEvent("log", m);
@@ -73,19 +85,6 @@ public class Connection extends GameObject implements Runnable {
 			this.inputStream = null;
 		}
 				
-		try {
-			while(true) {
-				if(this.in != null) {
-					String name = (String) this.in.readObject();
-					EventMessage event = (EventMessage) this.in.readObject();
-					EventManager.getInstance().sendEvent(name, event);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public boolean processMessage(String name, EventMessage event) {
