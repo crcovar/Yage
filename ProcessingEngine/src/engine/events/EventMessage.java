@@ -1,12 +1,15 @@
 package engine.events;
 
+import java.io.Serializable;
+
 import engine.GameObject;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class EventMessage {
+public class EventMessage implements Serializable {
+	
 	public EventMessage() {
 		this.msg = "";
 		this.object = null;
@@ -42,6 +45,8 @@ public class EventMessage {
 	public GameObject getObject() {
 		return this.object;
 	}
+
+	private static final long serialVersionUID = 8645183011653698049L;
 	
 	private String msg;
 	private GameObject object;

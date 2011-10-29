@@ -16,7 +16,7 @@ public class Client extends GameObject implements Runnable{
 	 * Default Constructor. Connects to localhost from default port
 	 */
 	public Client() {
-		this("localhost", 10040);
+		this("127.0.0.1", 10040);
 	}
 	
 	/**
@@ -35,8 +35,8 @@ public class Client extends GameObject implements Runnable{
 		
 		try {
 			this.socket = new Socket(host,port);
-			this.input = this.socket.getInputStream();
-			this.output = this.socket.getOutputStream();
+			this.input = new ObjectInputStream(this.socket.getInputStream());
+			this.output = new ObjectOutputStream(this.socket.getOutputStream());
 			this.eventManager.sendEvent("log",new EventMessage("Client connected to server"));
 			
 			new Thread(this).start();
@@ -61,11 +61,14 @@ public class Client extends GameObject implements Runnable{
 	
 	public void run() {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(this.input));
 			while(true) {
-				System.out.println(reader.readLine());
+				String name = (String) this.input.readObject();
+				EventMessage event = (EventMessage) this.input.readObject();
+				this.eventManager.sendEvent(name, event);
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -73,8 +76,14 @@ public class Client extends GameObject implements Runnable{
 	public boolean processMessage(String name, EventMessage event) {
 		if(name.equals("toserver")) {
 			if(this.output != null) {
-				PrintWriter pw = new PrintWriter(this.output,true);
-				pw.println(event.getMessage());
+				try {
+					this.output.writeObject(name);
+					this.output.writeObject(event);
+				} catch (IOException e) {
+					this.eventManager.sendEvent("log", new EventMessage("Unable to send object to server"));
+					e.printStackTrace();
+				}
+				
 				return true;
 			}
 		}
@@ -84,6 +93,6 @@ public class Client extends GameObject implements Runnable{
 	private EventManager eventManager;
 	
 	private Socket socket;
-	private InputStream input;
-	private OutputStream output;
+	private ObjectInputStream input;
+	private ObjectOutputStream output;
 }

@@ -1,10 +1,12 @@
 package engine.events;
 
+import java.io.Serializable;
+
 /**
  * @author Charles Covar (covar1@gmail.com)
  * TODO: Write javadoc
  */
-public class RenderEvent extends EventMessage {
+public class RenderEvent extends EventMessage implements Serializable {
 	
 	public RenderEvent() {
 		super();
@@ -69,6 +71,8 @@ public class RenderEvent extends EventMessage {
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
 
+	
+	private static final long serialVersionUID = -7234706606575239774L;
 	private int x;
 	private int y;
 	private int width;

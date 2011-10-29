@@ -22,6 +22,21 @@ public class Logger extends GameObject {
 		EventManager.getInstance().registerListener("log", this);
 		
 		try {
+			this.out = new PrintWriter(this.logFile);
+			processMessage("log",new EventMessage("--Start of Log--"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Logger(String logFile) {
+		super();
+		
+		this.out = null;
+		
+		EventManager.getInstance().registerListener("log", this);
+		
+		try {
 			this.out = new PrintWriter(logFile);
 			processMessage("log",new EventMessage("--Start of Log--"));
 		} catch (IOException e) {

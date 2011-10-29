@@ -63,14 +63,17 @@ public class Server extends GameObject implements Runnable {
 			try{
 				this.connection = this.serverSocket.accept();
 				this.eventManager.sendEvent("log",new EventMessage("Server recieved connection"));
-				this.in = this.connection.getInputStream();
-				this.out = this.connection.getOutputStream();
+				is = this.connection.getInputStream();
+				this.in = new ObjectInputStream(is);
+				os = this.connection.getOutputStream();
+				this.out = new ObjectOutputStream(os);
 				
-				BufferedReader reader = new BufferedReader(new InputStreamReader(this.in));
 				while(true) {
-					System.out.println(reader.readLine());
+					String name = (String) this.in.readObject();
+					EventMessage event = (EventMessage) this.in.readObject();
+					this.eventManager.sendEvent(name, event);
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -78,14 +81,17 @@ public class Server extends GameObject implements Runnable {
 	}
 	
 	public boolean processMessage(String name, EventMessage event) {
-		if(name.equals("toclient")) {
+		try {
 			if(this.out != null) {
-				PrintWriter pw = new PrintWriter(this.out,true);
-				pw.println(event.getMessage());
+				this.out.writeObject(name);
+				this.out.writeObject(event);
 				return true;
-			}
+			} else
+				return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 	
 	private EventManager eventManager;
@@ -93,7 +99,9 @@ public class Server extends GameObject implements Runnable {
 	private ServerSocket serverSocket;
 	private Socket connection;
 	
-	private InputStream in;
-	private OutputStream out;
+	private InputStream is;
+	private OutputStream os;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
 
 }
