@@ -22,8 +22,13 @@ public class RemoteVisualizer extends PApplet {
 		
 		new Logger("out2.log");
 		new Renderer(this);
-		new Client();
-		
+		this.eventManager.registerListener(new Client(), "register");
+
+		this.eventManager.sendEvent("register", new EventMessage("clear"));
+		this.eventManager.sendEvent("register", new EventMessage("draw"));
+		this.eventManager.sendEvent("register", new EventMessage("text"));
+		this.eventManager.sendEvent("register", new EventMessage("selectedtext"));
+		//*/
 	}
 
 	public void draw() {

@@ -56,8 +56,23 @@ public class Connection extends GameObject implements Runnable {
 		// try building the ObjectInputStream
 		try {
 			this.inputStream = this.socket.getInputStream();
+			
 			try {
 				this.in = new ObjectInputStream(this.inputStream);
+				try {
+					while(true) {
+						String name = (String) this.in.readObject();
+						EventMessage event = (EventMessage) this.in.readObject();
+						if(name.equals("register")) {
+							EventManager.getInstance().registerListener(this,event.getMessage());
+							EventManager.getInstance().sendEvent("log", new EventMessage("registered connection with " + event.getMessage() + " event."));
+						}
+						else
+							EventManager.getInstance().sendEvent(name, event);
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 			} catch (IOException e) {
 				EventMessage m = new EventMessage("Unable to get ObjectInputStream");
 				EventManager.getInstance().sendEvent("log", m);
@@ -66,19 +81,9 @@ public class Connection extends GameObject implements Runnable {
 				this.in = null;
 			}
 			
-			try {
-				while(true) {
-					if(this.in != null) {
-						String name = (String) this.in.readObject();
-						EventMessage event = (EventMessage) this.in.readObject();
-						EventManager.getInstance().sendEvent(name, event);
-					}
-				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
 		} catch (IOException e) {
 			EventMessage m = new EventMessage("Unable to get InputStream");
+			e.printStackTrace();
 			EventManager.getInstance().sendEvent("log", m);
 			m.setMessage(e.getMessage());
 			EventManager.getInstance().sendEvent("log", m);

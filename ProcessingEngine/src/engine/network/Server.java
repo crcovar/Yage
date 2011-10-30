@@ -1,7 +1,6 @@
 package engine.network;
 
 import engine.GameObject;
-import engine.events.EventManager;
 import engine.events.EventMessage;
 
 import java.io.*;
@@ -26,9 +25,6 @@ public class Server extends GameObject implements Runnable {
 	 */
 	public Server(int port) {
 		super();
-		
-		this.eventManager = EventManager.getInstance();
-		this.eventManager.registerListener(this, "toclient");
 		
 		this.serverSocket = null;
 		this.connections = new LinkedList<Connection>();
@@ -78,8 +74,6 @@ public class Server extends GameObject implements Runnable {
 		}
 		return true;
 	}
-	
-	private EventManager eventManager;
 	
 	private ServerSocket serverSocket;
 	private LinkedList<Connection> connections;

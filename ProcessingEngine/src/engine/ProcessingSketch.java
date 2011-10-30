@@ -37,10 +37,6 @@ public class ProcessingSketch extends PApplet {
 		//game = new Game("csc481",player);
 		
 		this.server = new Server();
-		this.eventManager.registerListener(this.server, "clear");
-		this.eventManager.registerListener(this.server, "draw");
-		this.eventManager.registerListener(this.server, "text");
-		this.eventManager.registerListener(this.server, "selectedtext");
 
 		//currentLevel = game.nextLevel();
 	}

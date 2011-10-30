@@ -29,7 +29,6 @@ public class Client extends GameObject implements Runnable{
 		
 		//register as listener for our events
 		this.eventManager = EventManager.getInstance();
-		this.eventManager.registerListener(this, "toserver");
 		
 		this.socket = null;
 		
@@ -97,21 +96,23 @@ public class Client extends GameObject implements Runnable{
 	}
 	
 	public boolean processMessage(String name, EventMessage event) {
-		if(name.equals("toserver")) {
+		
 			if(this.output != null) {
 				try {
 					this.output.writeObject(name);
 					this.output.flush();
 					this.output.writeObject(event);
 					this.output.flush();
+					this.eventManager.sendEvent("log",new EventMessage("sent " + name +" event to server"));
 				} catch (IOException e) {
 					this.eventManager.sendEvent("log", new EventMessage("Unable to send object to server"));
 					e.printStackTrace();
+					return false;
 				}
 				
 				return true;
 			}
-		}
+		
 		return false;
 	}
 	
