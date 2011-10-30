@@ -1,6 +1,7 @@
 package engine.network;
 
 import engine.GameObject;
+import engine.events.EventManager;
 import engine.events.EventMessage;
 
 import java.io.*;
@@ -68,9 +69,19 @@ public class Server extends GameObject implements Runnable {
 		
 	}
 	
+	public void update() {
+		for(Connection c : this.connections) {
+			if(c.isDone()) {
+				EventManager.getInstance().unregisterListener(c);
+				this.connections.remove(c);
+				System.gc();
+			}
+		}
+	}
+	
 	public boolean processMessage(String name, EventMessage event) {
 		for(Connection c : this.connections) {
-			c.processMessage(name, event);
+				c.processMessage(name, event);
 		}
 		return true;
 	}
