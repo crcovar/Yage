@@ -43,7 +43,7 @@ public class EventManager extends GameObject {
 			this.listeners.get(name).add(listener);
 		}
 		
-		this.sendEvent("log", new EventMessage("Registered " + listener.getClass().getCanonicalName() + " to " + name + " event."));
+		this.sendEvent("log", new EventMessage("Registered " + listener.getClass().getCanonicalName() + " to \"" + name + "\" event."));
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class EventManager extends GameObject {
 	 */
 	public void unregisterListener(GameObject listener, String name) {
 		if(this.listeners.get(name).remove(listener))
-			this.sendEvent("log", new EventMessage("Unregistered " + listener.getClass().getCanonicalName() + " from " + name + " event."));
+			this.sendEvent("log", new EventMessage("Unregistered " + listener.getClass().getCanonicalName() + " from \"" + name + "\" event."));
 	}
 	
 	/**
