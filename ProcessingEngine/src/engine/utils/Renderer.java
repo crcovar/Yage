@@ -1,5 +1,6 @@
-package engine;
+package engine.utils;
 
+import engine.GameObject;
 import engine.events.*;
 import engine.tileobject.*;
 import processing.core.PApplet;

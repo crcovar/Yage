@@ -6,6 +6,7 @@ import engine.menu.DirList;
 import engine.network.*;
 import engine.utils.Logger;
 import engine.utils.Recorder;
+import engine.utils.Renderer;
 import engine.utils.Replay;
 import processing.core.*;
 
