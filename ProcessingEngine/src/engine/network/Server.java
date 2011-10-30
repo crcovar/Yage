@@ -28,7 +28,7 @@ public class Server extends GameObject implements Runnable {
 		super();
 		
 		this.eventManager = EventManager.getInstance();
-		this.eventManager.registerListener("toclient", this);
+		this.eventManager.registerListener(this, "toclient");
 		
 		this.serverSocket = null;
 		this.connections = new LinkedList<Connection>();

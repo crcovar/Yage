@@ -31,18 +31,44 @@ public class EventManager extends GameObject {
 	}
 	
 	/**
-	 * Adds a <code>GameObject</code> to the EventManager to sit and listen for a specified event. Only one <code>GameObject</code> can
-	 * register per event. Calling this method with a event name already registered will result in over writing the previous <code>GameObject</code>
-	 * @param name Name of the event to register
+	 * Adds a <code>GameObject</code> to the EventManager to sit and listen for a specified event.
 	 * @param listener <code>GameObject</code> to register to respond to the event
+	 * @param name Name of the event to register
 	 */
-	public void registerListener(String name, GameObject listener) {
+	public void registerListener(GameObject listener, String name) {
 		if(this.listeners.containsKey(name)) {
 			this.listeners.get(name).add(listener);
 		} else {
 			this.listeners.put(name, new LinkedList<GameObject>());
 			this.listeners.get(name).add(listener);
 		}
+	}
+	
+	/**
+	 * Adds a <code>GameObject</code> to the <code>EventManager</code> to sit and listen for all existing events.
+	 * @param listener <code>GameObject</code> to register to respond to events
+	 */
+	public void registerListener(GameObject listener) {
+		for(String s : this.listeners.keySet())
+			registerListener(listener, s);
+	}
+	
+	/**
+	 * Remove registered <code>GameObject</code> from the specified event
+	 * @param listener <code>GameObject</code> to remove
+	 * @param name Name of the event to remove from
+	 */
+	public void unregisterListener(GameObject listener, String name) {
+		this.listeners.get(name).remove(listener);
+	}
+	
+	/**
+	 * Remove registered <code>GameObject</code> from all existing events
+	 * @param listener <code>GameObject</code> to remove
+	 */
+	public void unregisterListener(GameObject listener) {
+		for(String s : this.listeners.keySet())
+			unregisterListener(listener, s);
 	}
 	
 	/**

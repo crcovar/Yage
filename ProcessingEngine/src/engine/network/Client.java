@@ -29,7 +29,7 @@ public class Client extends GameObject implements Runnable{
 		
 		//register as listener for our events
 		this.eventManager = EventManager.getInstance();
-		this.eventManager.registerListener("toserver", this);
+		this.eventManager.registerListener(this, "toserver");
 		
 		this.socket = null;
 		

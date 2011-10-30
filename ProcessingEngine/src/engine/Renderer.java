@@ -37,10 +37,10 @@ public class Renderer extends GameObject {
 		}
 		
 		// register our events
-		EventManager.getInstance().registerListener("draw", this);
-		EventManager.getInstance().registerListener("clear", this);
-		EventManager.getInstance().registerListener("text", this);
-		EventManager.getInstance().registerListener("selectedtext", this);
+		EventManager.getInstance().registerListener(this, "draw");
+		EventManager.getInstance().registerListener(this, "clear");
+		EventManager.getInstance().registerListener(this, "text");
+		EventManager.getInstance().registerListener(this, "selectedtext");
 	}
 	
 	/**

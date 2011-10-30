@@ -15,7 +15,7 @@ public class Recorder extends GameObject {
 	public Recorder() {
 		super();
 		
-		EventManager.getInstance().registerListener("record", this);
+		EventManager.getInstance().registerListener(this, "record");
 		
 		out = null;
 		

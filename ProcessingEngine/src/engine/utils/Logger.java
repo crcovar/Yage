@@ -19,7 +19,7 @@ public class Logger extends GameObject {
 		
 		this.out = null;
 		
-		EventManager.getInstance().registerListener("log", this);
+		EventManager.getInstance().registerListener(this, "log");
 		
 		try {
 			this.out = new PrintWriter(this.logFile);
@@ -34,7 +34,7 @@ public class Logger extends GameObject {
 		
 		this.out = null;
 		
-		EventManager.getInstance().registerListener("log", this);
+		EventManager.getInstance().registerListener(this, "log");
 		
 		try {
 			this.out = new PrintWriter(logFile);
