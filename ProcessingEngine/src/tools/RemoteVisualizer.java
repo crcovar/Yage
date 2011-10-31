@@ -17,12 +17,12 @@ public class RemoteVisualizer extends PApplet {
 
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
-		
+		frameRate(30);
 		this.eventManager = EventManager.getInstance();
 		
 		new Logger("out2.log");
 		new Renderer(this);
-		this.eventManager.registerListener(new Client(), "register");
+		this.eventManager.registerListener(new Client("192.168.1.150", 10040), "register");
 
 		this.eventManager.sendEvent("register", new EventMessage("clear"));
 		this.eventManager.sendEvent("register", new EventMessage("draw"));
