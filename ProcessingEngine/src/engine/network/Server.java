@@ -66,7 +66,6 @@ public class Server extends GameObject implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public boolean processMessage(String name, EventMessage event) {
