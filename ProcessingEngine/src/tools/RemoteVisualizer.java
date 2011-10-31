@@ -4,9 +4,9 @@
 package tools;
 
 import processing.core.PApplet;
-import engine.Renderer;
 import engine.network.Client;
 import engine.utils.Logger;
+import engine.utils.Renderer;
 import engine.events.*;
 
 /**

@@ -36,7 +36,7 @@ public class Connection extends GameObject implements Runnable {
 			this.outputStream = null;
 		}
 		
-		
+		this.done = false;
 	}
 	
 	public void finalize() throws Throwable {
@@ -46,6 +46,7 @@ public class Connection extends GameObject implements Runnable {
 			if(this.outputStream != null)
 				this.outputStream.close();
 			this.socket.close();
+			EventManager.getInstance().sendEvent("log", new EventMessage("connection garbage collection"));
 		} finally {
 			super.finalize();
 		}
@@ -65,7 +66,6 @@ public class Connection extends GameObject implements Runnable {
 						EventMessage event = (EventMessage) this.in.readObject();
 						if(name.equals("register")) {
 							EventManager.getInstance().registerListener(this,event.getMessage());
-							EventManager.getInstance().sendEvent("log", new EventMessage("registered connection with " + event.getMessage() + " event."));
 						}
 						else
 							EventManager.getInstance().sendEvent(name, event);
@@ -88,6 +88,8 @@ public class Connection extends GameObject implements Runnable {
 			m.setMessage(e.getMessage());
 			EventManager.getInstance().sendEvent("log", m);
 			this.inputStream = null;
+		} finally {
+			this.done = true;
 		}
 				
 	}
@@ -105,11 +107,23 @@ public class Connection extends GameObject implements Runnable {
 				EventManager.getInstance().sendEvent("log", m);
 				m.setMessage(e.getMessage());
 				EventManager.getInstance().sendEvent("log", m);
+				this.done = true;
+				
 				return false;
 			}
 		}
+
+		this.done = true;
 		return false;
 	}
+	
+	/**
+	 * Check to see if the connection is finished
+	 * @return Whether or not the connection is done
+	 */
+	public boolean isDone() { return this.done; }
+	
+	private boolean done;
 	
 	private Socket socket;
 	private InputStream inputStream;
