@@ -41,12 +41,13 @@ public class Connection extends GameObject implements Runnable {
 	
 	public void finalize() throws Throwable {
 		try {
+			EventManager.getInstance().unregisterListener(this);
 			if(this.inputStream != null)
 				this.inputStream.close();
 			if(this.outputStream != null)
 				this.outputStream.close();
 			this.socket.close();
-			EventManager.getInstance().sendEvent("log", new EventMessage("connection garbage collection"));
+			//EventManager.getInstance().sendEvent("log", new EventMessage("connection garbage collection"));
 		} finally {
 			super.finalize();
 		}
@@ -89,7 +90,16 @@ public class Connection extends GameObject implements Runnable {
 			EventManager.getInstance().sendEvent("log", m);
 			this.inputStream = null;
 		} finally {
+			// if connection was still available we would still be in the loop
+			// when you're here it means an exception was thrown, and here we are
+			
 			this.done = true;
+			try {
+				this.finalize();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 				
 	}

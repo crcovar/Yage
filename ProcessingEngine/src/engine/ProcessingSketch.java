@@ -96,9 +96,7 @@ public class ProcessingSketch extends PApplet {
 	/**
 	 * Main game loop. Processing will call this method as often as the frame rate calls for it.
 	 */
-	public void draw() {
-		this.server.update();
-		
+	public void draw() {		
 		this.eventManager.sendEvent("clear", null);
 				
 		switch (gameState) {

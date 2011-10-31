@@ -22,7 +22,7 @@ public class RemoteVisualizer extends PApplet {
 		
 		new Logger("out2.log");
 		new Renderer(this);
-		this.eventManager.registerListener(new Client("192.168.1.150", 10040), "register");
+		this.eventManager.registerListener(new Client("localhost", 10040), "register");
 
 		this.eventManager.sendEvent("register", new EventMessage("clear"));
 		this.eventManager.sendEvent("register", new EventMessage("draw"));
