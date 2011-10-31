@@ -32,6 +32,7 @@ public class DirList extends Menu {
 		EventManager em = EventManager.getInstance();
 		
 		for(short i=0; i<this.gameList.length;i++) {
+			// TODO: Remove magic numbers
 			RenderEvent re = new RenderEvent(this.gameList[i],300,20+(i*20));
 			if(i == this.selected)
 				em.sendEvent("selectedtext", re);
