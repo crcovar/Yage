@@ -45,9 +45,18 @@ public class EventMessage implements Serializable {
 	public GameObject getObject() {
 		return this.object;
 	}
+	
+	public void setTimestamp() {
+		this.timestamp = System.currentTimeMillis();
+	}
+	
+	public long getTimestamp() {
+		return this.timestamp;
+	}
 
 	private static final long serialVersionUID = 8645183011653698049L;
 	
 	private String msg;
 	private GameObject object;
+	private long timestamp;
 }

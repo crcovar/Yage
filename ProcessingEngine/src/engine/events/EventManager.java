@@ -81,6 +81,8 @@ public class EventManager extends GameObject {
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
 	public boolean sendEvent(String name, EventMessage event) {
+		event.setTimestamp(); // set timestamp event gets sent, for networking
+		
 		if(this.listeners.containsKey(name)) {
 			for(GameObject g : this.listeners.get(name)) {
 				if(!g.processMessage(name, event))
