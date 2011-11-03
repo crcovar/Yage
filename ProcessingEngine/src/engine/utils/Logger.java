@@ -3,7 +3,7 @@ package engine.utils;
 import java.io.*;
 
 import engine.GameObject;
-import engine.events.EventMessage;
+import engine.events.EventData;
 import engine.events.EventManager;
 
 /**
@@ -23,7 +23,7 @@ public class Logger extends GameObject {
 		
 		try {
 			this.out = new PrintWriter(this.logFile);
-			processMessage("log",new EventMessage("--Start of Log--"));
+			processMessage("log",new EventData("--Start of Log--"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,7 +38,7 @@ public class Logger extends GameObject {
 		
 		try {
 			this.out = new PrintWriter(logFile);
-			processMessage("log",new EventMessage("--Start of Log--"));
+			processMessage("log",new EventData("--Start of Log--"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class Logger extends GameObject {
 	 * Overrides <code>GameObject</code>'s method.
 	 * @return True if the message gets processed
 	 */
-	public boolean processMessage(String name, EventMessage event) {
+	public boolean processMessage(String name, EventData event) {
 		if(name.equals("log")) {
 			log(event.getMessage());
 			return true;

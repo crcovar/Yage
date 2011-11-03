@@ -24,10 +24,10 @@ public class RemoteVisualizer extends PApplet {
 		new Renderer(this);
 		this.eventManager.registerListener(new Client("localhost", 10040), "register");
 
-		this.eventManager.sendEvent("register", new EventMessage("clear"));
-		this.eventManager.sendEvent("register", new EventMessage("draw"));
-		this.eventManager.sendEvent("register", new EventMessage("text"));
-		this.eventManager.sendEvent("register", new EventMessage("selectedtext"));
+		this.eventManager.sendEvent("register", new EventData("clear"));
+		this.eventManager.sendEvent("register", new EventData("draw"));
+		this.eventManager.sendEvent("register", new EventData("text"));
+		this.eventManager.sendEvent("register", new EventData("selectedtext"));
 		//*/
 	}
 

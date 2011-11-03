@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import engine.GameObject;
+import engine.network.Connection;
 
 /**
  * Singleton class for managing events
@@ -16,6 +17,8 @@ public class EventManager extends GameObject {
 	 */
 	private EventManager() {
 		super();
+		this.eventQueues = new HashMap<Connection,LinkedList<Event>>();
+		
 		this.listeners = new HashMap<String,LinkedList<GameObject>>();
 	}
 	
@@ -43,7 +46,7 @@ public class EventManager extends GameObject {
 			this.listeners.get(name).add(listener);
 		}
 		
-		this.sendEvent("log", new EventMessage("Registered " + listener.getClass().getCanonicalName() + " to \"" + name + "\" event."));
+		this.sendEvent("log", new EventData("Registered " + listener.getClass().getCanonicalName() + " to \"" + name + "\" event."));
 	}
 	
 	/**
@@ -62,7 +65,7 @@ public class EventManager extends GameObject {
 	 */
 	public void unregisterListener(GameObject listener, String name) {
 		if(this.listeners.get(name).remove(listener))
-			this.sendEvent("log", new EventMessage("Unregistered " + listener.getClass().getCanonicalName() + " from \"" + name + "\" event."));
+			this.sendEvent("log", new EventData("Unregistered " + listener.getClass().getCanonicalName() + " from \"" + name + "\" event."));
 	}
 	
 	/**
@@ -80,8 +83,12 @@ public class EventManager extends GameObject {
 	 * @param event event details
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
-	public boolean sendEvent(String name, EventMessage event) {
-		event.setTimestamp(GameObject.gameTime); // set timestamp event gets sent, for networking
+	public boolean sendEvent(String name, EventData event) {
+		event.setTimestamp(GameObject.gameTime); // set time stamp event gets sent, for networking
+		
+		for(LinkedList<Event> queue : this.eventQueues.values()) {
+			queue.add(new Event(name,event));
+		}
 		
 		if(this.listeners.containsKey(name)) {
 			for(GameObject g : this.listeners.get(name)) {
@@ -94,6 +101,7 @@ public class EventManager extends GameObject {
 		return false;
 	}
 	
+	private HashMap<Connection,LinkedList<Event>> eventQueues;
 	private HashMap<String,LinkedList<GameObject>> listeners;
 	
 	private static EventManager instance = null;

@@ -1,6 +1,6 @@
 package engine;
 
-import engine.events.EventMessage;
+import engine.events.EventData;
 
 /**
  * Superclass of the engine
@@ -46,7 +46,7 @@ public abstract class GameObject {
 	 * @param event message to process
 	 * @return true if the event message was processed successfully
 	 */
-	public boolean processMessage(String name, EventMessage event) { return false; }
+	public boolean processMessage(String name, EventData event) { return false; }
 	
 	public static long gameTime;
 	

@@ -5,14 +5,52 @@ import java.io.*;
 
 import engine.GameObject;
 import engine.events.EventManager;
-import engine.events.EventMessage;
+import engine.events.EventData;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
 public class Connection extends GameObject implements Runnable {
-
+	public Connection(String host, int port) {
+		super();
+		
+		//register as listener for our events
+		this.eventManager = EventManager.getInstance();
+		
+		this.socket = null;
+		
+		try {
+			this.socket = new Socket(host,port);
+			
+			try {
+				this.outputStream = this.socket.getOutputStream();
+				try {
+					this.out = new ObjectOutputStream(this.outputStream);
+				} catch (IOException e) {
+					EventData m = new EventData("Unable to get ObjectOutputStream");
+					EventManager.getInstance().sendEvent("log", m);
+					m.setMessage(e.getMessage());
+					EventManager.getInstance().sendEvent("log", m);
+					this.out = null;
+				}
+			} catch (IOException e) {
+				EventData m = new EventData("Unable to get OutputStream");
+				EventManager.getInstance().sendEvent("log", m);
+				m.setMessage(e.getMessage());
+				EventManager.getInstance().sendEvent("log", m);
+				this.outputStream = null;
+			}
+			
+			this.eventManager.sendEvent("log",new EventData("Client connected to server"));
+			
+			new Thread(this).start();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Connection(Socket socket) {
 		this.socket = socket;
 		
@@ -22,14 +60,14 @@ public class Connection extends GameObject implements Runnable {
 			try {
 				this.out = new ObjectOutputStream(this.outputStream);
 			} catch (IOException e) {
-				EventMessage m = new EventMessage("Unable to get ObjectOutputStream");
+				EventData m = new EventData("Unable to get ObjectOutputStream");
 				EventManager.getInstance().sendEvent("log", m);
 				m.setMessage(e.getMessage());
 				EventManager.getInstance().sendEvent("log", m);
 				this.out = null;
 			}
 		} catch (IOException e) {
-			EventMessage m = new EventMessage("Unable to get OutputStream");
+			EventData m = new EventData("Unable to get OutputStream");
 			EventManager.getInstance().sendEvent("log", m);
 			m.setMessage(e.getMessage());
 			EventManager.getInstance().sendEvent("log", m);
@@ -64,7 +102,7 @@ public class Connection extends GameObject implements Runnable {
 				try {
 					while(true) {
 						String name = (String) this.in.readObject();
-						EventMessage event = (EventMessage) this.in.readObject();
+						EventData event = (EventData) this.in.readObject();
 						if(name.equals("register")) {
 							EventManager.getInstance().registerListener(this,event.getMessage());
 						}
@@ -75,7 +113,7 @@ public class Connection extends GameObject implements Runnable {
 					e.printStackTrace();
 				}
 			} catch (IOException e) {
-				EventMessage m = new EventMessage("Unable to get ObjectInputStream");
+				EventData m = new EventData("Unable to get ObjectInputStream");
 				EventManager.getInstance().sendEvent("log", m);
 				m.setMessage(e.getMessage());
 				EventManager.getInstance().sendEvent("log", m);
@@ -83,7 +121,7 @@ public class Connection extends GameObject implements Runnable {
 			}
 			
 		} catch (IOException e) {
-			EventMessage m = new EventMessage("Unable to get InputStream");
+			EventData m = new EventData("Unable to get InputStream");
 			e.printStackTrace();
 			EventManager.getInstance().sendEvent("log", m);
 			m.setMessage(e.getMessage());
@@ -104,7 +142,7 @@ public class Connection extends GameObject implements Runnable {
 				
 	}
 	
-	public boolean processMessage(String name, EventMessage event) {
+	public boolean processMessage(String name, EventData event) {
 		if(out != null) {
 			try {
 				out.writeObject(name);
@@ -113,7 +151,7 @@ public class Connection extends GameObject implements Runnable {
 				out.flush();
 				return true;
 			} catch (IOException e) {
-				EventMessage m = new EventMessage("Unable to send event to client");
+				EventData m = new EventData("Unable to send event to client");
 				EventManager.getInstance().sendEvent("log", m);
 				m.setMessage(e.getMessage());
 				EventManager.getInstance().sendEvent("log", m);
@@ -134,6 +172,8 @@ public class Connection extends GameObject implements Runnable {
 	public boolean isDone() { return this.done; }
 	
 	private boolean done;
+	
+	private EventManager eventManager;
 	
 	private Socket socket;
 	private InputStream inputStream;

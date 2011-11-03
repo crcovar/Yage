@@ -2,7 +2,7 @@ package engine.network;
 
 import engine.GameObject;
 import engine.events.EventManager;
-import engine.events.EventMessage;
+import engine.events.EventData;
 
 import java.io.*;
 import java.net.*;
@@ -37,7 +37,7 @@ public class Client extends GameObject implements Runnable{
 			try{
 				this.input = new ObjectInputStream(this.socket.getInputStream());
 			} catch (IOException e) {
-				EventMessage m = new EventMessage("Unable to Create ObjectInputStream");
+				EventData m = new EventData("Unable to Create ObjectInputStream");
 				this.eventManager.sendEvent("log", m);
 				m.setMessage(e.getMessage());
 				this.eventManager.sendEvent("log", m);
@@ -47,14 +47,14 @@ public class Client extends GameObject implements Runnable{
 			try{
 				this.output = new ObjectOutputStream(this.socket.getOutputStream());
 			} catch (IOException e) {
-				EventMessage m = new EventMessage("Unable to Create ObjectOutputStream");
+				EventData m = new EventData("Unable to Create ObjectOutputStream");
 				this.eventManager.sendEvent("log", m);
 				m.setMessage(e.getMessage());
 				this.eventManager.sendEvent("log", m);
 				this.output = null;
 			}
 			
-			this.eventManager.sendEvent("log",new EventMessage("Client connected to server"));
+			this.eventManager.sendEvent("log",new EventData("Client connected to server"));
 			
 			new Thread(this).start();
 			
@@ -84,7 +84,7 @@ public class Client extends GameObject implements Runnable{
 			while(true) {
 				if(this.input != null) {
 					String name = (String) this.input.readObject();
-					EventMessage event = (EventMessage) this.input.readObject();
+					EventData event = (EventData) this.input.readObject();
 					this.eventManager.sendEvent(name, event);
 				}
 			}
@@ -95,7 +95,7 @@ public class Client extends GameObject implements Runnable{
 		}
 	}
 	
-	public boolean processMessage(String name, EventMessage event) {
+	public boolean processMessage(String name, EventData event) {
 		
 			if(this.output != null) {
 				try {
@@ -103,9 +103,9 @@ public class Client extends GameObject implements Runnable{
 					this.output.flush();
 					this.output.writeObject(event);
 					this.output.flush();
-					this.eventManager.sendEvent("log",new EventMessage("sent " + name +" event to server"));
+					this.eventManager.sendEvent("log",new EventData("sent " + name +" event to server"));
 				} catch (IOException e) {
-					this.eventManager.sendEvent("log", new EventMessage("Unable to send object to server"));
+					this.eventManager.sendEvent("log", new EventData("Unable to send object to server"));
 					e.printStackTrace();
 					return false;
 				}

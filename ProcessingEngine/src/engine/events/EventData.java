@@ -8,24 +8,24 @@ import engine.GameObject;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class EventMessage implements Serializable {
+public class EventData implements Serializable {
 	
-	public EventMessage() {
+	public EventData() {
 		this.msg = "";
 		this.object = null;
 	}
 	
-	public EventMessage(String message) {
+	public EventData(String message) {
 		this();
 		this.msg = message;
 	}
 	
-	public EventMessage(GameObject object) {
+	public EventData(GameObject object) {
 		this();
 		this.object = object;
 	}
 	
-	public EventMessage(String message, GameObject object) {
+	public EventData(String message, GameObject object) {
 		this.msg = message;
 		this.object = object;
 	}

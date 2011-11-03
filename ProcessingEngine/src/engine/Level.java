@@ -1,7 +1,7 @@
 package engine;
 
 import engine.character.Player;
-import engine.events.EventMessage;
+import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
@@ -93,7 +93,7 @@ public class Level extends GameObject {
 	   
 	   // record the platforms (since they only need to record once)
 	   for(TileObject t : this.tiles) {
-		   EventMessage e = new EventMessage();
+		   EventData e = new EventData();
 		   if(t instanceof DeathZone) {
 			   e.setMessage("DeathZone");
 			   e.setObject((DeathZone) t);
@@ -111,7 +111,7 @@ public class Level extends GameObject {
 		   this.eventManager.sendEvent("record", e);
 	   }
 	   
-	   this.eventManager.sendEvent("record", new EventMessage("SpawnPoint",this.spawn));
+	   this.eventManager.sendEvent("record", new EventData("SpawnPoint",this.spawn));
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class Level extends GameObject {
 		}
 		
 		// record the players position
-		this.eventManager.sendEvent("record", new EventMessage("Player",this.player));
+		this.eventManager.sendEvent("record", new EventData("Player",this.player));
 	}
 	
 	/**

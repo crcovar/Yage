@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import engine.GameObject;
-import engine.events.EventMessage;
+import engine.events.EventData;
 import engine.events.EventManager;
 
 /**
@@ -34,7 +34,7 @@ public class Recorder extends GameObject {
 		}
 	}
 	
-	public boolean processMessage(String name, EventMessage event) {
+	public boolean processMessage(String name, EventData event) {
 		if(name.equals("record")) {
 			return this.record(event.getMessage(), event.getObject());
 		}

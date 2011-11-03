@@ -50,7 +50,7 @@ public class Renderer extends GameObject {
 	 * @param event message to process
 	 * @return true if the event message was processed successfully
 	 */
-	public boolean processMessage(String name, EventMessage event) {
+	public boolean processMessage(String name, EventData event) {
 		RenderEvent re = null;
 		
 		if(event instanceof RenderEvent)
