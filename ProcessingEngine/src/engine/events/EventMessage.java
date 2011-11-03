@@ -46,8 +46,8 @@ public class EventMessage implements Serializable {
 		return this.object;
 	}
 	
-	public void setTimestamp() {
-		this.timestamp = System.currentTimeMillis();
+	public void setTimestamp(long gameTime) {
+		this.timestamp = gameTime;
 	}
 	
 	public long getTimestamp() {

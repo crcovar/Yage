@@ -96,7 +96,9 @@ public class ProcessingSketch extends PApplet {
 	/**
 	 * Main game loop. Processing will call this method as often as the frame rate calls for it.
 	 */
-	public void draw() {		
+	public void draw() {	
+		GameObject.gameTime++;	// this should be the only write to this variable
+		
 		this.eventManager.sendEvent("clear", null);
 				
 		switch (gameState) {
@@ -185,6 +187,7 @@ public class ProcessingSketch extends PApplet {
 	private Renderer renderer;
 	private Replay replay;
 
+	@SuppressWarnings("unused")
 	private Server server;
 	@SuppressWarnings("unused")
 	private Client client;

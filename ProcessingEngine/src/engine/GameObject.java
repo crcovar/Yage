@@ -48,6 +48,8 @@ public abstract class GameObject {
 	 */
 	public boolean processMessage(String name, EventMessage event) { return false; }
 	
+	public static long gameTime;
+	
 	protected int gUId;
 	private static int numGameObjects = 0;
 }
