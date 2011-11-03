@@ -1,14 +1,12 @@
 package engine.events;
 
-import java.io.Serializable;
-
 import engine.GameObject;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class EventData implements Serializable {
+public class EventData {
 	
 	public EventData() {
 		this.msg = "";
@@ -45,18 +43,8 @@ public class EventData implements Serializable {
 	public GameObject getObject() {
 		return this.object;
 	}
-	
-	public void setTimestamp(long gameTime) {
-		this.timestamp = gameTime;
-	}
-	
-	public long getTimestamp() {
-		return this.timestamp;
-	}
 
-	private static final long serialVersionUID = 8645183011653698049L;
-	
 	private String msg;
 	private GameObject object;
-	private long timestamp;
+
 }

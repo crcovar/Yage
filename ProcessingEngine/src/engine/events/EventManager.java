@@ -1,5 +1,6 @@
 package engine.events;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -17,6 +18,8 @@ public class EventManager extends GameObject {
 	 */
 	private EventManager() {
 		super();
+		
+		this.localQueue = new LinkedList<Event>();
 		this.eventQueues = new HashMap<Connection,LinkedList<Event>>();
 		
 		this.listeners = new HashMap<String,LinkedList<GameObject>>();
@@ -83,12 +86,8 @@ public class EventManager extends GameObject {
 	 * @param event event details
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
-	public boolean sendEvent(String name, EventData event) {
-		event.setTimestamp(GameObject.gameTime); // set time stamp event gets sent, for networking
-		
-		for(LinkedList<Event> queue : this.eventQueues.values()) {
-			queue.add(new Event(name,event));
-		}
+	public boolean sendEvent(String name, EventData event) {		
+		this.localQueue.push(new Event(name, event));
 		
 		if(this.listeners.containsKey(name)) {
 			for(GameObject g : this.listeners.get(name)) {
@@ -101,6 +100,23 @@ public class EventManager extends GameObject {
 		return false;
 	}
 	
+	private long getGVT() {
+		Event localEvent = this.localQueue.peekLast();
+		long gvt = 0;
+		
+		if(localEvent != null)
+			gvt = localEvent.getTimestamp();
+		
+		for(LinkedList<Event> queue : this.eventQueues.values()) {
+			Event qEvent = queue.peekLast();
+			if(qEvent != null)
+				gvt = Math.min(gvt, qEvent.getTimestamp());
+		}
+		
+		return gvt;		
+	}
+	
+	private LinkedList<Event> localQueue;
 	private HashMap<Connection,LinkedList<Event>> eventQueues;
 	private HashMap<String,LinkedList<GameObject>> listeners;
 	

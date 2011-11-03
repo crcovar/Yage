@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.io.*;
 
 import engine.GameObject;
+import engine.events.Event;
 import engine.events.EventManager;
 import engine.events.EventData;
 
@@ -12,6 +13,12 @@ import engine.events.EventData;
  *
  */
 public class Connection extends GameObject implements Runnable {
+	/**
+	 * Constructor for using <code>Connection</code> from a client. <code>Connection</code> is now both ends of a one-to-one link between machines.
+	 * Use the <code>Server</code> class if you need to maintain and track multiple connections
+	 * @param host Hostname or IP of the <code>Server</code> object you want to connect to.
+	 * @param port Port number the <code>Server</code> will be listening on.
+	 */
 	public Connection(String host, int port) {
 		super();
 		
@@ -51,7 +58,13 @@ public class Connection extends GameObject implements Runnable {
 		}
 	}
 	
+	/**
+	 * Constructor for using <code>Connection</code> from a <code>Server</code>. This method uses an already open <code>Socket</code> provided by the server.
+	 * @param socket <code>Socket</code> object received by the server.
+	 */
 	public Connection(Socket socket) {
+		super();
+		
 		this.socket = socket;
 		
 		// try building the ObjectOutputStream
@@ -77,6 +90,9 @@ public class Connection extends GameObject implements Runnable {
 		this.done = false;
 	}
 	
+	/**
+	 * Destructor. Ensures all IO streams and sockets are closed.
+	 */
 	public void finalize() throws Throwable {
 		try {
 			EventManager.getInstance().unregisterListener(this);
@@ -91,6 +107,9 @@ public class Connection extends GameObject implements Runnable {
 		}
 	}
 	
+	/**
+	 * Open input stream and read in objects passed through, forwarding them to the event manager.
+	 */
 	@Override
 	public void run() {
 		// try building the ObjectInputStream
@@ -101,13 +120,7 @@ public class Connection extends GameObject implements Runnable {
 				this.in = new ObjectInputStream(this.inputStream);
 				try {
 					while(true) {
-						String name = (String) this.in.readObject();
-						EventData event = (EventData) this.in.readObject();
-						if(name.equals("register")) {
-							EventManager.getInstance().registerListener(this,event.getMessage());
-						}
-						else
-							EventManager.getInstance().sendEvent(name, event);
+						Event event = (Event) this.in.readObject();
 					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -142,6 +155,32 @@ public class Connection extends GameObject implements Runnable {
 				
 	}
 	
+	public boolean sendEvent(Event event) {
+		if(out != null) {
+			try {
+				out.writeObject(event);
+				out.flush();
+				return true;
+			} catch (IOException e) {
+				EventData m = new EventData("Unable to send event to client");
+				EventManager.getInstance().sendEvent("log", m);
+				m.setMessage(e.getMessage());
+				EventManager.getInstance().sendEvent("log", m);
+				this.done = true;
+				
+				return false;
+			}
+		}
+		
+		this.done = true;
+		return false;
+	}
+	
+	/**
+	 * Send events from the event manager to the other machine on the connection
+	 * @param name Name of the event
+	 * @param event Data about the event
+	 */
 	public boolean processMessage(String name, EventData event) {
 		if(out != null) {
 			try {
