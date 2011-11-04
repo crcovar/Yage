@@ -86,8 +86,13 @@ public class EventManager extends GameObject {
 	 * @param event event details
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
-	public boolean sendEvent(String name, EventData event) {		
-		this.localQueue.push(new Event(name, event));
+	public boolean sendEvent(String name, EventData event) {
+		Event e = new Event(name, event);
+		this.localQueue.push(e);
+		
+		for(Connection c : this.eventQueues.keySet()) {
+			c.send(e);
+		}
 		
 		if(this.listeners.containsKey(name)) {
 			for(GameObject g : this.listeners.get(name)) {
@@ -98,6 +103,20 @@ public class EventManager extends GameObject {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * push an <code>Event</code> sent from a <code>Connection</code> into the corresponding queue 
+	 * @param connection <code>Connection</code> that sent the <code>Event</code> 
+	 * @param event <code>Event</code> Object that was sent across the network
+	 */
+	public void sendEvent(Connection connection, Event event) {
+		if(this.eventQueues.containsKey(connection)) {
+			this.eventQueues.get(connection).push(event);
+		} else {
+			this.eventQueues.put(connection, new LinkedList<Event>());
+			this.eventQueues.get(connection).push(event);
+		}
 	}
 	
 	private long getGVT() {

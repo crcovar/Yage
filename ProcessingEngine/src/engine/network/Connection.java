@@ -121,6 +121,7 @@ public class Connection extends GameObject implements Runnable {
 				try {
 					while(true) {
 						Event event = (Event) this.in.readObject();
+						this.eventManager.sendEvent(this, event);
 					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -155,7 +156,7 @@ public class Connection extends GameObject implements Runnable {
 				
 	}
 	
-	public boolean sendEvent(Event event) {
+	public boolean send(Event event) {
 		if(out != null) {
 			try {
 				out.writeObject(event);
