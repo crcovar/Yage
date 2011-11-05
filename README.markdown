@@ -16,14 +16,14 @@ How To Play
 -----------
 Race to the finish!
 
+RemoteVisualizer
+----------------
+This is a little tool that will simply look in on a game. It's primary use was for testing networking synchronization code. The host you wish to connect the remote visualizer to must be already running before starting the Remote Visualizer. By default it is set up to monitor the localhost, on the engines default port. To have it connect to a remote machine or another port you will need to modify the RemoteVisualizer.java. The Remote Visualizer uses an unmodified subset of the engine for networking, logging, event management, and rendering.
+
 Other Information
 -----------------
-When you complete a level you will get to view a replay of your playthrough. You can toggle the speed between 1/2x, 1x, and 2x. After that the next level in the game will load.
-
 To modify the game simply modify any of the files in games/csc481 (or add you're own files to the directory). For any folder in the games directory the file that shares it's name serves as a directory listing of sorts, determining which levels get loaded in what order. If that file is missing the levels will be loaded into the game in the order of Java's choosing. Details for building your own levels can be found in the comments of the levels provided.
 
-Known Bugs
-----------
-* Replay only runs for the first level. For each level after that replay is skipped
-* Remote Visualizer doesn't update Player objects in the replays
-* Exiting ProcessingSketch causes exception to be thrown in Remote Visualizer
+Known Issues
+------------
+* Any lag introduced by network connections is maintained after connection drops
