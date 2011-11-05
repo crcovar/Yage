@@ -1,16 +1,15 @@
 package engine.network;
 
-import engine.GameObject;
-import engine.events.EventManager;
-import engine.events.EventData;
-
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.LinkedList;
+
+import engine.GameObject;
+import engine.events.EventData;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
- * TODO: pass messages sent from clients to other systems
  */
 public class Server extends GameObject implements Runnable {
 	/**
@@ -35,7 +34,6 @@ public class Server extends GameObject implements Runnable {
 			Thread t = new Thread(this);
 			t.start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -62,7 +60,6 @@ public class Server extends GameObject implements Runnable {
 				t.start();
 				this.connections.add(c);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

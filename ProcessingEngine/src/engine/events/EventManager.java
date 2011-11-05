@@ -1,6 +1,5 @@
 package engine.events;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -88,21 +87,13 @@ public class EventManager extends GameObject {
 	 */
 	public boolean sendEvent(String name, EventData event) {
 		Event e = new Event(name, event);
-		this.localQueue.push(e);
+		this.localQueue.add(e);
 		
 		for(Connection c : this.eventQueues.keySet()) {
 			c.send(e);
 		}
 		
-		if(this.listeners.containsKey(name)) {
-			for(GameObject g : this.listeners.get(name)) {
-				if(!g.processMessage(name, event))
-					return false;
-			}
-			return true;
-		}
-		
-		return false;
+		return true;
 	}
 	
 	/**
@@ -112,24 +103,59 @@ public class EventManager extends GameObject {
 	 */
 	public void sendEvent(Connection connection, Event event) {
 		if(this.eventQueues.containsKey(connection)) {
-			this.eventQueues.get(connection).push(event);
+			this.eventQueues.get(connection).add(event);
 		} else {
 			this.eventQueues.put(connection, new LinkedList<Event>());
-			this.eventQueues.get(connection).push(event);
+			this.eventQueues.get(connection).add(event);
 		}
 	}
 	
-	private long getGVT() {
-		Event localEvent = this.localQueue.peekLast();
-		long gvt = 0;
+	/**
+	 * Process any events that need to be handled
+	 */
+	public void process() {
+		long gvt = getGVT();
 		
-		if(localEvent != null)
-			gvt = localEvent.getTimestamp();
+		while (this.localQueue.getFirst().getTimestamp() == gvt) {
+			Event e = this.localQueue.pop();
+			processEvent(e.getName(),e.getData());
+			if(this.localQueue.isEmpty())
+				break;
+		}
 		
 		for(LinkedList<Event> queue : this.eventQueues.values()) {
-			Event qEvent = queue.peekLast();
-			if(qEvent != null)
-				gvt = Math.min(gvt, qEvent.getTimestamp());
+			while (queue.getFirst().getTimestamp() == gvt) {
+				Event e = queue.pop();
+				processEvent(e.getName(),e.getData());
+			}
+		}
+	}
+	
+	private boolean processEvent(String name, EventData data) {
+		if(this.listeners.containsKey(name)) {
+			for(GameObject g : this.listeners.get(name)) {
+				if(!g.processMessage(name, data))
+					return false;
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private long getGVT() {
+		long gvt = 0;
+		
+		if(this.localQueue.isEmpty())
+			this.sendEvent("null", null);
+		
+		Event localEvent = this.localQueue.getFirst();
+		
+		gvt = localEvent.getTimestamp();
+		
+		for(LinkedList<Event> queue : this.eventQueues.values()) {
+			Event qEvent = queue.getFirst();
+			gvt = Math.min(gvt, qEvent.getTimestamp());
 		}
 		
 		return gvt;		

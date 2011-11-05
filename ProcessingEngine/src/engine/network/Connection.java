@@ -141,7 +141,7 @@ public class Connection extends GameObject implements Runnable {
 			m.setMessage(e.getMessage());
 			EventManager.getInstance().sendEvent("log", m);
 			this.inputStream = null;
-		} finally {
+		}// finally {
 			// if connection was still available we would still be in the loop
 			// when you're here it means an exception was thrown, and here we are
 			
@@ -152,7 +152,7 @@ public class Connection extends GameObject implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		//}
 				
 	}
 	
@@ -182,7 +182,7 @@ public class Connection extends GameObject implements Runnable {
 	 * @param name Name of the event
 	 * @param event Data about the event
 	 */
-	public boolean processMessage(String name, EventData event) {
+/*	public boolean processMessage(String name, EventData event) {
 		if(out != null) {
 			try {
 				out.writeObject(name);
@@ -204,7 +204,7 @@ public class Connection extends GameObject implements Runnable {
 		this.done = true;
 		return false;
 	}
-	
+*/	
 	/**
 	 * Check to see if the connection is finished
 	 * @return Whether or not the connection is done

@@ -4,10 +4,12 @@
 package tools;
 
 import processing.core.PApplet;
-import engine.network.Client;
+import engine.GameObject;
+import engine.events.Event;
+import engine.events.EventManager;
+import engine.network.Connection;
 import engine.utils.Logger;
 import engine.utils.Renderer;
-import engine.events.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -22,17 +24,13 @@ public class RemoteVisualizer extends PApplet {
 		
 		new Logger("out2.log");
 		new Renderer(this);
-		this.eventManager.registerListener(new Client("localhost", 10040), "register");
-
-		this.eventManager.sendEvent("register", new EventData("clear"));
-		this.eventManager.sendEvent("register", new EventData("draw"));
-		this.eventManager.sendEvent("register", new EventData("text"));
-		this.eventManager.sendEvent("register", new EventData("selectedtext"));
-		//*/
+		connection = new Connection("localhost", 10040);
 	}
 
 	public void draw() {
-		
+		GameObject.gameTime++;
+		//this.connection.send(new Event("null",null));
+		this.eventManager.process();
 	}
 	
 	/**
@@ -45,6 +43,6 @@ public class RemoteVisualizer extends PApplet {
 	
 	private static final long serialVersionUID = 3848447693892875865L;
 
-	@SuppressWarnings("unused")
 	private EventManager eventManager;
+	private Connection connection;
 }

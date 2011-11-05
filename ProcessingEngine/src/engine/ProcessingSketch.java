@@ -159,6 +159,7 @@ public class ProcessingSketch extends PApplet {
 			break;
 		}
 
+		this.eventManager.process();
 	}
 	
 	/**
