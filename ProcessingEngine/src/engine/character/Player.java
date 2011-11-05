@@ -3,8 +3,8 @@ package engine.character;
 
 import engine.GameObject;
 import engine.Level;
+import engine.events.EventData;
 import engine.events.EventManager;
-import engine.events.RenderEvent;
 import engine.tileobject.SpawnPoint;
 
 /**
@@ -224,7 +224,7 @@ public class Player extends GameObject implements Character {
 	public void draw() {
 		if(spawn != null)
 			spawn.draw();
-		EventManager.getInstance().sendEvent("draw",new RenderEvent("player", this.centerX, this.centerY,this.radius*2,this.radius*2));
+		EventManager.getInstance().sendEvent("draw",new EventData("player", this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
 	private short velocityX;

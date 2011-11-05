@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 
 import engine.GameObject;
+import engine.events.Event;
 import engine.events.EventData;
 
 /**
@@ -56,9 +57,10 @@ public class Server extends GameObject implements Runnable {
 			try {
 				Socket s = this.serverSocket.accept();
 				Connection c = new Connection(s);
+				c.send(new Event("netinit",null));
 				Thread t = new Thread(c);
 				t.start();
-				this.connections.add(c);
+				//this.connections.add(c);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

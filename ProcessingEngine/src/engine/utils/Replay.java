@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import engine.GameObject;
 import engine.events.EventManager;
-import engine.events.RenderEvent;
+import engine.events.EventData;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -34,7 +34,7 @@ public class Replay extends GameObject {
 			e.printStackTrace();
 		}
 		
-		this.objects = new HashMap<Integer, RenderEvent>();
+		this.objects = new HashMap<Integer, EventData>();
 	}
 	
 	public void finalize() throws Throwable {
@@ -87,7 +87,7 @@ public class Replay extends GameObject {
 				// now check if there's already an object at the key
 				// if there's not add it to the HashMap
 				if(!this.objects.containsKey(key)) {
-					RenderEvent r = new RenderEvent();
+					EventData r = new EventData();
 					r.setMessage(lineArray[0]);
 					
 					this.objects.put(key, r);
@@ -118,7 +118,7 @@ public class Replay extends GameObject {
 		case Replay.HALF:
 		case Replay.NORMAL:
 		case Replay.DOUBLE:
-			for(RenderEvent obj : this.objects.values()) {
+			for(EventData obj : this.objects.values()) {
 				EventManager.getInstance().sendEvent("draw", obj);
 			}
 			break;
@@ -136,6 +136,6 @@ public class Replay extends GameObject {
 	private FileReader reader;
 	private BufferedReader in;
 
-	private HashMap<Integer,RenderEvent> objects;
+	private HashMap<Integer,EventData> objects;
 
 }

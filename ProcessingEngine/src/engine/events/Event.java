@@ -3,15 +3,13 @@
  */
 package engine.events;
 
-import java.io.Serializable;
-
 import engine.GameObject;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class Event implements Serializable {
+public class Event {
 	
 	public Event(String name, EventData data) {
 		this.name = name;
@@ -26,6 +24,10 @@ public class Event implements Serializable {
 	
 	public String getName() {
 		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public void setTimestamp() {
@@ -43,6 +45,4 @@ public class Event implements Serializable {
 	private String name;
 	private long timestamp;
 	private EventData data;
-	
-	private static final long serialVersionUID = -8132000945668948369L;
 }

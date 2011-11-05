@@ -51,26 +51,21 @@ public class Renderer extends GameObject {
 	 * @return true if the event message was processed successfully
 	 */
 	public boolean processMessage(String name, EventData event) {
-		RenderEvent re = null;
-		
-		if(event instanceof RenderEvent)
-			re = (RenderEvent) event;
-		
 		if(name.equals("clear")) {
 			this.clear();
 			return true;
 		} else if(name.equals("draw")) {
-			if(re.getMessage().toLowerCase().equals("player")) {
-				this.drawEllipse(re.getX(), re.getY(), re.getWidth(), re.getHeight());
+			if(event.getMessage().toLowerCase().equals("player")) {
+				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight());
 				return true;
 			}
 			else
-				return this.draw(re.getMessage(), re.getX(), re.getY(), re.getWidth(), re.getHeight());
-		} else if(name.equals("text") && re != null) {
-			this.text(re.getMessage(), re.getX(), re.getY());
+				return this.draw(event.getMessage(), event.getX(), event.getY(), event.getWidth(), event.getHeight());
+		} else if(name.equals("text") && event != null) {
+			this.text(event.getMessage(), event.getX(), event.getY());
 			return true;
-		} else if(name.equals("selectedtext") && re != null) {
-			this.selectedText(re.getMessage(), re.getX(), re.getY());
+		} else if(name.equals("selectedtext") && event != null) {
+			this.selectedText(event.getMessage(), event.getX(), event.getY());
 			return true;
 		}
 		return false;

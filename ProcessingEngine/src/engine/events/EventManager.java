@@ -22,6 +22,8 @@ public class EventManager extends GameObject {
 		this.eventQueues = new HashMap<Connection,LinkedList<Event>>();
 		
 		this.listeners = new HashMap<String,LinkedList<GameObject>>();
+		
+		this.eventCalled = false;
 	}
 	
 	/**
@@ -80,17 +82,28 @@ public class EventManager extends GameObject {
 	}
 	
 	/**
+	 * Remove <code>Connection</code> from the event queues
+	 * @param connection 
+	 */
+	public void unregisterListener(Connection connection) {
+		this.eventQueues.remove(connection);
+	}
+	
+	/**
 	 * Fires off an event to the <code>EventManager</code> which will then pass it to the right <code>GameObject</code>
 	 * @param name Event you're sending
 	 * @param event event details
 	 * @return true if the <code>EventManager</code> successfully passes and processes an event, false if there's no listener
 	 */
 	public boolean sendEvent(String name, EventData event) {
+		this.eventCalled = true;
+		
 		Event e = new Event(name, event);
 		this.localQueue.add(e);
 		
 		for(Connection c : this.eventQueues.keySet()) {
-			c.send(e);
+			if(!c.isDone())
+				c.send(e);
 		}
 		
 		return true;
@@ -114,9 +127,16 @@ public class EventManager extends GameObject {
 	 * Process any events that need to be handled
 	 */
 	public void process() {
+		if(!eventCalled)
+			this.sendEvent("null",null);
+		
+		for(Connection c : this.eventQueues.keySet())
+			if(c.isDone())
+				unregisterListener(c);
+		
 		long gvt = getGVT();
 		
-		while (this.localQueue.getFirst().getTimestamp() == gvt) {
+		while (this.localQueue.getFirst().getTimestamp() <= gvt) {
 			Event e = this.localQueue.pop();
 			processEvent(e.getName(),e.getData());
 			if(this.localQueue.isEmpty())
@@ -124,11 +144,13 @@ public class EventManager extends GameObject {
 		}
 		
 		for(LinkedList<Event> queue : this.eventQueues.values()) {
-			while (queue.getFirst().getTimestamp() == gvt) {
+			while (!queue.isEmpty() && queue.getFirst().getTimestamp() <= gvt) {
 				Event e = queue.pop();
 				processEvent(e.getName(),e.getData());
 			}
 		}
+		
+		this.eventCalled = false;
 	}
 	
 	private boolean processEvent(String name, EventData data) {
@@ -146,20 +168,21 @@ public class EventManager extends GameObject {
 	private long getGVT() {
 		long gvt = 0;
 		
-		if(this.localQueue.isEmpty())
-			this.sendEvent("null", null);
-		
 		Event localEvent = this.localQueue.getFirst();
 		
 		gvt = localEvent.getTimestamp();
 		
 		for(LinkedList<Event> queue : this.eventQueues.values()) {
+			if(queue.isEmpty())
+				return gvt;
 			Event qEvent = queue.getFirst();
 			gvt = Math.min(gvt, qEvent.getTimestamp());
 		}
 		
 		return gvt;		
 	}
+	
+	private boolean eventCalled;
 	
 	private LinkedList<Event> localQueue;
 	private HashMap<Connection,LinkedList<Event>> eventQueues;

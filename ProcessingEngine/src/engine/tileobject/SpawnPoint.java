@@ -3,7 +3,7 @@ package engine.tileobject;
 import engine.GameObject;
 import engine.character.Player;
 import engine.events.EventManager;
-import engine.events.RenderEvent;
+import engine.events.EventData;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -53,7 +53,7 @@ public class SpawnPoint extends GameObject implements TileObject {
 	}
 		
 	public void draw() {
-		EventManager.getInstance().sendEvent("draw", new RenderEvent("SpawnPoint", this.x, this.y, 1, 1));
+		EventManager.getInstance().sendEvent("draw", new EventData("SpawnPoint", this.x, this.y, 1, 1));
 	}
 	
 	private int x, y;

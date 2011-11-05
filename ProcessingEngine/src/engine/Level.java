@@ -92,7 +92,7 @@ public class Level extends GameObject {
 	   this.victory = false;
 	   
 	   // record the platforms (since they only need to record once)
-	   for(TileObject t : this.tiles) {
+/*	   for(TileObject t : this.tiles) {
 		   EventData e = new EventData();
 		   if(t instanceof DeathZone) {
 			   e.setMessage("DeathZone");
@@ -108,10 +108,11 @@ public class Level extends GameObject {
 			   e.setObject((VictoryZone) t);
 		   }
 		   
-		   this.eventManager.sendEvent("record", e);
+		   //this.eventManager.sendEvent("record", e);
 	   }
 	   
-	   this.eventManager.sendEvent("record", new EventData("SpawnPoint",this.spawn));
+	  // this.eventManager.sendEvent("record", new EventData("SpawnPoint",this.spawn)); 
+*/
 	}
 	
 	/**
@@ -137,7 +138,7 @@ public class Level extends GameObject {
 		}
 		
 		// record the players position
-		this.eventManager.sendEvent("record", new EventData("Player",this.player));
+		//this.eventManager.sendEvent("record", new EventData("Player",this.player));
 	}
 	
 	/**

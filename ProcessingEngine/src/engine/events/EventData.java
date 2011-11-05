@@ -10,7 +10,10 @@ public class EventData {
 	
 	public EventData() {
 		this.msg = "";
-		this.object = null;
+		this.x = 0;
+		this.y = 0;
+		this.width = 0;
+		this.height = 0;
 	}
 	
 	public EventData(String message) {
@@ -18,14 +21,25 @@ public class EventData {
 		this.msg = message;
 	}
 	
-	public EventData(GameObject object) {
+	public EventData(int x, int y) {
 		this();
-		this.object = object;
+		this.x = x;
+		this.y = y;
 	}
 	
-	public EventData(String message, GameObject object) {
-		this.msg = message;
-		this.object = object;
+	public EventData(String msg, int x, int y) {
+		this(x,y);
+		this.setMessage(msg);
+	}
+	
+	public EventData(int x, int y, int width, int height) {
+		this(x,y);
+		this.width = width;
+		this.height = height;
+	}
+	public EventData(String msg, int x, int y, int width, int height) {
+		this(x,y,width,height);
+		this.setMessage(msg);
 	}
 	
 	public void setMessage(String message) {
@@ -36,15 +50,50 @@ public class EventData {
 		return this.msg;
 	}
 	
-	public void setObject(GameObject object) {
-		this.object = object;
+	public GameObject getObject() {
+	//	return this.object;
+		return null;
 	}
 	
-	public GameObject getObject() {
-		return this.object;
+	public boolean setParam(String name, String value) {
+		
+		int v = 0;
+		try {
+			v =Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		if(name.equals("x")) {
+			this.x = v;
+			return true;
+		} else if(name.equals("y")) {
+			this.y = v;
+			return true;
+		} else if(name.equals("width") || name.equals("w")) {
+			this.width = v;
+			return true;
+		} else if(name.equals("height") || name.equals("h")) {
+			this.height = v;
+			return true;
+		} else if(name.equals("radius") || name.equals("r")) {
+			this.width = v*2;
+			this.height = v*2;
+			return true;
+		} else
+			return false;
 	}
 
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public int getWidth() { return width; }
+	public int getHeight() { return height; }
+	
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+		
 	private String msg;
-	private GameObject object;
 
 }

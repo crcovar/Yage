@@ -25,11 +25,12 @@ public class RemoteVisualizer extends PApplet {
 		new Logger("out2.log");
 		new Renderer(this);
 		connection = new Connection("localhost", 10040);
+		this.connection.send(new Event("null",null));
 	}
 
 	public void draw() {
 		GameObject.gameTime++;
-		//this.connection.send(new Event("null",null));
+		
 		this.eventManager.process();
 	}
 	

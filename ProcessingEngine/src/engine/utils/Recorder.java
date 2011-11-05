@@ -43,7 +43,7 @@ public class Recorder extends GameObject {
 	}
 	
 	private boolean record(String name, GameObject object) {
-		if(out != null) {
+		if(out != null && object != null) {
 			out.println(name + " " + object.printParams());
 			out.flush();
 			return true;

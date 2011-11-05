@@ -3,7 +3,7 @@ package engine.tileobject;
 import engine.GameObject;
 import engine.character.Player;
 import engine.events.EventManager;
-import engine.events.RenderEvent;
+import engine.events.EventData;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -101,7 +101,7 @@ public class DeathZone extends GameObject implements TileObject {
 	  
 	public void draw() { 
 		if(draw) {
-			EventManager.getInstance().sendEvent("draw", new RenderEvent("DeathZone", this.x, this.y, this.t_width, this.t_height));
+			EventManager.getInstance().sendEvent("draw", new EventData("DeathZone", this.x, this.y, this.t_width, this.t_height));
 		} // end if
 	
 	}

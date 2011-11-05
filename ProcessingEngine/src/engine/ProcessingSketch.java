@@ -122,7 +122,7 @@ public class ProcessingSketch extends PApplet {
 			
 			currentLevel.update();
 			
-			this.eventManager.sendEvent("text", new RenderEvent("LIVE",10,20));
+			this.eventManager.sendEvent("text", new EventData("LIVE",10,20));
 			
 			currentLevel.draw();
 			break;
@@ -133,13 +133,13 @@ public class ProcessingSketch extends PApplet {
 				// update and draw the replay
 				if(this.replay.getSpeed() == Replay.HALF) {
 					frameRate(15);
-					this.eventManager.sendEvent("text", new RenderEvent("REPLAY 1/2x",10,20));
+					this.eventManager.sendEvent("text", new EventData("REPLAY 1/2x",10,20));
 				}else if (this.replay.getSpeed() == Replay.NORMAL) {
 					frameRate(30);
-					this.eventManager.sendEvent("text", new RenderEvent("REPLAY 1x",10,20));
+					this.eventManager.sendEvent("text", new EventData("REPLAY 1x",10,20));
 				} else if (this.replay.getSpeed() == Replay.DOUBLE) {
 					frameRate(60);
-					this.eventManager.sendEvent("text", new RenderEvent("REPLAY 2x",10,20));
+					this.eventManager.sendEvent("text", new EventData("REPLAY 2x",10,20));
 				}
 				this.replay.update();
 				this.replay.draw();
@@ -155,7 +155,7 @@ public class ProcessingSketch extends PApplet {
 			}
 			break;
 		case GAME_STATE_END:
-			this.eventManager.sendEvent("text", new RenderEvent("YOU WIN",302,235));
+			this.eventManager.sendEvent("text", new EventData("YOU WIN",302,235));
 			break;
 		}
 
