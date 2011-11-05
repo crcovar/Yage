@@ -136,7 +136,7 @@ public class EventManager extends GameObject {
 		
 		long gvt = getGVT();
 		
-		while (this.localQueue.getFirst().getTimestamp() <= gvt) {
+		while (this.localQueue.getFirst().getTimestamp() == gvt) {
 			Event e = this.localQueue.pop();
 			processEvent(e.getName(),e.getData());
 			if(this.localQueue.isEmpty())
@@ -144,7 +144,7 @@ public class EventManager extends GameObject {
 		}
 		
 		for(LinkedList<Event> queue : this.eventQueues.values()) {
-			while (!queue.isEmpty() && queue.getFirst().getTimestamp() <= gvt) {
+			while (!queue.isEmpty() && queue.getFirst().getTimestamp() == gvt) {
 				Event e = queue.pop();
 				processEvent(e.getName(),e.getData());
 			}
