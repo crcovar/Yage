@@ -1,16 +1,17 @@
 package engine;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+
 import engine.character.Player;
-import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
 import engine.tileobject.SpawnPoint;
 import engine.tileobject.TileObject;
 import engine.tileobject.VictoryZone;
-
-import java.util.LinkedList;
-import java.io.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
