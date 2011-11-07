@@ -190,8 +190,6 @@ public class ProcessingSketch extends PApplet {
 
 	@SuppressWarnings("unused")
 	private Server server;
-	@SuppressWarnings("unused")
-	private Client client;
 	
 	private boolean[] keys = new boolean[526];
 
