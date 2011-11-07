@@ -1,5 +1,6 @@
 package engine;
 
+import engine.events.Event;
 import engine.events.EventData;
 
 /**
@@ -39,6 +40,15 @@ public abstract class GameObject {
 	 * @return String of all the parameters in the <code>GameObject</code>
 	 */
 	public String printParams() { return "GUId="+ this.gUId; }
+	
+	/**
+	 * Process an event. Can be overridden in subclasses to account for things like local vs remote events.
+	 * @param event <code>Event</code> object to be processed
+	 * @return true if the message gets processed sucessfully
+	 */
+	public boolean processEvent(Event event) {
+		return processMessage(event.getName(), event.getData());
+	}
 	
 	/**
 	 * Process a message that was sent from the event manager

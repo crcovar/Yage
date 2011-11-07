@@ -101,6 +101,8 @@ public class EventManager extends GameObject {
 		Event e = new Event(name, event);
 		this.localQueue.add(e);
 		
+		e.makeRemote();	// since we're sending this event over the wire make sure it's local flag is set to false
+		
 		for(Connection c : this.eventQueues.keySet()) {
 			if(!c.isDone())
 				c.send(e);
@@ -138,7 +140,7 @@ public class EventManager extends GameObject {
 		
 		while (this.localQueue.getFirst().getTimestamp() == gvt) {
 			Event e = this.localQueue.pop();
-			processEvent(e.getName(),e.getData());
+			handleEvent(e);
 			if(this.localQueue.isEmpty())
 				break;
 		}
@@ -146,17 +148,17 @@ public class EventManager extends GameObject {
 		for(LinkedList<Event> queue : this.eventQueues.values()) {
 			while (!queue.isEmpty() && queue.getFirst().getTimestamp() == gvt) {
 				Event e = queue.pop();
-				processEvent(e.getName(),e.getData());
+				handleEvent(e);
 			}
 		}
 		
 		this.eventCalled = false;
 	}
 	
-	private boolean processEvent(String name, EventData data) {
-		if(this.listeners.containsKey(name)) {
-			for(GameObject g : this.listeners.get(name)) {
-				if(!g.processMessage(name, data))
+	private boolean handleEvent(Event e) {
+		if(this.listeners.containsKey(e.getName())) {
+			for(GameObject g : this.listeners.get(e.getName())) {
+				if(!g.processEvent(e))
 					return false;
 			}
 			return true;

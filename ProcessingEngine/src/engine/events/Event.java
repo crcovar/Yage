@@ -14,6 +14,7 @@ public class Event {
 	public Event(String name, EventData data) {
 		this.name = name;
 		this.data = data;
+		this.local = true;
 		
 		setTimestamp();
 	}
@@ -42,7 +43,16 @@ public class Event {
 		return this.data;
 	}
 	
+	public void makeRemote() {
+		this.local = false;
+	}
+	
+	public boolean isLocal() {
+		return this.local;
+	}
+	
 	private String name;
 	private long timestamp;
 	private EventData data;
+	private boolean local;
 }
