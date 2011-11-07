@@ -58,7 +58,7 @@ public abstract class GameObject {
 	 */
 	public boolean processMessage(String name, EventData event) { return false; }
 	
-	public static long gameTime;
+	public static long gameTime = Long.MIN_VALUE;
 	
 	protected int gUId;
 	private static int numGameObjects = 0;
