@@ -14,6 +14,7 @@ public class EventData {
 		this.y = 0;
 		this.width = 0;
 		this.height = 0;
+		this.guid = 0;
 	}
 	
 	public EventData(String message) {
@@ -40,6 +41,12 @@ public class EventData {
 	public EventData(String msg, int x, int y, int width, int height) {
 		this(x,y,width,height);
 		this.setMessage(msg);
+	}
+	
+	public EventData(String msg, int guid, int x, int y, int width, int height) {
+		this(x,y,width,height);
+		this.setMessage(msg);
+		this.guid = guid;
 	}
 	
 	public void setMessage(String message) {
@@ -80,15 +87,20 @@ public class EventData {
 			this.width = v*2;
 			this.height = v*2;
 			return true;
+		} else if(name.equals("guid")) {
+			this.guid = v;
+			return true;
 		} else
 			return false;
 	}
 
+	public int getGuid() { return guid; }
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
 	
+	private int guid;
 	private int x;
 	private int y;
 	private int width;

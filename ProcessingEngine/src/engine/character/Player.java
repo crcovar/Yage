@@ -30,6 +30,7 @@ public class Player extends GameObject implements Character {
 	    this.spawn = null;
 	    this.centerX = 16; //spawn.getX() + this.radius;
 	    this.centerY = 16; //spawn.getY() + this.radius;
+	    this.color = (int) (this.gUId*System.currentTimeMillis());
 	}
 	
 	/**
@@ -224,11 +225,12 @@ public class Player extends GameObject implements Character {
 	public void draw() {
 		if(spawn != null)
 			spawn.draw();
-		EventManager.getInstance().sendEvent("draw",new EventData("player", this.centerX, this.centerY,this.radius*2,this.radius*2));
+		EventManager.getInstance().sendEvent("draw",new EventData("player",this.color, this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
 	private short velocityX;
 	private short velocityY;
+	private int color;
 	private boolean[] movement;
 	private byte direction; // true if facing right
 	private int centerX;

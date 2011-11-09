@@ -1,11 +1,15 @@
 package engine.utils;
 
-import engine.GameObject;
-import engine.events.*;
-import engine.tileobject.*;
+import java.awt.Color;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
+
+import engine.GameObject;
+import engine.events.EventData;
+import engine.events.EventManager;
+import engine.tileobject.TileObject;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -56,7 +60,7 @@ public class Renderer extends GameObject {
 			return true;
 		} else if(name.equals("draw")) {
 			if(event.getMessage().toLowerCase().equals("player")) {
-				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight());
+				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight(), event.getGuid());
 				return true;
 			}
 			else
@@ -78,9 +82,10 @@ public class Renderer extends GameObject {
 		this.parent.background(34,155,221);
 	}
 	
-	private void drawEllipse(int x, int y, int w, int h) {
-		parent.stroke(255,255,255);
-		parent.fill(255,255,255);
+	private void drawEllipse(int x, int y, int w, int h, int c) {
+		Color color = new Color(c);
+		parent.stroke(parent.color(color.getRed(),color.getGreen(),color.getBlue()));
+		parent.fill(parent.color(color.getRed(),color.getGreen(),color.getBlue()));
 		parent.ellipse(x,y,w,h);
 	}
 	
