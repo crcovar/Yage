@@ -90,6 +90,10 @@ public class ProcessingSketch extends PApplet {
 			DirList.getInstance().previousMenuItem();
 		}
 		
+		if(keyCode == 'g' || keyCode == 'G' && gameState == GAME_STATE_LEVEL) {
+				currentLevel.addPlayer(new Player());
+		}
+		
 		keys[keyCode] = false;
 	}
 	
@@ -119,9 +123,6 @@ public class ProcessingSketch extends PApplet {
 			    currentLevel.movePlayer(Level.RIGHT);
 			}
 			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
-			if(checkKey('g') || checkKey('G')) {
-				currentLevel.addPlayer(new Player());
-			}
 			
 			currentLevel.update();
 			

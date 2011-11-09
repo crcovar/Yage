@@ -147,6 +147,11 @@ public class Level extends GameObject {
 	public void update() {
 		for(Player p : this.players) {
 			p.update();
+
+			for(int i=this.players.indexOf(p)+1;i<this.players.size();i++) {
+				p.collide(this.players.get(i));
+			}
+			
 			for(TileObject t : tiles) {
 				if(t.collide(p) && t instanceof VictoryZone) {
 					this.victory = true;

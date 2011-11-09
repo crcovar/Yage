@@ -159,6 +159,48 @@ public class Player extends GameObject implements Character {
 	public int getSmallRightBound() { return centerX + this.radius/2; }
 	
 	/**
+	 * Check for collision with another <code>Player</code>
+	 * @param p The other <code>Player</code>
+	 * @return true if the other player hits this player
+	 */
+	public boolean collide(Player p) {
+		int leftBound = p.getLeftBound();
+		int rightBound = p.getRightBound();
+		int topBound = p.getTopBound();
+		int bottomBound = p.getBottomBound();
+	    
+		boolean collided = false;   
+	   
+		if((p.getSmallLeftBound() <= this.getRightBound()) && (p.getSmallRightBound() >= this.getLeftBound())) { // we're in the x
+			if((bottomBound >= this.getTopBound()) && topBound < this.getTopBound()) {
+				collided = true;
+				p.collideBottom(this.getTopBound());
+				this.collideTop(p.getBottomBound());
+			}
+			else if((topBound <= this.getBottomBound()) && bottomBound > this.getBottomBound()) {
+				collided = true;
+				p.collideTop(this.getBottomBound());
+				this.collideBottom(p.getTopBound());
+			}
+		}
+	    
+		if((p.getSmallTopBound() <= this.getBottomBound()) && (p.getSmallBottomBound() >= this.getTopBound())) { // we're in the y
+			if((rightBound >= this.getLeftBound()) && leftBound < this.getLeftBound()) {
+				collided = true;
+				p.collideRight(this.getLeftBound());
+				this.collideLeft(p.getRightBound());
+			}
+			else if((leftBound <= this.getRightBound()) && rightBound > this.getRightBound()) {
+				collided = true;
+				p.collideLeft(this.getRightBound());
+				this.collideRight(p.getLeftBound());
+			}
+		}   
+	    
+		return collided;
+	}
+	
+	/**
 	 * What to do when the player's top collides with something 
 	 * @param bound bottom of the object player hit
 	 */
