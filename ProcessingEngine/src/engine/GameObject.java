@@ -12,6 +12,7 @@ public abstract class GameObject {
 	 * Default Constructor, creates a GUID for the object and increments the counter
 	 */
 	public GameObject() {
+		this.localOnly = false;
 		this.gUId = numGameObjects;
 		numGameObjects++;
 	}
@@ -44,10 +45,13 @@ public abstract class GameObject {
 	/**
 	 * Process an event. Can be overridden in subclasses to account for things like local vs remote events.
 	 * @param event <code>Event</code> object to be processed
-	 * @return true if the message gets processed sucessfully
+	 * @return true if the message gets processed successfully
 	 */
 	public boolean processEvent(Event event) {
-		return processMessage(event.getName(), event.getData());
+		if((localOnly && event.isLocal()) || (!localOnly))
+			return processMessage(event.getName(), event.getData());
+		else
+			return false;
 	}
 	
 	/**
@@ -58,8 +62,9 @@ public abstract class GameObject {
 	 */
 	public boolean processMessage(String name, EventData event) { return false; }
 	
-	public static long gameTime = Long.MIN_VALUE;
-	
 	protected int gUId;
+	protected boolean localOnly;
+	
+	public static long gameTime = Long.MIN_VALUE;
 	private static int numGameObjects = 0;
 }

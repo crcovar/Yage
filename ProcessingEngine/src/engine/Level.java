@@ -25,7 +25,8 @@ public class Level extends GameObject {
 	public Level(Player player, String file) {
 		super();
 		
-		this.player = player;
+		this.players = new LinkedList<Player>();
+		this.players.add(player);
 		this.tiles = new LinkedList<TileObject>();
 		
 		this.eventManager = EventManager.getInstance();
@@ -88,8 +89,10 @@ public class Level extends GameObject {
 	 * Make victory false, and record static elements of the level
 	 */
 	public void startLevel() {
-	   player.setSpawn(spawn);
-	   player.moveToSpawn();
+		for(Player p : this.players) {
+			p.setSpawn(spawn);
+			p.moveToSpawn();
+		}
 	   this.victory = false;
 	   
 	   // record the platforms (since they only need to record once)
@@ -117,27 +120,40 @@ public class Level extends GameObject {
 	}
 	
 	/**
+	 * Add a player to the level.
+	 * @param player <code>Player</code> object to add in
+	 * @return the index of the player, used for id.
+	 */
+	public int addPlayer(Player player) {
+		this.players.add(player);
+		player.setSpawn(spawn);
+		player.moveToSpawn();
+		return this.players.indexOf(player);
+	}
+	
+	/**
 	 * Tell the player to move
 	 * @param direction Direction to move the player in
 	 */
 	public void movePlayer(short direction) {
-		if(direction == UP) player.moveUp();
-		else if(direction == LEFT) player.moveLeft();
-		else if(direction == RIGHT) player.moveRight();
+		if(direction == UP) players.get(0).moveUp();
+		else if(direction == LEFT) players.get(0).moveLeft();
+		else if(direction == RIGHT) players.get(0).moveRight();
 	}
 	
 	/**
 	 * Updates the player and any objects in the level. Mostly collision detection.
 	 */
 	public void update() {
-		player.update();
-		
-		for(TileObject t : tiles) {
-			if(t.collide(player) && t instanceof VictoryZone) {
-				this.victory = true;
+		for(Player p : this.players) {
+			p.update();
+			for(TileObject t : tiles) {
+				if(t.collide(p) && t instanceof VictoryZone) {
+					this.victory = true;
+				}
 			}
-		}
 		
+		}
 		// record the players position
 		//this.eventManager.sendEvent("record", new EventData("Player",this.player));
 	}
@@ -157,7 +173,9 @@ public class Level extends GameObject {
 		for(TileObject t : tiles) {
 			t.draw();
 		}
-		player.draw();
+		for(Player p : this.players) {
+			p.draw();
+		}
 	}
 	
 	public static final short UP = 0;
@@ -166,7 +184,7 @@ public class Level extends GameObject {
 	public static final short RIGHT = 3;
 	
 	private SpawnPoint spawn;
-	private Player player;
+	private LinkedList<Player> players;
 	private LinkedList<TileObject> tiles;
 	
 	private EventManager eventManager;

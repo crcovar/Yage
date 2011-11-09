@@ -119,6 +119,9 @@ public class ProcessingSketch extends PApplet {
 			    currentLevel.movePlayer(Level.RIGHT);
 			}
 			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
+			if(checkKey('g') || checkKey('G')) {
+				currentLevel.addPlayer(new Player());
+			}
 			
 			currentLevel.update();
 			
