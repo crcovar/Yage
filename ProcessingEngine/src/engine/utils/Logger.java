@@ -16,24 +16,14 @@ public class Logger extends GameObject {
 	 * Default Constructor
 	 */
 	public Logger() {
-		super();
-		
-		this.out = null;
-		
-		EventManager.getInstance().registerListener(this, "log");
-		
-		try {
-			this.out = new PrintWriter(this.logFile);
-			processMessage("log",new EventData("--Start of Log--"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this("out.log");
 	}
 	
 	public Logger(String logFile) {
 		super();
 		
 		this.out = null;
+		this.localOnly = true;
 		
 		EventManager.getInstance().registerListener(this, "log");
 		
@@ -52,18 +42,6 @@ public class Logger extends GameObject {
 		} finally {
 			super.finalize();
 		}
-	}
-	
-	/**
-	 * OverRides <code>GameObject</code>'s method to make logger only process local log events
-	 * @param event
-	 */
-	@Override
-	public boolean processEvent(Event event) {
-		if(event.isLocal())
-			return processMessage(event.getName(), event.getData());
-		else
-			return false;
 	}
 	
 	/**
@@ -93,6 +71,4 @@ public class Logger extends GameObject {
 	}
 	
 	private PrintWriter out;
-	
-	private final String logFile = "out.log";
 }
