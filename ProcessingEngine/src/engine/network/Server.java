@@ -3,11 +3,10 @@ package engine.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.LinkedList;
-
 import engine.GameObject;
 import engine.events.Event;
 import engine.events.EventData;
+import engine.events.EventManager;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -28,14 +27,13 @@ public class Server extends GameObject implements Runnable {
 		super();
 		
 		this.serverSocket = null;
-		this.connections = new LinkedList<Connection>();
 		
 		try {
 			this.serverSocket = new ServerSocket(port);
 			Thread t = new Thread(this);
 			t.start();
 		} catch (IOException e) {
-			e.printStackTrace();
+			EventManager.getInstance().sendEvent("log", new EventData("Port unavailable"));
 		}
 	}
 	
@@ -66,15 +64,6 @@ public class Server extends GameObject implements Runnable {
 			}
 		}
 	}
-	
-	public boolean processMessage(String name, EventData event) {
-		for(Connection c : this.connections) {
-				c.processMessage(name, event);
-		}
-		return true;
-	}
-	
+		
 	private ServerSocket serverSocket;
-	private LinkedList<Connection> connections;
-
 }
