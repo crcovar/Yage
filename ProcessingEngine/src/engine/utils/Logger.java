@@ -3,7 +3,6 @@ package engine.utils;
 import java.io.*;
 
 import engine.GameObject;
-import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 

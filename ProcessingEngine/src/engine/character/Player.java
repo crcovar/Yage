@@ -31,6 +31,7 @@ public class Player extends GameObject implements Character {
 	    this.centerX = 16; //spawn.getX() + this.radius;
 	    this.centerY = 16; //spawn.getY() + this.radius;
 	    this.color = (int) (this.gUId*System.currentTimeMillis());
+	    this.name = "";
 	}
 	
 	/**
@@ -42,6 +43,11 @@ public class Player extends GameObject implements Character {
 	public boolean setParam(String name, String value) {
 		String n = name.toLowerCase();
 		short v;
+		
+		if(n.equals("name")) {
+			this.name = value;
+			return true;
+		}
 		
 		try {
 			v = Short.parseShort(value);
@@ -76,6 +82,7 @@ public class Player extends GameObject implements Character {
 	public int getX() { return this.centerX; }
 	public int getY() { return this.centerY; }
 	public int getRadius() { return this.radius; }
+	public String getName() { return this.name; }
 	
 	/**
 	 * Set the player's current spawn point
@@ -283,6 +290,7 @@ public class Player extends GameObject implements Character {
 		EventManager.getInstance().sendEvent("draw",new EventData("player",this.color, this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
+	private String name;
 	private short velocityX;
 	private short velocityY;
 	private int color;
