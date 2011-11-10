@@ -22,6 +22,11 @@ public class EventData {
 		this.msg = message;
 	}
 	
+	public EventData(String message, int gUId) {
+		this(message);
+		this.guid = gUId;
+	}
+	
 	public EventData(int x, int y) {
 		this();
 		this.x = x;

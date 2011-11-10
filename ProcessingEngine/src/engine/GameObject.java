@@ -73,4 +73,10 @@ public abstract class GameObject {
 	
 	public static long gameTime = Long.MIN_VALUE;
 	private static int numGameObjects = 0;
+	
+	public static short gameState = 0;
+	public static final short GAME_STATE_MENU = 0;
+	public static final short GAME_STATE_LEVEL = 1;
+	public static final short GAME_STATE_REPLAY = 2;
+	public static final short GAME_STATE_END = 3;
 }

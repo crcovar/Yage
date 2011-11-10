@@ -62,27 +62,27 @@ public class ProcessingSketch extends PApplet {
 	 * Event trigger. Sets the value of the key in our array to false.
 	 */
 	public void keyReleased() {		
-		if((keyCode == 't' || keyCode == 'T') && gameState == GAME_STATE_REPLAY)
+		if((keyCode == 't' || keyCode == 'T') && GameObject.gameState == GameObject.GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
 		if(keyCode == ' ') {
-			if(gameState == GAME_STATE_MENU && checkKey(' ')) {
+			if(GameObject.gameState == GameObject.GAME_STATE_MENU && checkKey(' ')) {
 				this.game = new Game(DirList.getInstance().getSelected(), this.player);
 				this.currentLevel = game.nextLevel();
-				gameState = GAME_STATE_LEVEL;
+				GameObject.gameState = GameObject.GAME_STATE_LEVEL;
 				resetKeys();
-			} else if(gameState == GAME_STATE_END && checkKey(' ')) {
-				gameState = GAME_STATE_MENU;
+			} else if(GameObject.gameState == GameObject.GAME_STATE_END && checkKey(' ')) {
+				GameObject.gameState = GameObject.GAME_STATE_MENU;
 				resetKeys();
 			}
 		}
-		if(keyCode == 's' || keyCode == 'S' && gameState == GAME_STATE_MENU) {
+		if(keyCode == 's' || keyCode == 'S' && GameObject.gameState == GameObject.GAME_STATE_MENU) {
 			DirList.getInstance().nextMenuItem();
 		}
-		if(keyCode == 'w' || keyCode == 'W' && gameState == GAME_STATE_MENU) {
+		if(keyCode == 'w' || keyCode == 'W' && GameObject.gameState == GameObject.GAME_STATE_MENU) {
 			DirList.getInstance().previousMenuItem();
 		}
 		
-		if(keyCode == 'g' || keyCode == 'G' && gameState == GAME_STATE_LEVEL) {
+		if(keyCode == 'g' || keyCode == 'G' && GameObject.gameState == GameObject.GAME_STATE_LEVEL) {
 				currentLevel.addPlayer(new Player());
 		}
 		
@@ -97,13 +97,13 @@ public class ProcessingSketch extends PApplet {
 		
 		this.eventManager.sendEvent("clear", null);
 				
-		switch (gameState) {
-		case GAME_STATE_MENU:
+		switch (GameObject.gameState) {
+		case GameObject.GAME_STATE_MENU:
 			DirList.getInstance().draw();			
 			break;
-		case GAME_STATE_LEVEL:
+		case GameObject.GAME_STATE_LEVEL:
 			if(currentLevel.reachedVictory()) {
-				gameState = GAME_STATE_REPLAY;
+				GameObject.gameState = GameObject.GAME_STATE_REPLAY;
 				resetKeys();
 				break;
 			}
@@ -122,7 +122,7 @@ public class ProcessingSketch extends PApplet {
 			
 			currentLevel.draw();
 			break;
-		case GAME_STATE_REPLAY:
+		case GameObject.GAME_STATE_REPLAY:
 			if(this.replay == null)
 				this.replay = new Replay("replay" + this.recorder.gUId);
 			if(!this.replay.isDone()) {
@@ -143,14 +143,14 @@ public class ProcessingSketch extends PApplet {
 				frameRate(30);
 				currentLevel = game.nextLevel();
 				if(currentLevel == null) {
-					gameState = GAME_STATE_END;
+					GameObject.gameState = GameObject.GAME_STATE_END;
 				}
 				else
-					gameState = GAME_STATE_LEVEL;
+					GameObject.gameState = GameObject.GAME_STATE_LEVEL;
 				resetKeys();
 			}
 			break;
-		case GAME_STATE_END:
+		case GameObject.GAME_STATE_END:
 			this.eventManager.sendEvent("text", new EventData("YOU WIN",302,235));
 			break;
 		}
@@ -169,12 +169,6 @@ public class ProcessingSketch extends PApplet {
 	private Player player;
 	private Game game;
 	private Level currentLevel;
-	
-	private short gameState = 0;
-	private static final short GAME_STATE_MENU = 0;
-	private static final short GAME_STATE_LEVEL = 1;
-	private static final short GAME_STATE_REPLAY = 2;
-	private static final short GAME_STATE_END = 3;
 	
 	private EventManager eventManager;
 	@SuppressWarnings("unused")
