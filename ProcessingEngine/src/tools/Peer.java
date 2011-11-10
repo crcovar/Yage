@@ -112,7 +112,7 @@ public class Peer extends PApplet {
 			break;
 		case GameObject.GAME_STATE_LEVEL:
 			if(connection == null) {
-				connection = new Connection("localhost", 10040);
+				connection = new Connection("localhost", 10040, Connection.PEER);
 				this.connection.send(new Event("null",null));
 			}
 			if(currentLevel.reachedVictory()) {

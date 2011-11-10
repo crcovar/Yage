@@ -15,6 +15,11 @@ import engine.events.EventData;
  *
  */
 public class Connection extends GameObject implements Runnable {
+	
+	public static final short CLIENT = 0;
+	public static final short PEER = 1;
+	public static final short REMOTE_VIEWER = 2;
+	
 	/**
 	 * Default Constructor. 
 	 */
@@ -33,8 +38,10 @@ public class Connection extends GameObject implements Runnable {
 	 * @param host Hostname or IP of the <code>Server</code> object you want to connect to.
 	 * @param port Port number the <code>Server</code> will be listening on.
 	 */
-	public Connection(String host, int port) {
+	public Connection(String host, int port, short type) {
 		this();
+		
+		this.type = type;
 		
 		try {
 			this.socket = new Socket(host,port);
@@ -113,9 +120,25 @@ public class Connection extends GameObject implements Runnable {
 					Event event = this.gson.fromJson(json, Event.class);
 					if(event.getName().equals("netinit")) {
 						GameObject.gameTime = event.getTimestamp();
-						this.send(new Event("netresponse", new EventData("connection")));
+						this.send(new Event("netresponse", new EventData("connection",this.type)));
 					} else if(event.getName().equals("netresponse")) {
-						this.eventManager.sendEvent("log", new EventData(event.getData().getMessage() + " Connection established"));
+						this.type = (short) event.getData().getGuid();
+						String msg = "";
+						switch(this.type) {
+						case CLIENT:
+							msg += "Client";
+							break;
+						case PEER:
+							msg += "Peer-2-Peer";
+							break;
+						case REMOTE_VIEWER:
+							msg += "Remote Viewer";
+							break;
+						default:
+							msg += "unknown connection type";
+							break;
+						}
+						this.eventManager.sendEvent("log", new EventData(msg + " Connection established"));
 					} else
 						this.eventManager.sendEvent(this, event);
 				}
@@ -186,9 +209,19 @@ public class Connection extends GameObject implements Runnable {
 	 */
 	public boolean isDone() { return this.done; }
 	
+	/**
+	 * Get what type of connection this machine is
+	 * @return
+	 */
+	public short getType() {
+		return this.type;
+	}
+	
 	private boolean done;
 	
 	private EventManager eventManager;
+	
+	private short type;
 	
 	private Socket socket;
 	private InputStream inputStream;

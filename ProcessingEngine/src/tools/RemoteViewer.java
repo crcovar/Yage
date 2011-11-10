@@ -15,7 +15,7 @@ import engine.utils.Renderer;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class RemoteVisualizer extends PApplet {
+public class RemoteViewer extends PApplet {
 
 	public void setup() {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
@@ -24,7 +24,7 @@ public class RemoteVisualizer extends PApplet {
 		
 		new Logger("out2.log");
 		new Renderer(this);
-		connection = new Connection("localhost", 10040);
+		connection = new Connection("localhost", 10040, Connection.REMOTE_VIEWER);
 		this.connection.send(new Event("null",null));
 	}
 
@@ -39,7 +39,7 @@ public class RemoteVisualizer extends PApplet {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PApplet.main(new String[] { "tools.RemoteVisualizer" });
+		PApplet.main(new String[] { "tools.RemoteViewer" });
 
 	}
 	
