@@ -62,6 +62,12 @@ public abstract class GameObject {
 	 */
 	public boolean processMessage(String name, EventData event) { return false; }
 	
+	/**
+	 * Get the Global Unique Identifier of the <code>GameObject</code>
+	 * @return Global Unique Identifier that represents the <code>GameObject</code>
+	 */
+	public int getGUId() { return gUId; }
+	
 	protected int gUId;
 	protected boolean localOnly;
 	

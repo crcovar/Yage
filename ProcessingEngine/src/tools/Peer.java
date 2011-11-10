@@ -136,7 +136,7 @@ public class Peer extends PApplet {
 			currentLevel.draw();
 			break;
 		case GAME_STATE_REPLAY:
-			if(this.replay == null)
+			/*if(this.replay == null)
 				this.replay = new Replay("replay");
 			if(!this.replay.isDone()) {
 				// update and draw the replay
@@ -152,7 +152,7 @@ public class Peer extends PApplet {
 				}
 				this.replay.update();
 				this.replay.draw();
-			} else {
+			} else*/ {
 				frameRate(30);
 				currentLevel = game.nextLevel();
 				if(currentLevel == null) {

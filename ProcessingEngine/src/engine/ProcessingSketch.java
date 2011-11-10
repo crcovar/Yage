@@ -16,11 +16,6 @@ import processing.core.*;
  */
 public class ProcessingSketch extends PApplet {
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6142886135378656379L;
-
-	/**
 	 * Sets the screen size, locks the framerate and initializes values.
 	 */
 	public void setup() {
@@ -35,11 +30,8 @@ public class ProcessingSketch extends PApplet {
 		this.replay = null;
 		
 		player = new Player();
-		//game = new Game("csc481",player);
 		
 		this.server = new Server();
-
-		//currentLevel = game.nextLevel();
 	}
 	
 	/**
@@ -196,5 +188,6 @@ public class ProcessingSketch extends PApplet {
 	private Server server;
 	
 	private boolean[] keys = new boolean[526];
-
+	
+	private static final long serialVersionUID = -6142886135378656379L;
 }
