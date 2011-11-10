@@ -113,6 +113,9 @@ public class Connection extends GameObject implements Runnable {
 					Event event = this.gson.fromJson(json, Event.class);
 					if(event.getName().equals("netinit")) {
 						GameObject.gameTime = event.getTimestamp();
+						this.send(new Event("netresponse", new EventData("connection")));
+					} else if(event.getName().equals("netresponse")) {
+						this.eventManager.sendEvent("log", new EventData(event.getData().getMessage() + " Connection established"));
 					} else
 						this.eventManager.sendEvent(this, event);
 				}

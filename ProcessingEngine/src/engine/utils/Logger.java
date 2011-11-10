@@ -3,6 +3,7 @@ package engine.utils;
 import java.io.*;
 
 import engine.GameObject;
+import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 
@@ -44,6 +45,7 @@ public class Logger extends GameObject {
 		}
 	}
 	
+	@Override
 	public void finalize() throws Throwable {
 		try {
 			this.out.close();
@@ -53,9 +55,22 @@ public class Logger extends GameObject {
 	}
 	
 	/**
+	 * OverRides <code>GameObject</code>'s method to make logger only process local log events
+	 * @param event
+	 */
+	@Override
+	public boolean processEvent(Event event) {
+		if(event.isLocal())
+			return processMessage(event.getName(), event.getData());
+		else
+			return false;
+	}
+	
+	/**
 	 * Overrides <code>GameObject</code>'s method.
 	 * @return True if the message gets processed
 	 */
+	@Override
 	public boolean processMessage(String name, EventData event) {
 		if(name.equals("log")) {
 			log(event.getMessage());

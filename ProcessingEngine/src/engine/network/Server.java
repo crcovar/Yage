@@ -55,7 +55,7 @@ public class Server extends GameObject implements Runnable {
 			try {
 				Socket s = this.serverSocket.accept();
 				Connection c = new Connection(s);
-				c.send(new Event("netinit",null));
+				c.send(new Event("netinit",new EventData("", GameObject.gameState)));
 				Thread t = new Thread(c);
 				t.start();
 				//this.connections.add(c);
