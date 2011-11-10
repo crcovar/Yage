@@ -1,6 +1,3 @@
-/**
- * 
- */
 package tools;
 
 import processing.core.PApplet;
@@ -19,7 +16,7 @@ import engine.utils.Renderer;
 import engine.utils.Replay;
 
 /**
- * @author Covar
+ * @author Charles Covar (covar1@gmail.com)
  *
  */
 public class Peer extends PApplet {

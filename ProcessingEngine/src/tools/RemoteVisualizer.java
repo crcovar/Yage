@@ -30,6 +30,7 @@ public class RemoteVisualizer extends PApplet {
 
 	public void draw() {
 		GameObject.gameTime++;
+		this.eventManager.sendEvent("clear", null);
 		
 		this.eventManager.process();
 	}

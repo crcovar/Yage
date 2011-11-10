@@ -7,6 +7,7 @@ import processing.core.PConstants;
 import processing.core.PImage;
 
 import engine.GameObject;
+import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.TileObject;
@@ -46,6 +47,14 @@ public class Renderer extends GameObject {
 		EventManager.getInstance().registerListener(this, "clear");
 		EventManager.getInstance().registerListener(this, "text");
 		EventManager.getInstance().registerListener(this, "selectedtext");
+	}
+	
+	public boolean processEvent(Event event) {
+		if(event.isLocal() || (!event.isLocal() && !event.getName().equals("clear"))) {
+			return super.processEvent(event);
+		} else
+		
+		return false;
 	}
 	
 	/**

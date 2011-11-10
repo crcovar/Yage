@@ -101,8 +101,6 @@ public class EventManager extends GameObject {
 		Event e = new Event(name, event);
 		this.localQueue.add(e);
 		
-		e.makeRemote();	// since we're sending this event over the wire make sure it's local flag is set to false
-		
 		for(Connection c : this.eventQueues.keySet()) {
 			if(!c.isDone())
 				c.send(e);
@@ -117,6 +115,7 @@ public class EventManager extends GameObject {
 	 * @param event <code>Event</code> Object that was sent across the network
 	 */
 	public void sendEvent(Connection connection, Event event) {
+		event.makeRemote();	// connection came in off the wire, make sure it's set to remote
 		if(this.eventQueues.containsKey(connection)) {
 			this.eventQueues.get(connection).add(event);
 		} else {
