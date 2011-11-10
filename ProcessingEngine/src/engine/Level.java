@@ -30,6 +30,7 @@ public class Level extends GameObject {
 		this.tiles = new LinkedList<TileObject>();
 		
 		this.eventManager = EventManager.getInstance();
+		this.eventManager.registerListener(this,"player");
 		
 		try {
 			FileReader reader = new FileReader(file);
@@ -122,13 +123,12 @@ public class Level extends GameObject {
 	/**
 	 * Add a player to the level.
 	 * @param player <code>Player</code> object to add in
-	 * @return the index of the player, used for id.
 	 */
-	public int addPlayer(Player player) {
+	public void addPlayer(Player player) {
 		this.players.add(player);
 		player.setSpawn(spawn);
 		player.moveToSpawn();
-		return this.players.indexOf(player);
+		//return this.players.indexOf(player);
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class Level extends GameObject {
 	public void update() {
 		for(Player p : this.players) {
 			p.update();
-
+			
 			for(int i=this.players.indexOf(p)+1;i<this.players.size();i++) {
 				p.collide(this.players.get(i));
 			}
