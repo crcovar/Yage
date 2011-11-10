@@ -164,6 +164,19 @@ public class Player extends GameObject implements Character {
 	 * @return true if the other player hits this player
 	 */
 	public boolean collide(Player p) {
+		/*int a, dx, dy;
+		a = (p.radius+this.radius) * (p.radius+this.radius);
+		dx = this.centerX - p.centerX;
+		dy = this.centerY - p.centerY;
+		
+		if(a > (dx*dx) + (dy*dy)) {
+			// collided
+			
+			return true;
+		} else
+			return false;
+		*/
+		
 		int leftBound = p.getLeftBound();
 		int rightBound = p.getRightBound();
 		int topBound = p.getTopBound();
