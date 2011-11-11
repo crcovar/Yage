@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import engine.character.Player;
+import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
@@ -32,7 +33,9 @@ public class Level extends GameObject {
 		this.eventManager = EventManager.getInstance();
 		
 		this.eventManager.registerListener(this, "move");
-		this.eventManager.registerListener(this,"addedPlayer");
+		this.eventManager.registerListener(this, "addedPlayer");
+		this.eventManager.registerListener(this, "update");
+		this.eventManager.registerListener(this, "updateresponse");
 		
 		try {
 			FileReader reader = new FileReader(file);
@@ -149,12 +152,47 @@ public class Level extends GameObject {
 		}
 	}
 	
+	@Override
+	public boolean processEvent(Event event) {
+		if(event.isLocal() && (event.getName().equals("update") || event.getName().equals("updateresponse"))) {
+			return false;
+		} else
+			return super.processEvent(event);
+	}
+	
 	/**
 	 * Processes any events sent by the <code>EventManager</code>.
 	 */
 	@Override
 	public boolean processMessage(String name, EventData event) {
-		if(name.equals("addedplayer")) {
+		if(name.equals("update")) {
+			Player p = new Player();
+			p.setSpawn(spawn);
+			p.setParam("x", ""+event.getX());
+			p.setParam("y", ""+event.getY());
+			p.setParam("radius", ""+event.getWidth());
+			for(Player p2 : this.players) {
+				p.collide(p2);
+			}
+			for(TileObject t : tiles) {
+				if(t.collide(p) && t instanceof VictoryZone) {
+					this.victory = true;
+				}
+			}
+			event.setParam("x", ""+p.getX());
+			event.setParam("y", ""+p.getY());
+			this.eventManager.sendEvent("updateresponse", event);
+		} else if(name.equals("updateresponse")) {
+			for(Player p : this.players) {
+				if(!p.getName().equals(event.getMessage()))
+					continue;
+				
+				p.setParam("x", ""+event.getX());
+				p.setParam("y", ""+event.getY());
+				break;
+			}
+		} else if(name.equals("addedplayer")) {
+		
 			Player p = new Player();
 			p.setParam("name", event.getMessage());
 			this.addPlayer(p);
@@ -180,10 +218,8 @@ public class Level extends GameObject {
 					this.victory = true;
 				}
 			}
-		
+			this.eventManager.sendEvent("update", new EventData(p.getName(),p.getX(),p.getY(),p.getRadius(),p.getRadius()));
 		}
-		// record the players position
-		//this.eventManager.sendEvent("record", new EventData("Player",this.player));
 	}
 	
 	/**

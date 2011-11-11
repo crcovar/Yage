@@ -24,12 +24,15 @@ public class ProcessingSketch extends PApplet {
 		
 		this.eventManager = EventManager.getInstance();
 		
+		this.name = "" + System.currentTimeMillis();
+		
 		this.logger = new Logger();
 		this.recorder = new Recorder();
 		this.renderer = new Renderer(this);
 		this.replay = null;
 		
 		player = new Player();
+		player.setParam("name", name);
 		
 		this.server = new Server();
 	}
@@ -109,12 +112,12 @@ public class ProcessingSketch extends PApplet {
 			}
 			
 			if(checkKey('a') || checkKey('A')) {
-			    currentLevel.movePlayer("",Level.LEFT);
+			    currentLevel.movePlayer(name,Level.LEFT);
 			}
 			if(checkKey('d') || checkKey('D')) {
-			    currentLevel.movePlayer("",Level.RIGHT);
+			    currentLevel.movePlayer(name,Level.RIGHT);
 			}
-			if(checkKey(' ')) currentLevel.movePlayer("",Level.UP);
+			if(checkKey(' ')) currentLevel.movePlayer(name,Level.UP);
 			
 			currentLevel.update();
 			
@@ -180,6 +183,8 @@ public class ProcessingSketch extends PApplet {
 
 	@SuppressWarnings("unused")
 	private Server server;
+	
+	private String name;
 	
 	private boolean[] keys = new boolean[526];
 	
