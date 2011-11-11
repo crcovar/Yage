@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import engine.character.Player;
+import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
@@ -22,15 +23,16 @@ public class Level extends GameObject {
 	 * @param player
 	 * @param file
 	 */
-	public Level(Player player, String file) {
+	public Level(LinkedList<Player> players, String file) {
 		super();
 		
-		this.players = new LinkedList<Player>();
-		this.players.add(player);
+		this.players = players;
 		this.tiles = new LinkedList<TileObject>();
 		
 		this.eventManager = EventManager.getInstance();
-		this.eventManager.registerListener(this,"player");
+		
+		this.eventManager.registerListener(this, "move");
+		this.eventManager.registerListener(this,"addedPlayer");
 		
 		try {
 			FileReader reader = new FileReader(file);
@@ -125,7 +127,6 @@ public class Level extends GameObject {
 	 * @param player <code>Player</code> object to add in
 	 */
 	public void addPlayer(Player player) {
-		this.players.add(player);
 		player.setSpawn(spawn);
 		player.moveToSpawn();
 		//return this.players.indexOf(player);
@@ -135,10 +136,33 @@ public class Level extends GameObject {
 	 * Tell the player to move
 	 * @param direction Direction to move the player in
 	 */
-	public void movePlayer(short direction) {
-		if(direction == UP) players.get(0).moveUp();
-		else if(direction == LEFT) players.get(0).moveLeft();
-		else if(direction == RIGHT) players.get(0).moveRight();
+	public void movePlayer(String player, short direction) {
+		for(Player p : this.players) {
+			if(!p.getName().equals(player))
+				continue;
+			
+			if(direction == Level.UP) p.moveUp();
+			else if(direction == Level.LEFT) p.moveLeft();
+			else if(direction == Level.RIGHT) p.moveRight();
+			
+			break;	// leave the loop because you moved the player you're looking for
+		}
+	}
+	
+	/**
+	 * Processes any events sent by the <code>EventManager</code>.
+	 */
+	@Override
+	public boolean processMessage(String name, EventData event) {
+		if(name.equals("addedplayer")) {
+			Player p = new Player();
+			p.setParam("name", event.getMessage());
+			this.addPlayer(p);
+			return true;
+		} else if(name.equals("move")) {
+			this.movePlayer(event.getMessage(),(short) event.getGuid());
+		}
+		return false;
 	}
 	
 	/**
@@ -147,7 +171,6 @@ public class Level extends GameObject {
 	public void update() {
 		for(Player p : this.players) {
 			p.update();
-			
 			for(int i=this.players.indexOf(p)+1;i<this.players.size();i++) {
 				p.collide(this.players.get(i));
 			}

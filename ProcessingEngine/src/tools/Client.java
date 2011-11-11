@@ -21,6 +21,8 @@ public class Client extends PApplet {
 	 * 
 	 */
 	public void setup() {
+		this.name = "" + System.currentTimeMillis();
+		
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		this.eventManager = EventManager.getInstance();
@@ -29,6 +31,7 @@ public class Client extends PApplet {
 		new Renderer(this);
 		connection = new Connection("localhost", 10040, Connection.CLIENT);
 		this.connection.send(new Event("null",null));
+		this.connection.send(new Event("addplayer", new EventData(name)));
 	}
 	
 	/**
@@ -68,13 +71,13 @@ public class Client extends PApplet {
 		this.eventManager.sendEvent("clear", null);
 		
 		if(checkKey('a') || checkKey('A')) {
-		    this.eventManager.sendEvent("move", new EventData("payer2",Level.LEFT));
+		    this.eventManager.sendEvent("move", new EventData(name,Level.LEFT));
 		}
 		if(checkKey('d') || checkKey('D')) {
-		    this.eventManager.sendEvent("move", new EventData("player2",Level.RIGHT));
+		    this.eventManager.sendEvent("move", new EventData(name,Level.RIGHT));
 		}
 		if(checkKey(' ')) {
-			this.eventManager.sendEvent("move", new EventData("player2",Level.UP));
+			this.eventManager.sendEvent("move", new EventData(name,Level.UP));
 		}
 		
 		this.eventManager.process();
@@ -89,6 +92,7 @@ public class Client extends PApplet {
 	}
 	private static final long serialVersionUID = 100427647698574158L;
 	
+	private String name;
 	private EventManager eventManager;
 	private Connection connection;
 	private boolean[] keys = new boolean[526];

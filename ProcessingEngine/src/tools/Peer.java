@@ -122,12 +122,12 @@ public class Peer extends PApplet {
 			}
 			
 			if(checkKey('a') || checkKey('A')) {
-			    currentLevel.movePlayer(Level.LEFT);
+			    currentLevel.movePlayer("",Level.LEFT);
 			}
 			if(checkKey('d') || checkKey('D')) {
-			    currentLevel.movePlayer(Level.RIGHT);
+			    currentLevel.movePlayer("",Level.RIGHT);
 			}
-			if(checkKey(' ')) currentLevel.movePlayer(Level.UP);
+			if(checkKey(' ')) currentLevel.movePlayer("",Level.UP);
 			
 			currentLevel.update();
 			

@@ -93,6 +93,14 @@ public class Player extends GameObject implements Character {
 	}
 	
 	/**
+	 * Fetch the <code>SpawnPoint</code> currently assigned to the <code>Player</code>
+	 * @return
+	 */
+	public SpawnPoint getSpawn() {
+		return this.spawn;
+	}
+	
+	/**
 	 * Move the player to his current spawn point, used when player dies,
 	 * or level restarts.
 	 */

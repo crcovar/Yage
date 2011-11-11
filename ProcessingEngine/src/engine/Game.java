@@ -11,7 +11,6 @@ import engine.events.EventManager;
  * Handles file loading of Games/mods (no mod support yet)
  * @author Charles Covar (covar1@gmail.com)
  * TODO: Add support for mods (mod directory)
- * TODO: Support multiple players
  */
 public class Game extends GameObject {
 	/**
@@ -23,8 +22,10 @@ public class Game extends GameObject {
 	public Game(String name, Player player) {		
 		this.name = name;
 		this.levels = new LinkedList<String>();
-		this.player = player;
+		this.players = new LinkedList<Player>();
+		this.players.add(player);
 		this.eventManager = EventManager.getInstance();
+		this.eventManager.registerListener(this,"addplayer");
 
 		File dir = new File("games/"+name);
 		FileReader reader = null;
@@ -75,16 +76,28 @@ public class Game extends GameObject {
 		}
 		else {
 			this.eventManager.sendEvent("log", new EventData("Loading next level from file..."));
-			Level l = new Level(this.player, "games/"+this.name+"/"+this.levels.pop());
+			Level l = new Level(this.players, "games/"+this.name+"/"+this.levels.pop());
 			l.startLevel();
 			this.eventManager.sendEvent("log", new EventData("level loaded and initialized successfully"));
 			return l;
 		}
 	}
+	
+	public boolean processMessage(String name, EventData event) {
+		if(name.equals("addplayer")) {
+			Player p = new Player();
+			p.setParam("name", event.getMessage());
+			this.players.add(p);
+			p.setSpawn(this.players.peek().getSpawn());
+			p.moveToSpawn();
+			return true;
+		}
+		return false;
+	}
 
 	private EventManager eventManager;
 	private String name;
 	private LinkedList<String> levels;
-	private Player player;
+	private LinkedList<Player> players;
 
 }
