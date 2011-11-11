@@ -18,7 +18,7 @@ Race to the finish!
 
 Client
 ------
-This is a multiplayer mode designed to place the workload on a single machine. Once a player on the server enters a game you can start the client program and join in.
+This is a multiplayer mode designed to place the workload on a single machine. Once a player on the server enters a game you can start the client program and join in. At this time only four clients are able to connect to the server.
 
 RemoteViewer
 ------------
@@ -32,3 +32,4 @@ Known Issues
 ------------
 * Any lag introduced by network connections is maintained after connection drops
 * Player names must be unique or another use can connect using the same name and events will mix with each other
+* ConcurrentModificationException thrown with connection of fifth client
