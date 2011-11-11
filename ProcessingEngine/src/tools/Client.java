@@ -12,7 +12,7 @@ import engine.utils.Logger;
 import engine.utils.Renderer;
 
 /**
- * @author Covar
+ * @author Charles Covar (covar1@gmail.com)
  *
  */
 public class Client extends PApplet {
