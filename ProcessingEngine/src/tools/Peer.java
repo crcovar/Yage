@@ -32,6 +32,8 @@ public class Peer extends PApplet {
 		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
+		this.name = "" + System.currentTimeMillis();
+		
 		this.eventManager = EventManager.getInstance();
 		
 		this.logger = new Logger();
@@ -40,6 +42,7 @@ public class Peer extends PApplet {
 		this.replay = null;
 		
 		player = new Player();
+		player.setParam("name", name);
 		this.connection = null;
 	}
 	
@@ -122,12 +125,12 @@ public class Peer extends PApplet {
 			}
 			
 			if(checkKey('a') || checkKey('A')) {
-			    currentLevel.movePlayer("",Level.LEFT);
+			    currentLevel.movePlayer(name,Level.LEFT);
 			}
 			if(checkKey('d') || checkKey('D')) {
-			    currentLevel.movePlayer("",Level.RIGHT);
+			    currentLevel.movePlayer(name,Level.RIGHT);
 			}
-			if(checkKey(' ')) currentLevel.movePlayer("",Level.UP);
+			if(checkKey(' ')) currentLevel.movePlayer(name,Level.UP);
 			
 			currentLevel.update();
 			
@@ -191,6 +194,7 @@ public class Peer extends PApplet {
 	private Replay replay;
 	
 	private Connection connection;
+	private String name;
 	
 	private boolean[] keys = new boolean[526];
 
