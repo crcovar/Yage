@@ -22,7 +22,7 @@ public class Logger extends GameObject {
 		super();
 		
 		this.out = null;
-		this.localOnly = true;
+		this.remoteEvents = false;
 		
 		EventManager.getInstance().registerListener(this, "log");
 		
