@@ -6,6 +6,7 @@ import engine.Game;
 import engine.GameObject;
 import engine.Level;
 import engine.character.Player;
+import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.menu.DirList;
@@ -44,6 +45,10 @@ public class Peer extends PApplet {
 		player = new Player();
 		player.setParam("name", name);
 		this.connection = null;
+		if(connection == null) {
+			connection = new Connection("localhost", 10040, Connection.PEER);
+			connection.send(new Event("null", null));
+		}
 	}
 	
 	/**
@@ -82,9 +87,6 @@ public class Peer extends PApplet {
 				this.currentLevel = game.nextLevel();
 				GameObject.gameState = GameObject.GAME_STATE_LEVEL;
 				resetKeys();
-				if(connection == null) {
-					connection = new Connection("localhost", 10040, Connection.PEER);
-				}
 			} else if(GameObject.gameState == GameObject.GAME_STATE_END && checkKey(' ')) {
 				GameObject.gameState = GameObject.GAME_STATE_MENU;
 				resetKeys();

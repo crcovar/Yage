@@ -22,6 +22,7 @@ public class Renderer extends GameObject {
 	 * @param p </code>PApplet</code> object from processing, handles the drawing
 	 */
 	public Renderer(PApplet p) {
+		this.remoteEvents = false;
 		this.parent = p;
 		PImage tilemap = this.parent.loadImage("assets/tilemap.png");
 		
