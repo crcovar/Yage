@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.util.LinkedList;
 
 import engine.character.Player;
-import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
@@ -34,6 +33,7 @@ public class Level extends GameObject {
 		this.eventManager = EventManager.getInstance();
 		
 		this.eventManager.registerListener(this, "move");
+		this.eventManager.registerListener(this,"buildlevel");
 		
 		try {
 			FileReader reader = new FileReader(file);
@@ -46,7 +46,8 @@ public class Level extends GameObject {
 		        stringBuilder.append( ls );
 		    }
 		    
-		    this.buildLevel(stringBuilder.toString());
+		    this.eventManager.sendEvent("buildlevel", new EventData(stringBuilder.toString()));
+		    //this.buildLevel(stringBuilder.toString());
 			
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -96,6 +97,8 @@ public class Level extends GameObject {
 						this.tiles.add(t);
 				}
 			}
+			
+			this.startLevel();
 		} catch (IOException e) {
 			this.eventManager.sendEvent("log", new EventData("Unable to read line"));
 		} finally {
@@ -182,7 +185,7 @@ public class Level extends GameObject {
 		}
 	}
 	
-	@Override
+	/*@Override
 	public boolean processEvent(Event event) {
 		if(event.isLocal()) {
 			if(event.getName().equals("move")) {
@@ -191,7 +194,7 @@ public class Level extends GameObject {
 				return false;
 		} else
 			return super.processEvent(event);
-	}
+	}*/
 	
 	/**
 	 * Processes any events sent by the <code>EventManager</code>.
@@ -200,6 +203,9 @@ public class Level extends GameObject {
 	public boolean processMessage(String name, EventData event) {
 		if(name.equals("move")) {
 			this.movePlayer(event.getMessage(),(short) event.getValue());
+			return true;
+		} else if(name.equals("buildlevel")) {
+			this.buildLevel(event.getMessage());
 		}
 		return false;
 	}

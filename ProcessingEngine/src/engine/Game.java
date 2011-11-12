@@ -81,7 +81,7 @@ public class Game extends GameObject {
 		} else {
 			this.eventManager.sendEvent("log", new EventData("Loading next level from file..."));
 			this.currentLevel = new Level(this.players, "games/"+this.name+"/"+this.levels.pop());
-			this.currentLevel.startLevel();
+			//this.currentLevel.startLevel();
 			this.eventManager.sendEvent("log", new EventData("level loaded and initialized successfully"));
 		}
 		
