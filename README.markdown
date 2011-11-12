@@ -33,3 +33,4 @@ Known Issues
 * Any lag introduced by network connections is maintained after connection drops
 * Player names must be unique or another use can connect using the same name and events will mix with each other
 * ConcurrentModificationException thrown with connection of fifth client
+* Games chosen in Peer-2-Peer mode must have same number of levels
