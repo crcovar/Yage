@@ -1,13 +1,15 @@
 package engine;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import engine.character.Player;
-import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
-import engine.tileobject.SpawnPoint;
 
 /**
  * Handles file loading of Games/mods (no mod support yet)
@@ -29,8 +31,6 @@ public class Game extends GameObject {
 		this.players.add(player);
 		this.eventManager = EventManager.getInstance();
 		this.localEvents = false;
-//		this.eventManager.registerListener(this, "exchangeplayers");
-//		this.eventManager.registerListener(this, "addplayer");
 
 		File dir = new File("games/"+name);
 		FileReader reader = null;
@@ -86,41 +86,6 @@ public class Game extends GameObject {
 		}
 		
 		return this.currentLevel;
-	}
-	
-	@Override
-	public boolean processEvent(Event event) {
-		if(event.isLocal() || event.getName().equals("exchangeplayer"))
-			return processMessage(event.getName(), event.getData());
-		else
-			return super.processEvent(event);
-	}
-	
-	@Override
-	public boolean processMessage(String name, EventData event) {
-		if(name.equals("exchangeplayers")) {
-			for(Player p : players)
-				this.eventManager.sendEvent("addplayer", new EventData(p.getName(),p.getX(),p.getY(), p.getRadius(), p.getRadius()));
-		}
-		if(name.equals("addplayer")) {
-			for(Player p : players)
-				if(p.getName().equals(event.getMessage()))
-					return false;
-			
-			Player p = new Player();
-			p.setParam("name", event.getMessage());
-			p.setParam("x", ""+event.getX());
-			p.setParam("y", ""+event.getY());
-			SpawnPoint s = new SpawnPoint();
-			s.setParam("x", ""+event.getWidth());
-			s.setParam("y", ""+event.getHeight());
-			p.setSpawn(s);
-			//p.setSpawn(players.peek().getSpawn());
-			this.players.add(p);
-			//p.moveToSpawn();
-			return true;
-		}
-		return false;
 	}
 
 	private EventManager eventManager;
