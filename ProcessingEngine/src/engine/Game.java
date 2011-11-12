@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import engine.character.Player;
+import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 
@@ -30,6 +31,8 @@ public class Game extends GameObject {
 		this.players = new LinkedList<Player>();
 		this.players.add(player);
 		this.eventManager = EventManager.getInstance();
+		this.eventManager.registerListener(this, "exchange");
+		this.eventManager.registerListener(this, "gamestatechange");
 		this.localEvents = false;
 
 		File dir = new File("games/"+name);
@@ -87,6 +90,34 @@ public class Game extends GameObject {
 		}
 		
 		return this.currentLevel;
+	}
+	
+	/**
+	 * Process events
+	 */
+	@Override
+	public boolean processMessage(String name, EventData event) {
+		super.processMessage(name, event);
+		if(name.equals("exchange")) {
+			for(Player p : players)
+				this.eventManager.sendEvent("addplayer", new EventData(p.getName(),p.getX(),p.getY(), p.getRadius(), p.getRadius()));
+			return true;
+		}
+		if(name.equals("addplayer")) {
+			for(Player p : players)
+				if(p.getName().equals(event.getMessage()))
+					return false;
+
+			Player p = new Player();
+			p.setParam("name", event.getMessage());
+			p.setParam("x", ""+event.getX());
+			p.setParam("y", ""+event.getY());
+			p.setSpawn(players.peek().getSpawn());
+			this.players.add(p);
+			//p.moveToSpawn();
+			return true;
+		}
+		return false;
 	}
 
 	private EventManager eventManager;

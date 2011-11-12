@@ -79,27 +79,27 @@ public class Peer extends PApplet {
 	 * Event trigger. Sets the value of the key in our array to false.
 	 */
 	public void keyReleased() {		
-		if((keyCode == 't' || keyCode == 'T') && GameObject.gameState == GameObject.GAME_STATE_REPLAY)
+		if((keyCode == 't' || keyCode == 'T') && GameObject.getGameState() == GameObject.GAME_STATE_REPLAY)
 			this.replay.toggleSpeed();
 		if(keyCode == ' ') {
-			if(GameObject.gameState == GameObject.GAME_STATE_MENU && checkKey(' ')) {
+			if(GameObject.getGameState() == GameObject.GAME_STATE_MENU && checkKey(' ')) {
 				this.game = new Game(DirList.getInstance().getSelected(), this.player);
 				this.currentLevel = game.nextLevel();
-				GameObject.gameState = GameObject.GAME_STATE_LEVEL;
+				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
 				resetKeys();
-			} else if(GameObject.gameState == GameObject.GAME_STATE_END && checkKey(' ')) {
-				GameObject.gameState = GameObject.GAME_STATE_MENU;
+			} else if(GameObject.getGameState() == GameObject.GAME_STATE_END && checkKey(' ')) {
+				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_MENU));
 				resetKeys();
 			}
 		}
-		if(keyCode == 's' || keyCode == 'S' && GameObject.gameState == GameObject.GAME_STATE_MENU) {
+		if(keyCode == 's' || keyCode == 'S' && GameObject.getGameState() == GameObject.GAME_STATE_MENU) {
 			DirList.getInstance().nextMenuItem();
 		}
-		if(keyCode == 'w' || keyCode == 'W' && GameObject.gameState == GameObject.GAME_STATE_MENU) {
+		if(keyCode == 'w' || keyCode == 'W' && GameObject.getGameState() == GameObject.GAME_STATE_MENU) {
 			DirList.getInstance().previousMenuItem();
 		}
 		
-		if(keyCode == 'g' || keyCode == 'G' && GameObject.gameState == GameObject.GAME_STATE_LEVEL) {
+		if(keyCode == 'g' || keyCode == 'G' && GameObject.getGameState() == GameObject.GAME_STATE_LEVEL) {
 				currentLevel.addPlayer(new Player());
 		}
 		
@@ -114,14 +114,18 @@ public class Peer extends PApplet {
 		
 		this.eventManager.sendEvent("clear", null);
 				
-		switch (GameObject.gameState) {
+		switch (GameObject.getGameState()) {
 		case GameObject.GAME_STATE_MENU:
 			DirList.getInstance().draw();			
 			break;
 		case GameObject.GAME_STATE_LEVEL:
-	
+			if(currentLevel == null) {
+				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
+				resetKeys();
+				break;
+			}
 			if(currentLevel.reachedVictory()) {
-				GameObject.gameState = GameObject.GAME_STATE_REPLAY;
+				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_REPLAY));
 				resetKeys();
 				break;
 			}
@@ -162,10 +166,10 @@ public class Peer extends PApplet {
 				frameRate(30);
 				currentLevel = game.nextLevel();
 				if(currentLevel == null) {
-					GameObject.gameState = GameObject.GAME_STATE_END;
+					this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
 				}
 				else
-					GameObject.gameState = GameObject.GAME_STATE_LEVEL;
+					this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
 				resetKeys();
 			}
 			break;

@@ -2,6 +2,7 @@ package engine;
 
 import engine.events.Event;
 import engine.events.EventData;
+import engine.events.EventManager;
 
 /**
  * Superclass of the engine
@@ -71,7 +72,12 @@ public abstract class GameObject {
 	 * @param event message to process
 	 * @return true if the event message was processed successfully
 	 */
-	public boolean processMessage(String name, EventData event) { return false; }
+	public boolean processMessage(String name, EventData event) {
+		if(name.equals("gamestatechange")) {
+			gameState = (short) event.getValue();
+		}
+		return false;
+	}
 	
 	/**
 	 * Get the Global Unique Identifier of the <code>GameObject</code>
@@ -79,6 +85,11 @@ public abstract class GameObject {
 	 */
 	public int getGUId() { return gUId; }
 	
+	public static short getGameState() {
+		return gameState;
+	}
+
+
 	protected int gUId;
 	protected boolean localEvents;
 	protected boolean remoteEvents;
@@ -86,7 +97,7 @@ public abstract class GameObject {
 	public static long gameTime = Long.MIN_VALUE;
 	private static int numGameObjects = 0;
 	
-	public static short gameState = 0;
+	private static short gameState = 0;
 	public static final short GAME_STATE_MENU = 0;
 	public static final short GAME_STATE_LEVEL = 1;
 	public static final short GAME_STATE_REPLAY = 2;
