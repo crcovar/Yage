@@ -2,7 +2,6 @@ package engine;
 
 import engine.events.Event;
 import engine.events.EventData;
-import engine.events.EventManager;
 
 /**
  * Superclass of the engine
