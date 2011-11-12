@@ -22,7 +22,7 @@ public class EventManager extends GameObject {
 		this.eventQueues = new HashMap<Connection,LinkedList<Event>>();
 		
 		this.listeners = new HashMap<String,LinkedList<GameObject>>();
-		
+		this.registerListener(this, "gamestatechange");
 		this.eventCalled = false;
 	}
 	

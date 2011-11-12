@@ -98,14 +98,17 @@ public class ProcessingSketch extends PApplet {
 	 */
 	public void draw() {	
 		GameObject.gameTime++;	// this should be the only write to this variable
-		
 		this.eventManager.sendEvent("clear", null);
 				
 		switch (GameObject.getGameState()) {
 		case GameObject.GAME_STATE_MENU:
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
 			DirList.getInstance().draw();			
 			break;
 		case GameObject.GAME_STATE_LEVEL:
+			this.renderer.setEventFlags(true, true);
+			this.eventManager.setEventFlags(true, true);
 			if(currentLevel == null) {
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
 				resetKeys();
@@ -132,6 +135,8 @@ public class ProcessingSketch extends PApplet {
 			currentLevel.draw();
 			break;
 		case GameObject.GAME_STATE_REPLAY:
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
 			if(this.replay == null)
 				this.replay = new Replay("replay" + this.recorder.gUId);
 			if(!this.replay.isDone()) {
@@ -160,6 +165,8 @@ public class ProcessingSketch extends PApplet {
 			}
 			break;
 		case GameObject.GAME_STATE_END:
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
 			this.eventManager.sendEvent("text", new EventData("YOU WIN",302,235));
 			break;
 		}
@@ -183,7 +190,6 @@ public class ProcessingSketch extends PApplet {
 	@SuppressWarnings("unused")
 	private Logger logger;
 	private Recorder recorder;
-	@SuppressWarnings("unused")
 	private Renderer renderer;
 	private Replay replay;
 

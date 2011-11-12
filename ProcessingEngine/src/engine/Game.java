@@ -29,10 +29,11 @@ public class Game extends GameObject {
 		this.currentLevel = null;
 		this.levels = new LinkedList<String>();
 		this.players = new LinkedList<Player>();
-		this.players.add(player);
+		if(player != null)
+			this.players.add(player);
 		this.eventManager = EventManager.getInstance();
 		this.eventManager.registerListener(this, "exchange");
-		this.eventManager.registerListener(this, "gamestatechange");
+		this.eventManager.registerListener(this, "addplayer");
 		this.localEvents = false;
 
 		File dir = new File("games/"+name);
@@ -97,10 +98,9 @@ public class Game extends GameObject {
 	 */
 	@Override
 	public boolean processMessage(String name, EventData event) {
-		super.processMessage(name, event);
 		if(name.equals("exchange")) {
-			for(Player p : players)
-				this.eventManager.sendEvent("addplayer", new EventData(p.getName(),p.getX(),p.getY(), p.getRadius(), p.getRadius()));
+			if(currentLevel != null)
+				this.eventManager.sendEvent("buildlevel", new EventData(this.currentLevel.toString()));
 			return true;
 		}
 		if(name.equals("addplayer")) {
@@ -114,7 +114,7 @@ public class Game extends GameObject {
 			p.setParam("y", ""+event.getY());
 			p.setSpawn(players.peek().getSpawn());
 			this.players.add(p);
-			//p.moveToSpawn();
+			p.moveToSpawn();
 			return true;
 		}
 		return false;

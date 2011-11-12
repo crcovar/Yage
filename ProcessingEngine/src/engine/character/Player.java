@@ -37,6 +37,7 @@ public class Player extends GameObject implements Character {
 	    this.name = "";
 	    
 	    this.eventManager = EventManager.getInstance();
+	    
 	}
 	
 	/**
@@ -183,7 +184,7 @@ public class Player extends GameObject implements Character {
 	 * @param p The other <code>Player</code>
 	 * @return true if the other player hits this player
 	 */
-	public boolean collide(Player p) {
+	public boolean collide(int x, int y) {
 		/*int a, dx, dy;
 		a = (p.radius+this.radius) * (p.radius+this.radius);
 		dx = this.centerX - p.centerX;
@@ -196,6 +197,9 @@ public class Player extends GameObject implements Character {
 		} else
 			return false;
 		*/
+		Player p = new Player();
+		p.setParam("x", ""+x);
+		p.setParam("y", ""+y);
 		
 		int leftBound = p.getLeftBound();
 		int rightBound = p.getRightBound();
@@ -207,12 +211,12 @@ public class Player extends GameObject implements Character {
 		if((p.getSmallLeftBound() <= this.getRightBound()) && (p.getSmallRightBound() >= this.getLeftBound())) { // we're in the x
 			if((bottomBound >= this.getTopBound()) && topBound < this.getTopBound()) {
 				collided = true;
-				p.collideBottom(this.getTopBound());
+				//p.collideBottom(this.getTopBound());
 				this.collideTop(p.getBottomBound());
 			}
 			else if((topBound <= this.getBottomBound()) && bottomBound > this.getBottomBound()) {
 				collided = true;
-				p.collideTop(this.getBottomBound());
+				//p.collideTop(this.getBottomBound());
 				this.collideBottom(p.getTopBound());
 			}
 		}
@@ -220,12 +224,12 @@ public class Player extends GameObject implements Character {
 		if((p.getSmallTopBound() <= this.getBottomBound()) && (p.getSmallBottomBound() >= this.getTopBound())) { // we're in the y
 			if((rightBound >= this.getLeftBound()) && leftBound < this.getLeftBound()) {
 				collided = true;
-				p.collideRight(this.getLeftBound());
+				//p.collideRight(this.getLeftBound());
 				this.collideLeft(p.getRightBound());
 			}
 			else if((leftBound <= this.getRightBound()) && rightBound > this.getRightBound()) {
 				collided = true;
-				p.collideLeft(this.getRightBound());
+				//p.collideLeft(this.getRightBound());
 				this.collideRight(p.getLeftBound());
 			}
 		}
@@ -271,20 +275,6 @@ public class Player extends GameObject implements Character {
 
 		centerX = bound-this.radius;
 		velocityX = 0;
-	}
-	
-	@Override
-	public boolean processMessage(String name, EventData event) {
-		if(!event.getMessage().equals(this.name))
-			return false;
-		
-		if(name.equals("syncplayer")) {
-			this.centerX = event.getX();
-			this.centerY = event.getY();
-			return true;
-		}
-		
-		return false;
 	}
 	
 	/**

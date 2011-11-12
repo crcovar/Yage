@@ -10,7 +10,6 @@ import java.io.*;
  */
 public class DirList extends Menu {
 	private DirList() {
-		EventManager.getInstance().registerListener(this, "gamestatechange");
 		File dir = new File("games");
 		if(dir.isDirectory())
 			this.gameList = dir.list();

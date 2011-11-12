@@ -84,8 +84,9 @@ public class Peer extends PApplet {
 			this.replay.toggleSpeed();
 		if(keyCode == ' ') {
 			if(GameObject.getGameState() == GameObject.GAME_STATE_MENU && checkKey(' ')) {
-				this.game = new Game(DirList.getInstance().getSelected(), this.player);
+				this.game = new Game(DirList.getInstance().getSelected(), player);
 				this.currentLevel = game.nextLevel();
+				connection.send(new Event("exchange",null));
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
 				resetKeys();
 			} else if(GameObject.getGameState() == GameObject.GAME_STATE_END && checkKey(' ')) {
@@ -117,9 +118,13 @@ public class Peer extends PApplet {
 				
 		switch (GameObject.getGameState()) {
 		case GameObject.GAME_STATE_MENU:
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
 			DirList.getInstance().draw();			
 			break;
 		case GameObject.GAME_STATE_LEVEL:
+			this.renderer.setEventFlags(true, true);
+			this.eventManager.setEventFlags(true, true);
 			if(currentLevel == null) {
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
 				resetKeys();
@@ -147,6 +152,8 @@ public class Peer extends PApplet {
 			currentLevel.draw();
 			break;
 		case GameObject.GAME_STATE_REPLAY:
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
 			/*if(this.replay == null)
 				this.replay = new Replay("replay");
 			if(!this.replay.isDone()) {
@@ -175,6 +182,8 @@ public class Peer extends PApplet {
 			}
 			break;
 		case GameObject.GAME_STATE_END:
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
 			this.eventManager.sendEvent("text", new EventData("YOU WIN",302,235));
 			break;
 		}
@@ -197,7 +206,6 @@ public class Peer extends PApplet {
 	private EventManager eventManager;
 	@SuppressWarnings("unused")
 	private Logger logger;
-	@SuppressWarnings("unused")
 	private Renderer renderer;
 	private Replay replay;
 	

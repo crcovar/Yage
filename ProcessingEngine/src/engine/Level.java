@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.util.LinkedList;
 
 import engine.character.Player;
+import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
@@ -34,6 +35,9 @@ public class Level extends GameObject {
 		
 		this.eventManager.registerListener(this, "move");
 		this.eventManager.registerListener(this,"buildlevel");
+		this.eventManager.registerListener(this, "syncplayer");
+		
+		this.script = "";
 		
 		try {
 			FileReader reader = new FileReader(file);
@@ -45,8 +49,8 @@ public class Level extends GameObject {
 		        stringBuilder.append( line );
 		        stringBuilder.append( ls );
 		    }
-		    
-		    this.eventManager.sendEvent("buildlevel", new EventData(stringBuilder.toString()));
+		    this.script = stringBuilder.toString();
+		    this.eventManager.sendEvent("buildlevel", new EventData(script));
 		    //this.buildLevel(stringBuilder.toString());
 			
 		} catch(IOException e) {
@@ -162,8 +166,8 @@ public class Level extends GameObject {
 		this.tiles.add(tile);
 	}
 	
-	public LinkedList<TileObject> getTiles() {
-		return this.tiles;
+	public String toString() {
+		return this.script;
 	}
 	
 	/**
@@ -183,19 +187,11 @@ public class Level extends GameObject {
 		}
 	}
 	
-	/*@Override
-	public boolean processEvent(Event event) {
-		if(event.isLocal()) {
-			if(event.getName().equals("move")) {
-				return super.processEvent(event);
-			} else
-				return false;
-		} else
-			return super.processEvent(event);
-	}*/
-	
 	/**
 	 * Processes any events sent by the <code>EventManager</code>.
+	 * @param name
+	 * @param event
+	 * @return
 	 */
 	@Override
 	public boolean processMessage(String name, EventData event) {
@@ -205,6 +201,12 @@ public class Level extends GameObject {
 		} else if(name.equals("buildlevel")) {
 			this.buildLevel(event.getMessage());
 			this.startLevel();
+		} else if(name.equals("syncplayer")) {
+			for(Player p : this.players) {
+				if(p.getName().equals(event.getMessage()))
+					continue;
+				p.collide(event.getX(), event.getY());	
+			}
 		}
 		return false;
 	}
@@ -215,9 +217,8 @@ public class Level extends GameObject {
 	public void update() {
 		for(Player p : this.players) {
 			p.update();
-			for(int i=this.players.indexOf(p)+1;i<this.players.size();i++) {
-				p.collide(this.players.get(i));
-			}
+			
+		    this.eventManager.sendEvent("syncplayer", new EventData(p.getName(),p.getX(),p.getY()));
 			
 			for(TileObject t : tiles) {
 				if(t.collide(p) && t instanceof VictoryZone) {
@@ -258,6 +259,7 @@ public class Level extends GameObject {
 	
 	private EventManager eventManager;
 	
+	private String script;
 	private boolean victory;
 
 }
