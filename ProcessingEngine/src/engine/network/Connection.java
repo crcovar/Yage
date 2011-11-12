@@ -122,7 +122,7 @@ public class Connection extends GameObject implements Runnable {
 						GameObject.gameTime = event.getTimestamp();
 						this.send(new Event("netresponse", new EventData("connection",this.type)));
 					} else if(event.getName().equals("netresponse")) {
-						this.type = (short) event.getData().getGuid();
+						this.type = (short) event.getData().getValue();
 						String msg = "";
 						switch(this.type) {
 						case CLIENT:

@@ -199,7 +199,7 @@ public class Level extends GameObject {
 	@Override
 	public boolean processMessage(String name, EventData event) {
 		if(name.equals("move")) {
-			this.movePlayer(event.getMessage(),(short) event.getGuid());
+			this.movePlayer(event.getMessage(),(short) event.getValue());
 		}
 		return false;
 	}

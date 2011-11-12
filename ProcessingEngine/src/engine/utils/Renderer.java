@@ -69,7 +69,7 @@ public class Renderer extends GameObject {
 			return true;
 		} else if(name.equals("draw")) {
 			if(event.getMessage().toLowerCase().equals("player")) {
-				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight(), event.getGuid());
+				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight(), event.getValue());
 				return true;
 			}
 			else
