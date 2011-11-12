@@ -97,8 +97,6 @@ public class Level extends GameObject {
 						this.tiles.add(t);
 				}
 			}
-			
-			this.startLevel();
 		} catch (IOException e) {
 			this.eventManager.sendEvent("log", new EventData("Unable to read line"));
 		} finally {
@@ -206,6 +204,7 @@ public class Level extends GameObject {
 			return true;
 		} else if(name.equals("buildlevel")) {
 			this.buildLevel(event.getMessage());
+			this.startLevel();
 		}
 		return false;
 	}

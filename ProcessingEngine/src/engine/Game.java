@@ -75,6 +75,7 @@ public class Game extends GameObject {
 	 * @return newly constructed level, already started
 	 */
 	public Level nextLevel() {
+		this.eventManager.unregisterListener(this.currentLevel);
 		if(this.levels.isEmpty()) {
 			this.eventManager.sendEvent("log", new EventData("No more Levels to load"));
 			this.currentLevel = null;

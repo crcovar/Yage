@@ -44,6 +44,16 @@ public abstract class GameObject {
 	public String printParams() { return "GUId="+ this.gUId; }
 	
 	/**
+	 * Set the flags for handling local and remote events.
+	 * @param local Set to <code>true</code> if you want this <code>GameObject</code> to process local events
+	 * @param remote Set to <code>true</code> if you want this <code>GameObejct</code> to process remote events 
+	 */
+	public void setEventFlags(boolean local, boolean remote) {
+		this.localEvents = local;
+		this.remoteEvents = remote;
+	}
+	
+	/**
 	 * Process an event. Can be overridden in subclasses to account for things like local vs remote events.
 	 * @param event <code>Event</code> object to be processed
 	 * @return true if the message gets processed successfully
