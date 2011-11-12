@@ -3,6 +3,7 @@ package engine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.LinkedList;
 
 import engine.character.Player;
@@ -37,12 +38,30 @@ public class Level extends GameObject {
 		try {
 			FileReader reader = new FileReader(file);
 			BufferedReader in = new BufferedReader(reader);
+			String line  = null;
+		    StringBuilder stringBuilder = new StringBuilder();
+		    String ls = System.getProperty("line.separator");
+		    while( ( line = in.readLine() ) != null ) {
+		        stringBuilder.append( line );
+		        stringBuilder.append( ls );
+		    }
+		    
+		    this.buildLevel(stringBuilder.toString());
 			
-			String line = in.readLine();
-			while(line != null) {
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void buildLevel(String level) {
+		BufferedReader in = new BufferedReader(new StringReader(level));
+		String line = null;
+		
+		try {
+			while((line = in.readLine()) != null) {
 				//check for comment
 				if(line.startsWith("#")) {
-					line = in.readLine();
 					continue;
 				}
 				
@@ -61,7 +80,6 @@ public class Level extends GameObject {
 					else if(obj.equals("spawnpoint"))
 						t = new SpawnPoint();
 					else {
-						line = in.readLine();
 						continue;
 					}
 					
@@ -77,14 +95,17 @@ public class Level extends GameObject {
 					else
 						this.tiles.add(t);
 				}
-								
-				line = in.readLine();
 			}
-			
-		} catch(IOException e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			this.eventManager.sendEvent("log", new EventData("Unable to read line"));
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
 	}
 	
 	/**
@@ -130,6 +151,18 @@ public class Level extends GameObject {
 		player.setSpawn(spawn);
 		player.moveToSpawn();
 		//return this.players.indexOf(player);
+	}
+	
+	/**
+	 * Add a <code>TileObject</code> into the level
+	 * @param tile
+	 */
+	public void addTile(TileObject tile) {
+		this.tiles.add(tile);
+	}
+	
+	public LinkedList<TileObject> getTiles() {
+		return this.tiles;
 	}
 	
 	/**
