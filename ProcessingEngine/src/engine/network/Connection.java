@@ -130,7 +130,6 @@ public class Connection extends GameObject implements Runnable {
 							break;
 						case PEER:
 							msg += "Peer-2-Peer";
-							this.eventManager.sendEvent("exchangeplayers", null);
 							break;
 						case REMOTE_VIEWER:
 							msg += "Remote Viewer";
