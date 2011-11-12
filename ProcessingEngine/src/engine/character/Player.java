@@ -14,12 +14,15 @@ import engine.tileobject.SpawnPoint;
  * Use constants to define movement speeds, bounding boxes, etc.
  */
 public class Player extends GameObject implements Character {
+	
 	/**
 	 * Constructor, takes in PApplet object for rendering
 	 * @param p PApplet that runs the graphics and input
 	 */
 	public Player() {
 		super();
+		
+		//this.localEvents = false;
 		
 	    this.movement = new boolean[4];
 	    this.direction = RIGHT;
@@ -32,6 +35,15 @@ public class Player extends GameObject implements Character {
 	    this.centerY = 16; //spawn.getY() + this.radius;
 	    this.color = (int) (this.gUId*System.currentTimeMillis());
 	    this.name = "";
+	    
+	    this.eventManager = EventManager.getInstance();
+		//this.eventManager.registerListener(this, "collidetop");
+		//this.eventManager.registerListener(this, "collidebottom");
+		//this.eventManager.registerListener(this, "collideleft");
+		//this.eventManager.registerListener(this, "collideright");
+		//this.eventManager.registerListener(this, "death");
+		//this.eventManager.registerListener(this, "syncplayer");
+		//this.eventManager.registerListener(this, "victory");
 	}
 	
 	/**
@@ -186,7 +198,7 @@ public class Player extends GameObject implements Character {
 		
 		if(a > (dx*dx) + (dy*dy)) {
 			// collided
-			
+
 			return true;
 		} else
 			return false;
@@ -223,9 +235,10 @@ public class Player extends GameObject implements Character {
 				p.collideLeft(this.getRightBound());
 				this.collideRight(p.getLeftBound());
 			}
-		}   
+		}
+		 
 	    
-		return collided;
+		return collided;  
 	}
 	
 	/**
@@ -262,10 +275,41 @@ public class Player extends GameObject implements Character {
 	 * @param bound left side of the object hit
 	 */
 	public void collideRight(int bound) {
+
 		centerX = bound-this.radius;
 		velocityX = 0;
 	}
-
+	
+	@Override
+	public boolean processMessage(String name, EventData event) {
+		if(!event.getMessage().equals(this.name))
+			return false;
+		
+		if(name.equals("collidetop")) {
+			this.collideTop(event.getGuid());
+			return true;
+		} else if(name.equals("collidebottom")) {
+			this.collideBottom(event.getGuid());
+			return true;
+		} else if(name.equals("collideleft")) {
+			this.collideLeft(event.getGuid());
+			return true;
+		} else if(name.equals("collideright")) {
+			this.collideRight(event.getGuid());
+			return true;
+		} else if(name.equals("death")) {
+			System.out.println("death");
+			this.death();
+			return true;
+		} else if(name.equals("syncplayer")) {
+			this.centerX = event.getX();
+			this.centerY = event.getY();
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Update logic. Applies gravity and momentum.
 	 */
@@ -297,6 +341,8 @@ public class Player extends GameObject implements Character {
 			spawn.draw();
 		EventManager.getInstance().sendEvent("draw",new EventData("player",this.color, this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
+	
+	private EventManager eventManager;
 	
 	private String name;
 	private short velocityX;

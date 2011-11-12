@@ -72,24 +72,25 @@ public class DeathZone extends GameObject implements TileObject {
 		if((leftBound <= getRightBound()) && (rightBound >= getLeftBound())) { // we're in the x
 			if((bottomBound >= getTopBound()) && topBound < getTopBound()) {
 				collided = true;
-				p.death();
 			}
 			else if((topBound <= getBottomBound()) && bottomBound > getBottomBound()) {
 				collided = true;
-				p.death();
 			}
 		}
 		
 		if((topBound <= getBottomBound()) && (bottomBound >= getTopBound())) { // we're in the y
 			if((rightBound >= getLeftBound()) && leftBound < getLeftBound()) {
 				collided = true;
-				p.death();
 			}
 			else if((leftBound <= getRightBound()) && rightBound > getRightBound()) {
 				collided = true;
-				p.death();
 			}
-		}   
+		}
+		
+		if(collided) {
+			p.death();
+			EventManager.getInstance().sendEvent("deat", new EventData(p.getName()));
+		}
 		
 		return collided;
 	}

@@ -68,10 +68,12 @@ public class Platform extends GameObject implements TileObject {
 			if((bottomBound >= this.getTopBound()) && topBound < this.getTopBound()) {
 				collided = true;
 				p.collideBottom(this.getTopBound());
+				EventManager.getInstance().sendEvent("collidebottom", new EventData(p.getName(),this.getTopBound()));
 			}
 			else if((topBound <= this.getBottomBound()) && bottomBound > this.getBottomBound()) {
 				collided = true;
 				p.collideTop(this.getBottomBound());
+				EventManager.getInstance().sendEvent("collidetop", new EventData(p.getName(),this.getBottomBound()));
 			}
 		}
 	    
@@ -79,10 +81,12 @@ public class Platform extends GameObject implements TileObject {
 			if((rightBound >= this.getLeftBound()) && leftBound < this.getLeftBound()) {
 				collided = true;
 				p.collideRight(this.getLeftBound());
+				EventManager.getInstance().sendEvent("collideright", new EventData(p.getName(),this.getLeftBound()));
 			}
 			else if((leftBound <= this.getRightBound()) && rightBound > this.getRightBound()) {
 				collided = true;
 				p.collideLeft(this.getRightBound());
+				EventManager.getInstance().sendEvent("collideleft", new EventData(p.getName(),this.getRightBound()));
 			}
 		}   
 	    
