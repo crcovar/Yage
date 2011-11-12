@@ -118,7 +118,7 @@ public class Peer extends PApplet {
 				
 		switch (GameObject.getGameState()) {
 		case GameObject.GAME_STATE_MENU:
-			this.renderer.setEventFlags(true, false);
+			this.renderer.setEventFlags(true, true);
 			this.eventManager.setEventFlags(true, false);
 			DirList.getInstance().draw();			
 			break;

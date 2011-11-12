@@ -16,6 +16,10 @@ How To Play
 -----------
 Race to the finish!
 
+Peer-2-Peer
+-----------
+In the tools you can find Peer.java. This is a virtually identical copy to ProcessingSketch itself, but is designed as a p2p client. It contains only a single Connection instead of a Server. Just like the Client or RemoteViewer you will need to make sure you start ProcessingSketch first, as my networking framework isn't that robust yet. When the person using Peer sees a level appear on their screen they can then select a game of their own to merge with what the other player selected.
+
 Client
 ------
 This is a multiplayer mode designed to place the workload on a single machine. Once a player on the server enters a game you can start the client program and join in. At this time only four clients are able to connect to the server.
@@ -30,7 +34,8 @@ To modify the game simply modify any of the files in games/csc481 (or add you're
 
 Known Issues
 ------------
+* Server player must select a game first in peer-2-peer setup
+* Hostname and port numbers hard coded. Hostname can be set in each tool's main class, port number ProcessingSketch listens on is set in Server.java
 * Any lag introduced by network connections is maintained after connection drops
 * Player names must be unique or another use can connect using the same name and events will mix with each other
 * ConcurrentModificationException thrown with connection of fifth client
-* Games chosen in Peer-2-Peer mode must have same number of levels
