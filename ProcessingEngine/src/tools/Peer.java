@@ -82,6 +82,9 @@ public class Peer extends PApplet {
 				this.currentLevel = game.nextLevel();
 				GameObject.gameState = GameObject.GAME_STATE_LEVEL;
 				resetKeys();
+				if(connection == null) {
+					connection = new Connection("localhost", 10040, Connection.PEER);
+				}
 			} else if(GameObject.gameState == GameObject.GAME_STATE_END && checkKey(' ')) {
 				GameObject.gameState = GameObject.GAME_STATE_MENU;
 				resetKeys();
@@ -114,10 +117,7 @@ public class Peer extends PApplet {
 			DirList.getInstance().draw();			
 			break;
 		case GameObject.GAME_STATE_LEVEL:
-			if(connection == null) {
-				connection = new Connection("localhost", 10040, Connection.PEER);
-				this.connection.send(new Event("addplayer",new EventData(name,player.getX(),player.getY(),player.getSpawn().getX(),player.getSpawn().getY())));
-			}
+	
 			if(currentLevel.reachedVictory()) {
 				GameObject.gameState = GameObject.GAME_STATE_REPLAY;
 				resetKeys();
