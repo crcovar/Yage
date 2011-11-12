@@ -29,6 +29,7 @@ public class ProcessingSketch extends PApplet {
 		this.logger = new Logger();
 		this.recorder = new Recorder();
 		this.renderer = new Renderer(this);
+		this.renderer.setEventFlags(true, false);
 		this.replay = null;
 		
 		player = new Player();

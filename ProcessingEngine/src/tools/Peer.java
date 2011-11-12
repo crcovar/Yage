@@ -40,6 +40,7 @@ public class Peer extends PApplet {
 		this.logger = new Logger();
 		new Recorder();
 		this.renderer = new Renderer(this);
+		this.renderer.setEventFlags(true, false);
 		this.replay = null;
 		
 		player = new Player();
