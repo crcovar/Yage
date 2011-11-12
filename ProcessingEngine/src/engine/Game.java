@@ -28,7 +28,8 @@ public class Game extends GameObject {
 		this.players.add(player);
 		this.eventManager = EventManager.getInstance();
 		this.localEvents = false;
-		this.eventManager.registerListener(this,"addplayer");
+		this.eventManager.registerListener(this, "exchangeplayers");
+		this.eventManager.registerListener(this, "addplayer");
 
 		File dir = new File("games/"+name);
 		FileReader reader = null;

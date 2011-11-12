@@ -37,13 +37,6 @@ public class Player extends GameObject implements Character {
 	    this.name = "";
 	    
 	    this.eventManager = EventManager.getInstance();
-		//this.eventManager.registerListener(this, "collidetop");
-		//this.eventManager.registerListener(this, "collidebottom");
-		//this.eventManager.registerListener(this, "collideleft");
-		//this.eventManager.registerListener(this, "collideright");
-		//this.eventManager.registerListener(this, "death");
-		//this.eventManager.registerListener(this, "syncplayer");
-		//this.eventManager.registerListener(this, "victory");
 	}
 	
 	/**
@@ -285,23 +278,7 @@ public class Player extends GameObject implements Character {
 		if(!event.getMessage().equals(this.name))
 			return false;
 		
-		if(name.equals("collidetop")) {
-			this.collideTop(event.getGuid());
-			return true;
-		} else if(name.equals("collidebottom")) {
-			this.collideBottom(event.getGuid());
-			return true;
-		} else if(name.equals("collideleft")) {
-			this.collideLeft(event.getGuid());
-			return true;
-		} else if(name.equals("collideright")) {
-			this.collideRight(event.getGuid());
-			return true;
-		} else if(name.equals("death")) {
-			System.out.println("death");
-			this.death();
-			return true;
-		} else if(name.equals("syncplayer")) {
+		if(name.equals("syncplayer")) {
 			this.centerX = event.getX();
 			this.centerY = event.getY();
 			return true;

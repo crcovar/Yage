@@ -89,7 +89,6 @@ public class DeathZone extends GameObject implements TileObject {
 		
 		if(collided) {
 			p.death();
-			EventManager.getInstance().sendEvent("deat", new EventData(p.getName()));
 		}
 		
 		return collided;
