@@ -23,13 +23,14 @@ public class Game extends GameObject {
 	 */
 	public Game(String name, Player player) {		
 		this.name = name;
+		this.currentLevel = null;
 		this.levels = new LinkedList<String>();
 		this.players = new LinkedList<Player>();
 		this.players.add(player);
 		this.eventManager = EventManager.getInstance();
 		this.localEvents = false;
-		this.eventManager.registerListener(this, "exchangeplayers");
-		this.eventManager.registerListener(this, "addplayer");
+//		this.eventManager.registerListener(this, "exchangeplayers");
+//		this.eventManager.registerListener(this, "addplayer");
 
 		File dir = new File("games/"+name);
 		FileReader reader = null;
@@ -76,15 +77,15 @@ public class Game extends GameObject {
 	public Level nextLevel() {
 		if(this.levels.isEmpty()) {
 			this.eventManager.sendEvent("log", new EventData("No more Levels to load"));
-			return null;
-		}
-		else {
+			this.currentLevel = null;
+		} else {
 			this.eventManager.sendEvent("log", new EventData("Loading next level from file..."));
-			Level l = new Level(this.players, "games/"+this.name+"/"+this.levels.pop());
-			l.startLevel();
+			this.currentLevel = new Level(this.players, "games/"+this.name+"/"+this.levels.pop());
+			this.currentLevel.startLevel();
 			this.eventManager.sendEvent("log", new EventData("level loaded and initialized successfully"));
-			return l;
 		}
+		
+		return this.currentLevel;
 	}
 	
 	@Override
@@ -124,6 +125,7 @@ public class Game extends GameObject {
 
 	private EventManager eventManager;
 	private String name;
+	private Level currentLevel;
 	private LinkedList<String> levels;
 	private LinkedList<Player> players;
 
