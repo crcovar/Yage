@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.util.LinkedList;
 
 import engine.character.Player;
-import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.DeathZone;
@@ -205,7 +204,7 @@ public class Level extends GameObject {
 			for(Player p : this.players) {
 				if(p.getName().equals(event.getMessage()))
 					continue;
-				p.collide(event.getX(), event.getY());	
+				p.collide(event.getX(), event.getY(), event.getWidth());	
 			}
 		}
 		return false;
@@ -218,7 +217,7 @@ public class Level extends GameObject {
 		for(Player p : this.players) {
 			p.update();
 			
-		    this.eventManager.sendEvent("syncplayer", new EventData(p.getName(),p.getX(),p.getY()));
+		    this.eventManager.sendEvent("syncplayer", new EventData(p.getName(),p.getX(),p.getY(),p.getRadius(),p.getRadius()));
 			
 			for(TileObject t : tiles) {
 				if(t.collide(p) && t instanceof VictoryZone) {

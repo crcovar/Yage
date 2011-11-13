@@ -136,7 +136,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the left
 	 */
 	public void moveLeft() {
-		if(velocityX > -8) velocityX--;
+		if(velocityX > -MAX_VELOCITY) velocityX--;
 		movement[Level.LEFT] = true;
 	}
 	
@@ -144,7 +144,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the right
 	 */
 	public void moveRight() {
-		if(velocityX < 8) velocityX++;
+		if(velocityX < MAX_VELOCITY) velocityX++;
 		movement[Level.RIGHT] = true;
 	}
 	
@@ -152,16 +152,16 @@ public class Player extends GameObject implements Character {
 	 * Push the player down, due to gravity.
 	 */
 	public void gravity() {
-		if(velocityY < 8) velocityY++;
+		if(velocityY < MAX_VELOCITY) velocityY++;
 	}
 	
 	/**
 	 * Move the player up provided they can still jump
 	 */
 	public void moveUp() {
-		if(velocityY > -8 && jumpTimer > 0) { 
+		if(velocityY > -MAX_VELOCITY && jumpTimer > 0) { 
 			jumpTimer--;
-			velocityY-=2; 
+			velocityY-=MAX_VELOCITY/4; 
 		}
 		movement[Level.UP] = true;
 	}
@@ -184,7 +184,7 @@ public class Player extends GameObject implements Character {
 	 * @param p The other <code>Player</code>
 	 * @return true if the other player hits this player
 	 */
-	public boolean collide(int x, int y) {
+	public boolean collide(int x, int y, int r) {
 		/*int a, dx, dy;
 		a = (p.radius+this.radius) * (p.radius+this.radius);
 		dx = this.centerX - p.centerX;
@@ -197,40 +197,37 @@ public class Player extends GameObject implements Character {
 		} else
 			return false;
 		*/
-		Player p = new Player();
-		p.setParam("x", ""+x);
-		p.setParam("y", ""+y);
 		
-		int leftBound = p.getLeftBound();
-		int rightBound = p.getRightBound();
-		int topBound = p.getTopBound();
-		int bottomBound = p.getBottomBound();
+		int leftBound = x - r;
+		int smallLeftBound = x - r/2;
+		int rightBound = x + r;
+		int smallRightBound = x  + r/2;
+		int topBound = y - r;
+		int smallTopBound = y - r/2;
+		int bottomBound = y + r;
+		int smallBottomBound = y + r/2;
 	    
 		boolean collided = false;   
 	   
-		if((p.getSmallLeftBound() <= this.getRightBound()) && (p.getSmallRightBound() >= this.getLeftBound())) { // we're in the x
+		if((smallLeftBound <= this.getRightBound()) && (smallRightBound >= this.getLeftBound())) { // we're in the x
 			if((bottomBound >= this.getTopBound()) && topBound < this.getTopBound()) {
 				collided = true;
-				//p.collideBottom(this.getTopBound());
-				this.collideTop(p.getBottomBound());
+				this.collideTop(bottomBound);
 			}
 			else if((topBound <= this.getBottomBound()) && bottomBound > this.getBottomBound()) {
 				collided = true;
-				//p.collideTop(this.getBottomBound());
-				this.collideBottom(p.getTopBound());
+				this.collideBottom(topBound);
 			}
 		}
 	    
-		if((p.getSmallTopBound() <= this.getBottomBound()) && (p.getSmallBottomBound() >= this.getTopBound())) { // we're in the y
+		if((smallTopBound <= this.getBottomBound()) && (smallBottomBound >= this.getTopBound())) { // we're in the y
 			if((rightBound >= this.getLeftBound()) && leftBound < this.getLeftBound()) {
 				collided = true;
-				//p.collideRight(this.getLeftBound());
-				this.collideLeft(p.getRightBound());
+				this.collideLeft(rightBound);
 			}
 			else if((leftBound <= this.getRightBound()) && rightBound > this.getRightBound()) {
 				collided = true;
-				//p.collideLeft(this.getRightBound());
-				this.collideRight(p.getLeftBound());
+				this.collideRight(leftBound);
 			}
 		}
 		 
@@ -306,7 +303,7 @@ public class Player extends GameObject implements Character {
 	public void draw() {
 		if(spawn != null)
 			spawn.draw();
-		EventManager.getInstance().sendEvent("draw",new EventData("player",this.color, this.centerX, this.centerY,this.radius*2,this.radius*2));
+		this.eventManager.sendEvent("draw",new EventData("player",this.color, this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
 	private EventManager eventManager;
@@ -327,4 +324,5 @@ public class Player extends GameObject implements Character {
 	private final byte RIGHT = 0;
 	private final byte LEFT = 1;
 	private final short MAX_JUMP = 8;
+	private final short MAX_VELOCITY = 8;
 }
