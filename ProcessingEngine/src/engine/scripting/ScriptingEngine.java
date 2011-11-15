@@ -1,5 +1,6 @@
 package engine.scripting;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,17 +11,44 @@ import javax.script.*;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class ScriptingEngine implements Invocable {
+public class ScriptingEngine {
 
+	/**
+	 * Default Constructor
+	 */
 	private ScriptingEngine() {
 		this.manager = new ScriptEngineManager();
 		this.jsEngine = this.manager.getEngineByMimeType("text/javascript");
+		
+		File scriptsDir = new File("scripts");
+		parseScriptsDir(scriptsDir);
+		
+		this.invocableEngine = (Invocable) this.jsEngine;
 	}
 	
+	/**
+	 * Fetch the instance of this Singleton class
+	 * @return
+	 */
 	public static ScriptingEngine getInstance() {
 		if(instance == null)
 			instance = new ScriptingEngine();
 		return instance;
+	}
+	
+	/**
+	 * Recursive method for going through a directory tree and loading any javascript files into the ScriptEngine
+	 * @param dir
+	 */
+	private void parseScriptsDir(File dir) {
+		if(dir.isDirectory()) {
+			for(File file : dir.listFiles()) {
+				if(file.isFile())
+					this.evalScriptFile(file.getAbsolutePath());
+				else if(file.isDirectory())
+					this.parseScriptsDir(file);
+			}
+		}
 	}
 	
 	public void evalScriptFile(String filename) {
@@ -43,6 +71,10 @@ public class ScriptingEngine implements Invocable {
 		}
 	}
 	
+	/**
+	 * Evaluates a <code>String</code> containing JavaScript
+	 * @param script Body of the script
+	 */
 	public void evalScriptText(String script) {
 		try {
 			this.jsEngine.eval(script);
@@ -50,34 +82,19 @@ public class ScriptingEngine implements Invocable {
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
-	public <T> T getInterface(Class<T> clasz) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public <T> T getInterface(Object thiz, Class<T> clasz) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Object invokeFunction(String name, Object... args)
 			throws ScriptException, NoSuchMethodException {
-		Invocable ie = (Invocable)this.jsEngine;
-		return ie.invokeFunction(name, args);
+		return this.invocableEngine.invokeFunction(name, args);
 	}
 
-	@Override
 	public Object invokeMethod(Object thiz, String name, Object... args)
 			throws ScriptException, NoSuchMethodException {
-		Invocable ie = (Invocable)this.jsEngine;
-		return ie.invokeMethod(thiz, name, args);
+		return this.invocableEngine.invokeMethod(thiz, name, args);
 	}
 	private ScriptEngineManager manager;
 	private ScriptEngine jsEngine;
+	private Invocable invocableEngine;
 	
 	private static ScriptingEngine instance = null;
 	
@@ -85,9 +102,6 @@ public class ScriptingEngine implements Invocable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String s = "print('hello, world')";
-		ScriptingEngine.getInstance().evalScriptText(s);
-		ScriptingEngine.getInstance().evalScriptFile("scripts/test.js");
 		try {
 			ScriptingEngine.getInstance().invokeFunction("hello");
 		} catch (NoSuchMethodException e) {
