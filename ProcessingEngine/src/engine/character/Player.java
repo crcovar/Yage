@@ -1,10 +1,13 @@
 package engine.character;
 
 
+import javax.script.ScriptException;
+
 import engine.GameObject;
 import engine.Level;
 import engine.events.EventData;
 import engine.events.EventManager;
+import engine.scripting.ScriptingEngine;
 import engine.tileobject.SpawnPoint;
 
 /**
@@ -89,6 +92,30 @@ public class Player extends GameObject implements Character {
 	public int getY() { return this.centerY; }
 	public int getRadius() { return this.radius; }
 	public String getName() { return this.name; }
+	public short getVelocityX() { return this.velocityX; }
+	public short getVelocityY() { return this.velocityY; }
+	
+	public void setVelocityX(short vx) {
+		if(vx >=0 && vx <= MAX_VELOCITY)
+			this.velocityX = vx;
+		else if(vx < 0 && vx >= -MAX_VELOCITY)
+			this.velocityX = vx;
+		else if(vx > MAX_VELOCITY)
+			this.velocityX = MAX_VELOCITY;
+		else
+			this.velocityX = -MAX_VELOCITY;
+	}
+	
+	public void setVelocityY(short vy) {
+		if(vy >=0 && vy <= MAX_VELOCITY)
+			this.velocityY = vy;
+		else if(vy < 0 && vy >= -MAX_VELOCITY)
+			this.velocityY = vy;
+		else if(vy > MAX_VELOCITY)
+			this.velocityY = MAX_VELOCITY;
+		else
+			this.velocityY = -MAX_VELOCITY;
+	}
 	
 	/**
 	 * Set the player's current spawn point
@@ -152,7 +179,16 @@ public class Player extends GameObject implements Character {
 	 * Push the player down, due to gravity.
 	 */
 	public void gravity() {
-		if(velocityY < MAX_VELOCITY) velocityY++;
+		//if(velocityY < MAX_VELOCITY) velocityY++;
+		try {
+			ScriptingEngine.getInstance().invokeFunction("gravity", this);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -323,6 +359,7 @@ public class Player extends GameObject implements Character {
 	
 	private final byte RIGHT = 0;
 	private final byte LEFT = 1;
-	private final short MAX_JUMP = 8;
-	private final short MAX_VELOCITY = 8;
+	
+	public final short MAX_JUMP = 8;
+	public final short MAX_VELOCITY = 8;
 }
