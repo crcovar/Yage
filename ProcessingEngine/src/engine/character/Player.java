@@ -7,8 +7,8 @@ import engine.GameObject;
 import engine.Level;
 import engine.events.EventData;
 import engine.events.EventManager;
-import engine.scripting.ScriptingEngine;
 import engine.tileobject.SpawnPoint;
+import engine.utils.ScriptingEngine;
 
 /**
  * @author Charles Covar (covar1@gmail.com)

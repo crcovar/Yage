@@ -1,4 +1,4 @@
-package engine.scripting;
+package engine.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
