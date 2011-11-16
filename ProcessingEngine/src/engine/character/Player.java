@@ -95,6 +95,10 @@ public class Player extends GameObject implements Character {
 	public short getVelocityX() { return this.velocityX; }
 	public short getVelocityY() { return this.velocityY; }
 	
+	/**
+	 * Sets the value of the velocity along the X axis
+	 * @param vx velocity to set, Must fall within range of <code>MAX_VELOCITY</code>
+	 */
 	public void setVelocityX(short vx) {
 		if(vx < -MAX_VELOCITY)
 			this.velocityX = -MAX_VELOCITY;
@@ -104,6 +108,10 @@ public class Player extends GameObject implements Character {
 			this.velocityX = vx;
 	}
 	
+	/**
+	 * Sets the value of the velocity along the Y axis
+	 * @param vy velocity to set, Must fall within range of <code>MAX_VELOCITY</code>
+	 */
 	public void setVelocityY(short vy) {
 		if(vy < -MAX_VELOCITY)
 			this.velocityY = -MAX_VELOCITY;
