@@ -83,14 +83,24 @@ public class ScriptingEngine {
 		}
 	}
 
-	public Object invokeFunction(String name, Object... args)
-			throws ScriptException, NoSuchMethodException {
-		return this.invocableEngine.invokeFunction(name, args);
+	public Object invokeFunction(String name, Object... args) {
+		try {
+			return this.invocableEngine.invokeFunction(name, args);
+		} catch (NoSuchMethodException e) {
+			return e.getStackTrace();
+		} catch (ScriptException e) {
+			return e.getStackTrace();
+		}
 	}
 
-	public Object invokeMethod(Object thiz, String name, Object... args)
-			throws ScriptException, NoSuchMethodException {
-		return this.invocableEngine.invokeMethod(thiz, name, args);
+	public Object invokeMethod(Object thiz, String name, Object... args) {
+		try {
+			return this.invocableEngine.invokeMethod(thiz, name, args);
+		} catch (NoSuchMethodException e) {
+			return e.getStackTrace();
+		} catch (ScriptException e) {
+			return e.getStackTrace();
+		}
 	}
 	private ScriptEngineManager manager;
 	private ScriptEngine jsEngine;
@@ -102,14 +112,6 @@ public class ScriptingEngine {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		try {
-			ScriptingEngine.getInstance().invokeFunction("hello");
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ScriptingEngine.getInstance().invokeFunction("hello");
 	}
 }

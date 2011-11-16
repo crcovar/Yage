@@ -96,25 +96,21 @@ public class Player extends GameObject implements Character {
 	public short getVelocityY() { return this.velocityY; }
 	
 	public void setVelocityX(short vx) {
-		if(vx >=0 && vx <= MAX_VELOCITY)
-			this.velocityX = vx;
-		else if(vx < 0 && vx >= -MAX_VELOCITY)
-			this.velocityX = vx;
+		if(vx < -MAX_VELOCITY)
+			this.velocityX = -MAX_VELOCITY;
 		else if(vx > MAX_VELOCITY)
 			this.velocityX = MAX_VELOCITY;
 		else
-			this.velocityX = -MAX_VELOCITY;
+			this.velocityX = vx;
 	}
 	
 	public void setVelocityY(short vy) {
-		if(vy >=0 && vy <= MAX_VELOCITY)
-			this.velocityY = vy;
-		else if(vy < 0 && vy >= -MAX_VELOCITY)
-			this.velocityY = vy;
+		if(vy < -MAX_VELOCITY)
+			this.velocityY = -MAX_VELOCITY;
 		else if(vy > MAX_VELOCITY)
 			this.velocityY = MAX_VELOCITY;
 		else
-			this.velocityY = -MAX_VELOCITY;
+			this.velocityY = vy;
 	}
 	
 	/**
@@ -163,7 +159,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the left
 	 */
 	public void moveLeft() {
-		if(velocityX > -MAX_VELOCITY) velocityX--;
+		ScriptingEngine.getInstance().invokeFunction("moveLeft", this);
 		movement[Level.LEFT] = true;
 	}
 	
@@ -171,7 +167,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the right
 	 */
 	public void moveRight() {
-		if(velocityX < MAX_VELOCITY) velocityX++;
+		ScriptingEngine.getInstance().invokeFunction("moveRight", this);
 		movement[Level.RIGHT] = true;
 	}
 	
@@ -179,16 +175,7 @@ public class Player extends GameObject implements Character {
 	 * Push the player down, due to gravity.
 	 */
 	public void gravity() {
-		//if(velocityY < MAX_VELOCITY) velocityY++;
-		try {
-			ScriptingEngine.getInstance().invokeFunction("gravity", this);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ScriptingEngine.getInstance().invokeFunction("gravity", this);
 	}
 	
 	/**
@@ -203,7 +190,7 @@ public class Player extends GameObject implements Character {
 	}
 	
 	public void moveDown() {
-		gravity();
+		ScriptingEngine.getInstance().invokeFunction("moveDown", this);
 	}
 	
 	public int getTopBound() { return (centerY-this.radius); }
