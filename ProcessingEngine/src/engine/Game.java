@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import engine.character.Player;
-import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
 
