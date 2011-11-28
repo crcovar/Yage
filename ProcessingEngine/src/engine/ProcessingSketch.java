@@ -4,6 +4,7 @@ import engine.character.Player;
 import engine.events.*;
 import engine.menu.DirList;
 import engine.network.*;
+import engine.utils.ConfigManager;
 import engine.utils.Logger;
 import engine.utils.Recorder;
 import engine.utils.Renderer;
@@ -19,7 +20,8 @@ public class ProcessingSketch extends PApplet {
 	 * Sets the screen size, locks the framerate and initializes values.
 	 */
 	public void setup() {
-		size(640,480, P2D);  // screen size of 640x480 gives 40x30 tilemap
+		ConfigManager cm = ConfigManager.getInstance();
+		size(Integer.parseInt(cm.getOption("width")),Integer.parseInt(cm.getOption("height")), P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
 		this.eventManager = EventManager.getInstance();
