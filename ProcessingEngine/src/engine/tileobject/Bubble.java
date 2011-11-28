@@ -15,6 +15,9 @@ public class Bubble implements TileObject {
 	 * Default Constructor
 	 */
 	public Bubble() {
+		this.x = 0;
+		this.y = 0;
+		this.color = BubbleColors.RED;
 	}
 
 	/**
