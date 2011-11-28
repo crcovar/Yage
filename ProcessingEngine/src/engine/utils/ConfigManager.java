@@ -22,7 +22,7 @@ public class ConfigManager extends GameObject {
 		this.options = new HashMap<String,String>();
 		
 		try {
-			FileReader reader = new FileReader("test.config");
+			FileReader reader = new FileReader("engine.config");
 			BufferedReader in = new BufferedReader(reader);
 			
 			String line;
