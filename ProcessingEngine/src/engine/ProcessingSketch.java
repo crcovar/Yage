@@ -21,7 +21,18 @@ public class ProcessingSketch extends PApplet {
 	 */
 	public void setup() {
 		ConfigManager cm = ConfigManager.getInstance();
-		size(Integer.parseInt(cm.getOption("width")),Integer.parseInt(cm.getOption("height")), P2D);  // screen size of 640x480 gives 40x30 tilemap
+		String w = cm.getOption("width");
+		String h = cm.getOption("height");
+		
+		int width = 640;
+		int height = 480;
+		
+		if(w != null)
+			width = Integer.parseInt(w);
+		if(h != null)
+			height = Integer.parseInt(h);
+		
+		size(width, height, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
 		this.eventManager = EventManager.getInstance();
