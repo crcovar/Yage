@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.script.*;
 
+import engine.GameObject;
+
 /**
  * @author Charles Covar (covar1@gmail.com)
  *
@@ -102,16 +104,14 @@ public class ScriptingEngine {
 			return e.getStackTrace();
 		}
 	}
+	
+	public void addObject(String key, GameObject object) {
+		this.jsEngine.put(key, object);
+	}
+	
 	private ScriptEngineManager manager;
 	private ScriptEngine jsEngine;
 	private Invocable invocableEngine;
 	
 	private static ScriptingEngine instance = null;
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ScriptingEngine.getInstance().invokeFunction("hello");
-	}
 }

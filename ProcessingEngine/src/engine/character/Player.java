@@ -1,8 +1,6 @@
 package engine.character;
 
 
-import javax.script.ScriptException;
-
 import engine.GameObject;
 import engine.Level;
 import engine.events.EventData;
@@ -39,8 +37,7 @@ public class Player extends GameObject implements Character {
 	    this.color = (int) (this.gUId*System.currentTimeMillis());
 	    this.name = "";
 	    
-	    this.eventManager = EventManager.getInstance();
-	    
+	    this.eventManager = EventManager.getInstance();	    
 	}
 	
 	/**
@@ -55,6 +52,7 @@ public class Player extends GameObject implements Character {
 		
 		if(n.equals("name")) {
 			this.name = value;
+			ScriptingEngine.getInstance().addObject(this.name, this);
 			return true;
 		}
 		
@@ -119,6 +117,25 @@ public class Player extends GameObject implements Character {
 			this.velocityY = MAX_VELOCITY;
 		else
 			this.velocityY = vy;
+	}
+	
+	/**
+	 * Get the value of the jump timer
+	 * @return
+	 */
+	public short getJumpTimer() { return this.jumpTimer; }
+	
+	/**
+	 * Sets the value of the jump timer
+	 * @param v
+	 */
+	public void setJumpTimer(short v) {
+		if(v < 0)
+			this.jumpTimer = 0;
+		else if(v > MAX_JUMP)
+			this.jumpTimer = MAX_JUMP;
+		else
+			this.jumpTimer = v;
 	}
 	
 	/**
@@ -190,10 +207,7 @@ public class Player extends GameObject implements Character {
 	 * Move the player up provided they can still jump
 	 */
 	public void moveUp() {
-		if(velocityY > -MAX_VELOCITY && jumpTimer > 0) { 
-			jumpTimer--;
-			velocityY-=MAX_VELOCITY/4; 
-		}
+		ScriptingEngine.getInstance().invokeFunction("jump", this);
 		movement[Level.UP] = true;
 	}
 	
@@ -348,7 +362,7 @@ public class Player extends GameObject implements Character {
 	private int centerX;
 	private int centerY;
 	private short radius;
-	private short jumpTimer;
+	public short jumpTimer;
 	
 	private SpawnPoint spawn;
 	
