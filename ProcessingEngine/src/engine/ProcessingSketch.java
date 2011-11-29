@@ -37,7 +37,7 @@ public class ProcessingSketch extends PApplet {
 		
 		this.eventManager = EventManager.getInstance();
 		
-		this.name = "" + System.currentTimeMillis();
+		this.name = "Player" + System.currentTimeMillis();
 		
 		this.logger = new Logger();
 		this.recorder = new Recorder();

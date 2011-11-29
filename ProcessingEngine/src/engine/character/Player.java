@@ -6,6 +6,7 @@ import engine.Level;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.SpawnPoint;
+import engine.utils.ScriptingEngine;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -36,8 +37,7 @@ public class Player extends GameObject implements Character {
 	    this.color = (int) (this.gUId*System.currentTimeMillis());
 	    this.name = "";
 	    
-	    this.eventManager = EventManager.getInstance();
-	    
+	    this.eventManager = EventManager.getInstance();	    
 	}
 	
 	/**
@@ -52,6 +52,7 @@ public class Player extends GameObject implements Character {
 		
 		if(n.equals("name")) {
 			this.name = value;
+			ScriptingEngine.getInstance().addObject(this.name, this);
 			return true;
 		}
 		
@@ -89,6 +90,53 @@ public class Player extends GameObject implements Character {
 	public int getY() { return this.centerY; }
 	public int getRadius() { return this.radius; }
 	public String getName() { return this.name; }
+	public short getVelocityX() { return this.velocityX; }
+	public short getVelocityY() { return this.velocityY; }
+	
+	/**
+	 * Sets the value of the velocity along the X axis
+	 * @param vx velocity to set, Must fall within range of <code>MAX_VELOCITY</code>
+	 */
+	public void setVelocityX(short vx) {
+		if(vx < -MAX_VELOCITY)
+			this.velocityX = -MAX_VELOCITY;
+		else if(vx > MAX_VELOCITY)
+			this.velocityX = MAX_VELOCITY;
+		else
+			this.velocityX = vx;
+	}
+	
+	/**
+	 * Sets the value of the velocity along the Y axis
+	 * @param vy velocity to set, Must fall within range of <code>MAX_VELOCITY</code>
+	 */
+	public void setVelocityY(short vy) {
+		if(vy < -MAX_VELOCITY)
+			this.velocityY = -MAX_VELOCITY;
+		else if(vy > MAX_VELOCITY)
+			this.velocityY = MAX_VELOCITY;
+		else
+			this.velocityY = vy;
+	}
+	
+	/**
+	 * Get the value of the jump timer
+	 * @return
+	 */
+	public short getJumpTimer() { return this.jumpTimer; }
+	
+	/**
+	 * Sets the value of the jump timer
+	 * @param v
+	 */
+	public void setJumpTimer(short v) {
+		if(v < 0)
+			this.jumpTimer = 0;
+		else if(v > MAX_JUMP)
+			this.jumpTimer = MAX_JUMP;
+		else
+			this.jumpTimer = v;
+	}
 	
 	/**
 	 * Set the player's current spawn point
@@ -136,7 +184,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the left
 	 */
 	public void moveLeft() {
-		if(velocityX > -MAX_VELOCITY) velocityX--;
+		ScriptingEngine.getInstance().invokeFunction("moveLeft", this);
 		movement[Level.LEFT] = true;
 	}
 	
@@ -144,7 +192,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the right
 	 */
 	public void moveRight() {
-		if(velocityX < MAX_VELOCITY) velocityX++;
+		ScriptingEngine.getInstance().invokeFunction("moveRight", this);
 		movement[Level.RIGHT] = true;
 	}
 	
@@ -152,22 +200,19 @@ public class Player extends GameObject implements Character {
 	 * Push the player down, due to gravity.
 	 */
 	public void gravity() {
-		if(velocityY < MAX_VELOCITY) velocityY++;
+		ScriptingEngine.getInstance().invokeFunction("gravity", this);
 	}
 	
 	/**
 	 * Move the player up provided they can still jump
 	 */
 	public void moveUp() {
-		if(velocityY > -MAX_VELOCITY && jumpTimer > 0) { 
-			jumpTimer--;
-			velocityY-=MAX_VELOCITY/4; 
-		}
+		ScriptingEngine.getInstance().invokeFunction("jump", this);
 		movement[Level.UP] = true;
 	}
 	
 	public void moveDown() {
-		gravity();
+		ScriptingEngine.getInstance().invokeFunction("moveDown", this);
 	}
 	
 	public int getTopBound() { return (centerY-this.radius); }
@@ -317,12 +362,13 @@ public class Player extends GameObject implements Character {
 	private int centerX;
 	private int centerY;
 	private short radius;
-	private short jumpTimer;
+	public short jumpTimer;
 	
 	private SpawnPoint spawn;
 	
 	private final byte RIGHT = 0;
 	private final byte LEFT = 1;
-	private final short MAX_JUMP = 8;
-	private final short MAX_VELOCITY = 8;
+	
+	public final short MAX_JUMP = 8;
+	public final short MAX_VELOCITY = 8;
 }
