@@ -111,6 +111,8 @@ public class Renderer extends GameObject {
 			tileIndex = 2;
 		} else if (s.equals("victoryzone")) {
 			tileIndex = 3;
+		} else if (s.equals("bubbledispenser")) {
+			tileIndex = 4;
 		} else
 			return false;
 		

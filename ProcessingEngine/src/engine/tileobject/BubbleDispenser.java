@@ -5,6 +5,8 @@ package engine.tileobject;
 
 import engine.character.Bubble;
 import engine.character.Player;
+import engine.events.EventData;
+import engine.events.EventManager;
 
 /**
  * @author Covar
@@ -27,6 +29,7 @@ public class BubbleDispenser implements TileObject {
 
 	@Override
 	public void draw() {
+		EventManager.getInstance().sendEvent("draw", new EventData("BubbleDispenser",this.x,this.y,this.t_width,this.t_height));
 	}
 
 	@Override
