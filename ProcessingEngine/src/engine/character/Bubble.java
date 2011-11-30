@@ -1,10 +1,12 @@
 package engine.character;
 
+import engine.Level;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.SpawnPoint;
 import engine.tileobject.TileObject;
 import engine.utils.BubbleState;
+import engine.utils.ScriptingEngine;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -18,6 +20,9 @@ public class Bubble implements Character {
 	public Bubble() {
 		this.x = 0;
 		this.y = 0;
+	    this.velocityX = 0;
+	    this.velocityY = 0;
+	    this.radius = 8;
 		this.color = BubbleState.RED;
 	}
 
@@ -32,11 +37,37 @@ public class Bubble implements Character {
 	}
 
 	@Override
-	public int getRadius() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getRadius() { return this.radius; }
 
+	public int getVelocityX() { return this.velocityX; }
+	public int getVelocityY() { return this.velocityY; }
+	
+	/**
+	 * Sets the value of the velocity along the X axis
+	 * @param vx velocity to set, Must fall within range of <code>MAX_VELOCITY</code>
+	 */
+	public void setVelocityX(short vx) {
+		if(vx < -MAX_VELOCITY)
+			this.velocityX = -MAX_VELOCITY;
+		else if(vx > MAX_VELOCITY)
+			this.velocityX = MAX_VELOCITY;
+		else
+			this.velocityX = vx;
+	}
+	
+	/**
+	 * Sets the value of the velocity along the Y axis
+	 * @param vy velocity to set, Must fall within range of <code>MAX_VELOCITY</code>
+	 */
+	public void setVelocityY(short vy) {
+		if(vy < -MAX_VELOCITY)
+			this.velocityY = -MAX_VELOCITY;
+		else if(vy > MAX_VELOCITY)
+			this.velocityY = MAX_VELOCITY;
+		else
+			this.velocityY = vy;
+	}
+	
 	@Override
 	public void setSpawn(SpawnPoint s) {
 		// TODO Auto-generated method stub
@@ -75,67 +106,30 @@ public class Bubble implements Character {
 
 	@Override
 	public void gravity() {
-		// TODO Auto-generated method stub
+		ScriptingEngine.getInstance().invokeFunction("float", this);
 		
 	}
 
-	@Override
-	public int getTopBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getSmallTopBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getBottomBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getSmallBottomBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getLeftBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getSmallLeftBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getRightBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getSmallRightBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	public int getTopBound() { return (y-this.radius); }
+	public int getSmallTopBound() { return y - this.radius/2; }
+	public int getBottomBound() { return (y+this.radius); }
+	public int getSmallBottomBound() { return y + this.radius/2; }
+	public int getLeftBound() { return x-this.radius; }
+	public int getSmallLeftBound() { return x - this.radius/2; }
+	public int getRightBound() { return x + this.radius; }
+	public int getSmallRightBound() { return x + this.radius/2; }
+	
 	@Override
 	public void collideLeft(int bound) {
-		// TODO Auto-generated method stub
+		x = bound+this.radius;
+		this.velocityX = -this.velocityX;
 		
 	}
 
 	@Override
 	public void collideRight(int bound) {
-		// TODO Auto-generated method stub
+		x = bound-this.radius;
+		this.velocityX = -this.velocityX;
 		
 	}
 
@@ -153,8 +147,17 @@ public class Bubble implements Character {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		gravity();
+		if(!movement[Level.LEFT] && velocityX < 0) velocityX++;
+	    if(!movement[Level.RIGHT] && velocityX > 0) velocityX--;
+	    if(!movement[Level.UP] && velocityY < 0) velocityY++;
+	    
+	    x += velocityX;
+	    y += velocityY;  
+	  
+	    movement[Level.LEFT] = false;
+	    movement[Level.RIGHT] = false;
+	    movement[Level.UP] = false;		
 	}
 	
 	@Override
@@ -170,5 +173,13 @@ public class Bubble implements Character {
 				   bottomRight;
 	
 	private int x, y;
+	private String name;
+	private int velocityX;
+	private int velocityY;
+	private boolean[] movement;
+	private int z;
+	private short radius;
+	
 	private BubbleState color;
+	public final short MAX_VELOCITY = 8;
 }

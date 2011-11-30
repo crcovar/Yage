@@ -66,28 +66,16 @@ public class BubbleDispenser implements TileObject {
 	}
 
 	@Override
-	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getX() { return this.x; }
 
 	@Override
-	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getY() { return this.y; }
 
 	@Override
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getWidth() {	return this.t_width; }
 
 	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getHeight() { return this.t_height; }
 
 	private int x;
 	private int y;

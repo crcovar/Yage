@@ -315,7 +315,6 @@ public class Player extends GameObject implements Character {
 	 * @param bound left side of the object hit
 	 */
 	public void collideRight(int bound) {
-
 		centerX = bound-this.radius;
 		velocityX = 0;
 	}
