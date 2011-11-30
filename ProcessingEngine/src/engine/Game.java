@@ -111,7 +111,7 @@ public class Game extends GameObject {
 			p.setParam("name", event.getMessage());
 			p.setParam("x", ""+event.getX());
 			p.setParam("y", ""+event.getY());
-			p.setSpawn(players.peek().getSpawn());
+			p.setSpawn(this.currentLevel.getSpawn());
 			this.players.add(p);
 			p.moveToSpawn();
 			return true;

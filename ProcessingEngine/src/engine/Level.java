@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
+import engine.tileobject.BubbleDispenser;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
 import engine.tileobject.SpawnPoint;
@@ -83,6 +84,8 @@ public class Level extends GameObject {
 						t = new VictoryZone();
 					else if(obj.equals("spawnpoint"))
 						t = new SpawnPoint();
+					else if(obj.equals("bubbledispenser"))
+						t = new BubbleDispenser();
 					else {
 						continue;
 					}
@@ -184,6 +187,14 @@ public class Level extends GameObject {
 			
 			break;	// leave the loop because you moved the player you're looking for
 		}
+	}
+	
+	/**
+	 * Return the spawnPoint for the level
+	 * @return
+	 */
+	public SpawnPoint getSpawn() {
+		return this.spawn;
 	}
 	
 	/**
