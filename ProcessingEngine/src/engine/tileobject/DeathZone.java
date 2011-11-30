@@ -16,6 +16,7 @@ public class DeathZone extends GameObject implements TileObject {
 		
 		this.x = -3;
 		this.y = 32;
+		this.z = 0;
 		this.t_width = 45;
 		this.t_height = 8;
 		this.draw = false;
@@ -45,6 +46,9 @@ public class DeathZone extends GameObject implements TileObject {
 			return true;
 		} else if(n.equals("y")) {
 			this.y = v;
+			return true;
+		} else if(n.equals("z")) {
+			this.z = v;
 			return true;
 		} else if (n.equals("width")) {
 			this.t_width = v;
@@ -113,6 +117,7 @@ public class DeathZone extends GameObject implements TileObject {
 	
 	private int x;
 	private int y;
+	private int z;
 	 
 	private int t_width;
 	private int t_height;

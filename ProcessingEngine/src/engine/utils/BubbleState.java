@@ -1,8 +1,10 @@
 package engine.utils;
 
-public enum BubbleColors {
+public enum BubbleState {
 	RED,
 	YELLOW,
 	GREEN,
-	BLUE
+	BLUE,
+	BLOCKED,
+	EMPTY
 }

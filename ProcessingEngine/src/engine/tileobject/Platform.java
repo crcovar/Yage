@@ -16,6 +16,7 @@ public class Platform extends GameObject implements TileObject {
 		
 		this.x=0;
 		this.y=29;
+		this.z=0;
 		this.t_width = 40;
 		this.t_height = 1;
 	}
@@ -35,6 +36,9 @@ public class Platform extends GameObject implements TileObject {
 			return true;
 		} else if(n.equals("y")) {
 			this.y = v;
+			return true;
+		} else if(n.equals("z")) {
+			this.z = v;
 			return true;
 		} else if(n.equals("width")) {
 			this.t_width = v;
@@ -100,6 +104,7 @@ public class Platform extends GameObject implements TileObject {
 	
 	private int x;
 	private int y;
+	private int z;
 	private int t_width;
 	private int t_height;
 }

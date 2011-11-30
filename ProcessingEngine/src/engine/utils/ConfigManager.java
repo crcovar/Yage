@@ -31,7 +31,10 @@ public class ConfigManager extends GameObject {
 					continue;
 				
 				String[] lineArray = line.split("=");
-				this.options.put(lineArray[0], lineArray[1]);
+				if(lineArray.length == 1)
+					this.options.put(lineArray[0], "");
+				else
+					this.options.put(lineArray[0], lineArray[1]);
 			}
 		} catch(IOException e) {
 			EventManager.getInstance().sendEvent("log", new EventData(e.getLocalizedMessage()));

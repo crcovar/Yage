@@ -16,6 +16,7 @@ public class VictoryZone extends GameObject implements TileObject {
 		
 		this.x = 0;
 		this.y = 0;
+		this.z = 0;
 		this.t_width=2;
 		this.t_height=2;
 	}
@@ -35,6 +36,9 @@ public class VictoryZone extends GameObject implements TileObject {
 			return true;
 		} else if(n.equals("y")) {
 			this.y = v;
+			return true;
+		} else if(n.equals("z")) {
+			this.z = v;
 			return true;
 		}
 		
@@ -94,6 +98,7 @@ public class VictoryZone extends GameObject implements TileObject {
 	
 	private int x;
 	private int y;
+	private int z;
 	  
 	private int t_width;
 	private int t_height;

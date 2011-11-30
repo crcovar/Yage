@@ -45,8 +45,10 @@ public class ProcessingSketch extends PApplet {
 		this.renderer.setEventFlags(true, false);
 		this.replay = null;
 		
-		player = new Player();
-		player.setParam("name", name);
+		if(cm.getOption("dedicated-server") == null) {
+			player = new Player();
+			player.setParam("name", name);
+		}
 		
 		this.server = new Server();
 	}

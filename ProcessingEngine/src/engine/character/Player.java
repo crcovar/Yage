@@ -34,6 +34,7 @@ public class Player extends GameObject implements Character {
 	    this.spawn = null;
 	    this.centerX = 16; //spawn.getX() + this.radius;
 	    this.centerY = 16; //spawn.getY() + this.radius;
+	    this.z = 0;
 	    this.color = (int) (this.gUId*System.currentTimeMillis());
 	    this.name = "";
 	    
@@ -361,6 +362,7 @@ public class Player extends GameObject implements Character {
 	private byte direction; // true if facing right
 	private int centerX;
 	private int centerY;
+	private int z;
 	private short radius;
 	public short jumpTimer;
 	

@@ -15,6 +15,7 @@ public class SpawnPoint extends GameObject implements TileObject {
 		
 		this.x = 0;
 		this.y = 0;
+		this.z = 0;
 	}
 	
 	public boolean setParam(String name, String value) {
@@ -32,6 +33,9 @@ public class SpawnPoint extends GameObject implements TileObject {
 			return true;
 		} else if(n.equals("y")) {
 			this.y = v;
+			return true;
+		} else if(n.equals("z")) {
+			this.z = v;
 			return true;
 		}
 		
@@ -56,7 +60,7 @@ public class SpawnPoint extends GameObject implements TileObject {
 		EventManager.getInstance().sendEvent("draw", new EventData("SpawnPoint", this.x, this.y, 1, 1));
 	}
 	
-	private int x, y;
+	private int x, y, z;
 	
 	private final int TILE_SIZE = 16;
 
