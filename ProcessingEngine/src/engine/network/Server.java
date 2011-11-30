@@ -7,27 +7,25 @@ import engine.GameObject;
 import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
+import engine.utils.ConfigManager;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
  */
 public class Server extends GameObject implements Runnable {
-	/**
-	 * Default Constructor. Sets default port number
-	 */
-	public Server() {
-		this(10040);
-	}
 	
 	/**
-	 * Constructor for non default port number
+	 * Default Constructor checks port number from the engine.config
 	 * @param port Port number for the server to listen on
 	 */
-	public Server(int port) {
+	public Server() {
 		super();
-		
+		int port = 10040;
 		this.serverSocket = null;
 		
+		String p = ConfigManager.getInstance().getOption("port");
+		if(p != null)
+			port = Integer.parseInt(p);
 		try {
 			this.serverSocket = new ServerSocket(port);
 			Thread t = new Thread(this);

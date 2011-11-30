@@ -42,7 +42,7 @@ public class Connection extends GameObject implements Runnable {
 		this();
 		
 		this.type = type;
-		
+
 		try {
 			this.socket = new Socket(host,port);
 			
