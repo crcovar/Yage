@@ -21,6 +21,26 @@ public class ProcessingSketch extends PApplet {
 	 */
 	public void setup() {
 		ConfigManager cm = ConfigManager.getInstance();
+		
+		this.eventManager = EventManager.getInstance();
+		
+		this.name = "Player" + System.currentTimeMillis();
+		
+		this.logger = new Logger();
+		this.recorder = new Recorder();
+		this.replay = null;
+		
+		if(cm.getOption("dedicated-server") == null) {
+			player = new Player();
+			player.setParam("name", name);
+		}
+
+
+		
+		this.server = new Server();
+		
+		this.nextLevelLock = false;
+		
 		String w = cm.getOption("width");
 		String h = cm.getOption("height");
 		
@@ -35,30 +55,14 @@ public class ProcessingSketch extends PApplet {
 		size(width, height, P2D);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
-		this.eventManager = EventManager.getInstance();
-		
-		this.name = "Player" + System.currentTimeMillis();
-		
-		this.logger = new Logger();
-		this.recorder = new Recorder();
 		this.renderer = new Renderer(this);
 		this.renderer.setEventFlags(true, false);
-		this.replay = null;
 		
-		if(cm.getOption("dedicated-server") == null) {
-			player = new Player();
-			player.setParam("name", name);
-		}
-
 		if(cm.getOption("game") != null) {
 			this.game = new Game(cm.getOption("game"), this.player);
 			this.currentLevel = game.nextLevel();
 			this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
 		}
-		
-		this.server = new Server();
-		
-		this.nextLevelLock = false;
 	}
 	
 	/**

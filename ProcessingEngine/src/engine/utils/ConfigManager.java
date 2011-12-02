@@ -21,8 +21,19 @@ public class ConfigManager extends GameObject {
 		
 		this.options = new HashMap<String,String>();
 		
+		this.loadConfig("engine.config");
+	}
+	
+	public static ConfigManager getInstance()
+	{
+		if(instance == null)
+			instance = new ConfigManager();
+		return instance;
+	}
+	
+	public void loadConfig(String configFilename) {
 		try {
-			FileReader reader = new FileReader("engine.config");
+			FileReader reader = new FileReader(configFilename);
 			BufferedReader in = new BufferedReader(reader);
 			
 			String line;
@@ -39,13 +50,6 @@ public class ConfigManager extends GameObject {
 		} catch(IOException e) {
 			EventManager.getInstance().sendEvent("log", new EventData(e.getLocalizedMessage()));
 		}
-	}
-	
-	public static ConfigManager getInstance()
-	{
-		if(instance == null)
-			instance = new ConfigManager();
-		return instance;
 	}
 	
 	public String getOption(String key) {
