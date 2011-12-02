@@ -12,7 +12,7 @@ import engine.utils.ScriptingEngine;
  * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class Bubble implements Character {
+public class Bubble implements Character, TileObject {
 	
 	/**
 	 * Default Constructor
@@ -38,6 +38,12 @@ public class Bubble implements Character {
 
 	@Override
 	public int getRadius() { return this.radius; }
+	
+	@Override
+	public int getWidth() { return 1; }
+
+	@Override
+	public int getHeight() { return 1; }
 
 	public int getVelocityX() { return this.velocityX; }
 	public int getVelocityY() { return this.velocityY; }
@@ -182,4 +188,21 @@ public class Bubble implements Character {
 	
 	private BubbleState color;
 	public final short MAX_VELOCITY = 8;
+	@Override
+	public boolean collide(Player p) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setParam(String name, String value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String printParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

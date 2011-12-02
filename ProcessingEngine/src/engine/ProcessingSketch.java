@@ -49,8 +49,16 @@ public class ProcessingSketch extends PApplet {
 			player = new Player();
 			player.setParam("name", name);
 		}
+
+		if(cm.getOption("game") != null) {
+			this.game = new Game(cm.getOption("game"), this.player);
+			this.currentLevel = game.nextLevel();
+			this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
+		}
 		
 		this.server = new Server();
+		
+		this.nextLevelLock = false;
 	}
 	
 	/**
@@ -122,6 +130,7 @@ public class ProcessingSketch extends PApplet {
 			DirList.getInstance().draw();			
 			break;
 		case GameObject.GAME_STATE_LEVEL:
+			this.nextLevelLock = false;
 			this.renderer.setEventFlags(true, true);
 			this.eventManager.setEventFlags(true, true);
 			if(currentLevel == null) {
@@ -169,14 +178,17 @@ public class ProcessingSketch extends PApplet {
 				this.replay.update();
 				this.replay.draw();
 			} else {
-				frameRate(30);
-				currentLevel = game.nextLevel();
-				if(currentLevel == null) {
-					this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
+				if(!this.nextLevelLock) {
+					frameRate(30);
+					currentLevel = game.nextLevel();
+					if(currentLevel == null) {
+						this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
+					}
+					else
+						this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
+					resetKeys();
+					this.nextLevelLock = true;
 				}
-				else
-					this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
-				resetKeys();
 			}
 			break;
 		case GameObject.GAME_STATE_END:
@@ -212,6 +224,7 @@ public class ProcessingSketch extends PApplet {
 	private Server server;
 	
 	private String name;
+	private boolean nextLevelLock;
 	
 	private boolean[] keys = new boolean[526];
 	
