@@ -72,7 +72,9 @@ public class Renderer extends GameObject {
 				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight(), event.getValue());
 				return true;
 			}
-			else
+			else if(event.getMessage().toLowerCase().equals("bubble")) {
+				this.drawBubble(event.getX(), event.getY(), event.getValue());
+			} else
 				return this.draw(event.getMessage(), event.getX(), event.getY(), event.getWidth(), event.getHeight());
 		} else if(name.equals("text") && event != null) {
 			this.text(event.getMessage(), event.getX(), event.getY());
@@ -95,7 +97,28 @@ public class Renderer extends GameObject {
 		Color color = new Color(c);
 		parent.stroke(parent.color(color.getRed(),color.getGreen(),color.getBlue()));
 		parent.fill(parent.color(color.getRed(),color.getGreen(),color.getBlue()));
+		parent.ellipseMode(PConstants.CENTER);
 		parent.ellipse(x,y,w,h);
+	}
+	
+	private void drawBubble(int x, int y, int c) {
+		if(c == BubbleState.RED.ordinal()) {
+			parent.stroke(parent.color(255,0,0));
+			parent.fill(parent.color(255,0,0));
+		} else if(c == BubbleState.BLUE.ordinal()) {
+			parent.stroke(parent.color(0,0,255));
+			parent.fill(parent.color(0,0,255));
+		} else if(c == BubbleState.GREEN.ordinal()) {
+			parent.stroke(parent.color(0,255,0));
+			parent.fill(parent.color(0,255,0));
+		} else if(c == BubbleState.YELLOW.ordinal()) {
+			parent.stroke(parent.color(255,255,0));
+			parent.fill(parent.color(255,255,0));
+		} else
+			return;
+		
+		//parent.ellipseMode(PConstants.CORNER);
+		parent.ellipse(x, y, (TileObject.TILE_SIZE*2), (TileObject.TILE_SIZE*2));
 	}
 	
 	private boolean draw(String tileObject, int x, int y, int w, int h) {

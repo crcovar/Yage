@@ -4,7 +4,5 @@ public enum BubbleState {
 	RED,
 	YELLOW,
 	GREEN,
-	BLUE,
-	BLOCKED,
-	EMPTY
+	BLUE
 }

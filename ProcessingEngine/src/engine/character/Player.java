@@ -351,18 +351,20 @@ public class Player extends GameObject implements Character {
 		this.eventManager.sendEvent("draw",new EventData("player",this.color, this.centerX, this.centerY,this.radius*2,this.radius*2));
 	}
 	
+	protected String name;
+	protected int centerX;
+	protected int centerY;
+	protected int z;
+	protected short radius;
+	protected short velocityX;
+	protected short velocityY;
+	protected boolean[] movement;
+	private int color;
+	
 	private EventManager eventManager;
 	
-	private String name;
-	private short velocityX;
-	private short velocityY;
-	private int color;
-	private boolean[] movement;
 	private byte direction; // true if facing right
-	private int centerX;
-	private int centerY;
-	private int z;
-	private short radius;
+
 	public short jumpTimer;
 	
 	private SpawnPoint spawn;

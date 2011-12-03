@@ -7,6 +7,7 @@ import engine.character.Bubble;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
+import engine.utils.BubbleState;
 
 /**
  * @author Covar
@@ -19,6 +20,9 @@ public class BubbleDispenser implements TileObject {
 		this.y = 0;
 		this.t_height = 1;
 		this.t_width = 40;
+		
+		this.atBat = BubbleState.values()[(int) (Math.random()*4)];
+		this.onDeck = BubbleState.values()[(int) (Math.random()*4)];
 	}
 	
 	
@@ -30,6 +34,14 @@ public class BubbleDispenser implements TileObject {
 	@Override
 	public void draw() {
 		EventManager.getInstance().sendEvent("draw", new EventData("BubbleDispenser",this.x,this.y,this.t_width,this.t_height));
+		
+		EventData atBatData = new EventData("Bubble", this.x*TileObject.TILE_SIZE + TileObject.TILE_SIZE, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE*2);
+		atBatData.setParam("value","" + atBat.ordinal());
+		EventManager.getInstance().sendEvent("draw", atBatData);
+		
+		EventData onDeckData = new EventData("Bubble", this.x*TileObject.TILE_SIZE + TileObject.TILE_SIZE*3, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE*2);
+		atBatData.setParam("value","" + onDeck.ordinal());
+		EventManager.getInstance().sendEvent("draw", onDeckData);
 	}
 
 	@Override
@@ -84,4 +96,7 @@ public class BubbleDispenser implements TileObject {
 	private int y;
 	private int t_width;
 	private int t_height;
+	
+	private BubbleState atBat;
+	private BubbleState onDeck;
 }

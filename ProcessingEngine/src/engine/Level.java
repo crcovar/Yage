@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
 
+import engine.character.Bubble;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
@@ -86,6 +87,8 @@ public class Level extends GameObject {
 						t = new SpawnPoint();
 					else if(obj.equals("bubbledispenser"))
 						t = new BubbleDispenser();
+					else if(obj.equals("bubble"))
+						t = new Bubble();
 					else {
 						continue;
 					}
@@ -233,6 +236,20 @@ public class Level extends GameObject {
 			for(TileObject t : tiles) {
 				if(t.collide(p) && t instanceof VictoryZone) {
 					this.victory = true;
+				}
+			}
+		}
+		
+		for(TileObject t : tiles) {
+			if(t instanceof Bubble) {
+				((Bubble) t).update();
+				
+				for(TileObject t2 : tiles) {
+					if(!t2.equals(t)) {
+						if(t2.collide((Bubble) t) && t2 instanceof DeathZone) {
+							this.victory = true;
+						}
+					}
 				}
 			}
 		}
