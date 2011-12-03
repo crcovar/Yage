@@ -208,7 +208,7 @@ public class ProcessingSketch extends PApplet {
 			frameRate(30);
 			this.renderer.setEventFlags(true, false);
 			this.eventManager.setEventFlags(true, false);
-			this.eventManager.sendEvent("text", new EventData("YOU LOSE", 302, 235));
+			this.eventManager.sendEvent("text", new EventData("GAME OVER", 302, 235));
 			break;
 		}
 
