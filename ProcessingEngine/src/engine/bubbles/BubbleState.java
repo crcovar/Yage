@@ -1,4 +1,4 @@
-package engine.utils;
+package engine.bubbles;
 
 public enum BubbleState {
 	RED,

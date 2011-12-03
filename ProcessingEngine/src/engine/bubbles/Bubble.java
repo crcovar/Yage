@@ -1,11 +1,11 @@
-package engine.character;
+package engine.bubbles;
 
 import engine.Level;
+import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.SpawnPoint;
 import engine.tileobject.TileObject;
-import engine.utils.BubbleState;
 import engine.utils.ScriptingEngine;
 
 /**
@@ -83,10 +83,15 @@ public class Bubble extends Player implements TileObject {
 		this.velocityX = (short) -this.velocityX;
 		
 	}
+	
+	@Override
+	public void death() {
+		return;
+	}
 
 	@Override
 	public void update() {
-		//gravity();
+		gravity();
 		if(!movement[Level.LEFT] && velocityX < 0) velocityX++;
 	    if(!movement[Level.RIGHT] && velocityX > 0) velocityX--;
 	    if(!movement[Level.UP] && velocityY < 0) velocityY++;

@@ -8,6 +8,15 @@ import engine.events.EventData;
  * @author Charles Covar (covar1@gmail.com)
  */
 public abstract class GameObject {
+	
+	public static final short GAME_STATE_MENU = 0;
+	public static final short GAME_STATE_LEVEL = 1;
+	public static final short GAME_STATE_REPLAY = 2;
+	public static final short GAME_STATE_WIN = 3;
+	public static final short GAME_STATE_LOSE = 4;
+	
+	public static long gameTime = Long.MIN_VALUE;
+	
 	/**
 	 * Default Constructor, creates a GUID for the object and increments the counter
 	 */
@@ -92,13 +101,8 @@ public abstract class GameObject {
 	protected int gUId;
 	protected boolean localEvents;
 	protected boolean remoteEvents;
-	
-	public static long gameTime = Long.MIN_VALUE;
+
 	private static int numGameObjects = 0;
 	
 	private static short gameState = 0;
-	public static final short GAME_STATE_MENU = 0;
-	public static final short GAME_STATE_LEVEL = 1;
-	public static final short GAME_STATE_REPLAY = 2;
-	public static final short GAME_STATE_END = 3;
 }

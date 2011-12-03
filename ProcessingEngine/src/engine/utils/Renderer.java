@@ -7,6 +7,7 @@ import processing.core.PConstants;
 import processing.core.PImage;
 
 import engine.GameObject;
+import engine.bubbles.BubbleState;
 import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;

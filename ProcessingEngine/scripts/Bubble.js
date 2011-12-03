@@ -1,5 +1,5 @@
 function inverseGravity(bubble) {
-	bubble.setVelocityY(bubble.getVelocityY()-1);
+	bubble.setVelocityY(bubble.getVelocityY()+1);
 }
 
 function holdY(bubble, bound) {

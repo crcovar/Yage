@@ -101,7 +101,7 @@ public class ProcessingSketch extends PApplet {
 				this.currentLevel = game.nextLevel();
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
 				resetKeys();
-			} else if(GameObject.getGameState() == GameObject.GAME_STATE_END && checkKey(' ')) {
+			} else if((GameObject.getGameState() == GameObject.GAME_STATE_WIN || GameObject.getGameState() == GameObject.GAME_STATE_LOSE) && checkKey(' ')) {
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_MENU));
 				resetKeys();
 			}
@@ -138,12 +138,16 @@ public class ProcessingSketch extends PApplet {
 			this.renderer.setEventFlags(true, true);
 			this.eventManager.setEventFlags(true, true);
 			if(currentLevel == null) {
-				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
+				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_WIN));
 				resetKeys();
 				break;
 			}
 			if(currentLevel.reachedVictory()) {
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_REPLAY));
+				resetKeys();
+				break;
+			} else if(currentLevel.reachedDefeat()) {
+				this.eventManager.sendEvent("gamestatechange", new EventData("", GameObject.GAME_STATE_LOSE));
 				resetKeys();
 				break;
 			}
@@ -186,7 +190,7 @@ public class ProcessingSketch extends PApplet {
 					frameRate(30);
 					currentLevel = game.nextLevel();
 					if(currentLevel == null) {
-						this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_END));
+						this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_WIN));
 					}
 					else
 						this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_LEVEL));
@@ -195,10 +199,16 @@ public class ProcessingSketch extends PApplet {
 				}
 			}
 			break;
-		case GameObject.GAME_STATE_END:
+		case GameObject.GAME_STATE_WIN:
 			this.renderer.setEventFlags(true, false);
 			this.eventManager.setEventFlags(true, false);
 			this.eventManager.sendEvent("text", new EventData("YOU WIN",302,235));
+			break;
+		case GameObject.GAME_STATE_LOSE:
+			frameRate(30);
+			this.renderer.setEventFlags(true, false);
+			this.eventManager.setEventFlags(true, false);
+			this.eventManager.sendEvent("text", new EventData("YOU LOSE", 302, 235));
 			break;
 		}
 

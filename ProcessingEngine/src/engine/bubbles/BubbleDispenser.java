@@ -1,13 +1,12 @@
 /**
  * 
  */
-package engine.tileobject;
+package engine.bubbles;
 
-import engine.character.Bubble;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
-import engine.utils.BubbleState;
+import engine.tileobject.TileObject;
 
 /**
  * @author Covar

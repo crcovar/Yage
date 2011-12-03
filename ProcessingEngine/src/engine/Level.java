@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
 
-import engine.character.Bubble;
+import engine.bubbles.Bubble;
+import engine.bubbles.BubbleDispenser;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
-import engine.tileobject.BubbleDispenser;
 import engine.tileobject.DeathZone;
 import engine.tileobject.Platform;
 import engine.tileobject.SpawnPoint;
@@ -30,6 +30,7 @@ public class Level extends GameObject {
 		super();
 		
 		this.players = players;
+		this.bubbles = new LinkedList<Bubble>();
 		this.tiles = new LinkedList<TileObject>();
 		
 		this.eventManager = EventManager.getInstance();
@@ -102,6 +103,8 @@ public class Level extends GameObject {
 					
 					if(t instanceof SpawnPoint)
 						this.spawn = (SpawnPoint) t;
+					else if(t instanceof Bubble)
+						this.bubbles.add((Bubble) t);
 					else
 						this.tiles.add(t);
 				}
@@ -128,6 +131,7 @@ public class Level extends GameObject {
 			p.moveToSpawn();
 		}
 	   this.victory = false;
+	   this.defeat = false;
 	   
 	   // record the platforms (since they only need to record once)
 /*	   for(TileObject t : this.tiles) {
@@ -240,16 +244,12 @@ public class Level extends GameObject {
 			}
 		}
 		
-		for(TileObject t : tiles) {
-			if(t instanceof Bubble) {
-				((Bubble) t).update();
-				
-				for(TileObject t2 : tiles) {
-					if(!t2.equals(t)) {
-						if(t2.collide((Bubble) t) && t2 instanceof DeathZone) {
-							this.victory = true;
-						}
-					}
+		for(Bubble b : bubbles) {
+			b.update();
+			
+			for(TileObject t : tiles) {
+				if(t.collide(b) && t instanceof DeathZone) {
+					this.defeat = true;
 				}
 			}
 		}
@@ -264,6 +264,14 @@ public class Level extends GameObject {
 	}
 	
 	/**
+	 * Checks to see if the player loses
+	 * @return true if a <code>Bubble</code> reaches a <code>DeathZone</code>
+	 */
+	public boolean reachedDefeat() {
+		return this.defeat;
+	}
+	
+	/**
 	 * Draw every object in the level. First any <code>TileObject</code> then the player
 	 */
 	public void draw() {
@@ -272,6 +280,9 @@ public class Level extends GameObject {
 		}
 		for(Player p : this.players) {
 			p.draw();
+		}
+		for(Bubble b : this.bubbles) {
+			b.draw();
 		}
 	}
 	
@@ -282,11 +293,13 @@ public class Level extends GameObject {
 	
 	private SpawnPoint spawn;
 	private LinkedList<Player> players;
+	private LinkedList<Bubble> bubbles;
 	private LinkedList<TileObject> tiles;
 	
 	private EventManager eventManager;
 	
 	private String script;
 	private boolean victory;
+	private boolean defeat;
 
 }
