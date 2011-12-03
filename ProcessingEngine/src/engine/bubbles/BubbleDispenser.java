@@ -3,16 +3,17 @@
  */
 package engine.bubbles;
 
+import engine.GameObject;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.TileObject;
 
 /**
- * @author Covar
+ * @author Charles Covar (covar1@gmail.com)
  *
  */
-public class BubbleDispenser implements TileObject {
+public class BubbleDispenser extends GameObject implements TileObject {
 
 	public BubbleDispenser() {
 		this.x = 0;
@@ -24,6 +25,18 @@ public class BubbleDispenser implements TileObject {
 		this.onDeck = BubbleState.values()[(int) (Math.random()*4)];
 	}
 	
+	public Bubble launchBubble() {
+		Bubble b = new Bubble();
+		b.setX(this.x*TileObject.TILE_SIZE +TileObject.TILE_SIZE);
+		b.setY(this.y*TileObject.TILE_SIZE - TileObject.TILE_SIZE);
+		b.setVelocityY((short) -(b.MAX_VELOCITY / 2));
+		b.setParam("flag", "" + atBat.ordinal());
+		
+		atBat = onDeck;
+		onDeck = BubbleState.values()[(int) (Math.random()*4)];
+		
+		return b;
+	}
 	
 	@Override
 	public boolean collide(Player p) {
@@ -39,7 +52,7 @@ public class BubbleDispenser implements TileObject {
 		EventManager.getInstance().sendEvent("draw", atBatData);
 		
 		EventData onDeckData = new EventData("Bubble", this.x*TileObject.TILE_SIZE + TileObject.TILE_SIZE*3, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE*2);
-		atBatData.setParam("value","" + onDeck.ordinal());
+		onDeckData.setParam("value","" + onDeck.ordinal());
 		EventManager.getInstance().sendEvent("draw", onDeckData);
 	}
 

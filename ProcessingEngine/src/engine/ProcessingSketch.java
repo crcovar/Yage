@@ -104,7 +104,10 @@ public class ProcessingSketch extends PApplet {
 			} else if((GameObject.getGameState() == GameObject.GAME_STATE_WIN || GameObject.getGameState() == GameObject.GAME_STATE_LOSE) && checkKey(' ')) {
 				this.eventManager.sendEvent("gamestatechange", new EventData("",GameObject.GAME_STATE_MENU));
 				resetKeys();
-			}
+			} 
+			
+			if(GameObject.getGameState() == GameObject.GAME_STATE_LEVEL && checkKey(' '))
+				this.eventManager.sendEvent("bubblelaunch", new EventData(""));
 		}
 		if(keyCode == 's' || keyCode == 'S' && GameObject.getGameState() == GameObject.GAME_STATE_MENU) {
 			DirList.getInstance().nextMenuItem();

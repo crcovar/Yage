@@ -21,6 +21,14 @@ import engine.tileobject.VictoryZone;
  * @author Charles Covar (covar1@gmail.com)
  */
 public class Level extends GameObject {
+	
+	public static final short UP = 0;
+	public static final short DOWN = 1;
+	public static final short LEFT = 2;
+	public static final short RIGHT = 3;
+	
+	public static final int DROP_TIMER = 450;	// approximately 1 drop every fifteen seconds
+	
 	/**
 	 * Reads in a level from a file and builds it out.
 	 * @param player
@@ -31,6 +39,8 @@ public class Level extends GameObject {
 		
 		this.players = players;
 		this.bubbles = new LinkedList<Bubble>();
+		Bubble.dropTimer = Level.DROP_TIMER;
+		this.drops = 1;
 		this.tiles = new LinkedList<TileObject>();
 		
 		this.eventManager = EventManager.getInstance();
@@ -38,6 +48,7 @@ public class Level extends GameObject {
 		this.eventManager.registerListener(this, "move");
 		this.eventManager.registerListener(this,"buildlevel");
 		this.eventManager.registerListener(this, "syncplayer");
+		this.eventManager.registerListener(this,"bubblelaunch");
 		
 		this.script = "";
 		
@@ -225,6 +236,15 @@ public class Level extends GameObject {
 				p.collide(event.getX(), event.getY(), event.getWidth());	
 			}
 		}
+		if(name.equals("bubblelaunch")) {
+			for(TileObject t : this.tiles) {
+				if(!(t instanceof BubbleDispenser))
+					continue;
+				this.bubbles.add(((BubbleDispenser) t).launchBubble());
+				break;
+			}
+			return true;
+		}
 		return false;
 	}
 	
@@ -244,8 +264,24 @@ public class Level extends GameObject {
 			}
 		}
 		
+		/*
+		 * All of the remaining code in this method is for processing the bubble shooter.
+		 */
+		int newTop = Integer.MAX_VALUE;
+		Bubble.dropTimer--;
+		
 		for(Bubble b : bubbles) {
+			if(Bubble.dropTimer <= 0){
+				b.moveDown();
+				if(b.getY() < newTop)
+					newTop = b.getY();
+			}
 			b.update();
+			
+			if(b.isFree())
+				for(Bubble b2 : bubbles) {
+					b2.collide(b);
+				}
 			
 			for(TileObject t : tiles) {
 				if(t.collide(b) && t instanceof DeathZone) {
@@ -253,6 +289,17 @@ public class Level extends GameObject {
 				}
 			}
 		}
+		Bubble.top = newTop;
+		if(Bubble.dropTimer <= 0) {
+			Platform p = new Platform();
+			p.setParam("x", "7");
+			p.setParam("width", "26");
+			p.setParam("y", ""+ drops);
+			this.tiles.add(p);
+			this.drops++;
+			Bubble.dropTimer = Level.DROP_TIMER;
+		}
+		
 	}
 	
 	/**
@@ -286,14 +333,10 @@ public class Level extends GameObject {
 		}
 	}
 	
-	public static final short UP = 0;
-	public static final short DOWN = 1;
-	public static final short LEFT = 2;
-	public static final short RIGHT = 3;
-	
 	private SpawnPoint spawn;
 	private LinkedList<Player> players;
 	private LinkedList<Bubble> bubbles;
+	private int drops;
 	private LinkedList<TileObject> tiles;
 	
 	private EventManager eventManager;

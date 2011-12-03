@@ -4,7 +4,6 @@ import engine.Level;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
-import engine.tileobject.SpawnPoint;
 import engine.tileobject.TileObject;
 import engine.utils.ScriptingEngine;
 
@@ -13,6 +12,8 @@ import engine.utils.ScriptingEngine;
  *
  */
 public class Bubble extends Player implements TileObject {
+	public static int top;
+	public static int dropTimer;
 	
 	/**
 	 * Default Constructor
@@ -21,8 +22,7 @@ public class Bubble extends Player implements TileObject {
 		super();
 	    this.radius = 16;
 		this.color = BubbleState.RED;
-		
-		this.movement = new boolean[4];
+		this.free = false;
 	}
 
 	public void setX(int x) {
@@ -49,21 +49,18 @@ public class Bubble extends Player implements TileObject {
 	@Override
 	public int getHeight() { return 1; }
 
-
-	@Override
-	public void gravity() {
-		ScriptingEngine.getInstance().invokeFunction("inverseGravity",this);
-		movement[Level.UP] = true;
+	public void moveDown() {
+		this.centerY+=TileObject.TILE_SIZE;
 	}
 
 	public int getTopBound() { return (centerY-this.radius); }
-	public int getSmallTopBound() { return centerY - this.radius/4; }
+	public int getSmallTopBound() { return centerY - this.radius + 2; }
 	public int getBottomBound() { return (centerY+this.radius); }
-	public int getSmallBottomBound() { return centerY + this.radius/4; }
+	public int getSmallBottomBound() { return centerY + this.radius - 2; }
 	public int getLeftBound() { return centerX-this.radius; }
-	public int getSmallLeftBound() { return centerX - this.radius/4; }
+	public int getSmallLeftBound() { return centerX - this.radius + 2; }
 	public int getRightBound() { return centerX + this.radius; }
-	public int getSmallRightBound() { return centerX + this.radius/4; }
+	public int getSmallRightBound() { return centerX + this.radius - 2; }
 	
 	@Override
 	public void collideTop(int bound) {
@@ -88,13 +85,17 @@ public class Bubble extends Player implements TileObject {
 	public void death() {
 		return;
 	}
+	
+	public boolean isFree() { 
+		return this.free;
+	}
 
 	@Override
 	public void update() {
-		gravity();
-		if(!movement[Level.LEFT] && velocityX < 0) velocityX++;
-	    if(!movement[Level.RIGHT] && velocityX > 0) velocityX--;
-	    if(!movement[Level.UP] && velocityY < 0) velocityY++;
+		//gravity();
+		//if(!movement[Level.LEFT] && velocityX < 0) velocityX++;
+	    //if(!movement[Level.RIGHT] && velocityX > 0) velocityX--;
+	    //if(!movement[Level.UP] && velocityY < 0) velocityY++;
 	    
 	    centerX += velocityX;
 	    centerY += velocityY;  
@@ -110,9 +111,6 @@ public class Bubble extends Player implements TileObject {
 		data.setParam("value", ""+color.ordinal());
 		EventManager.getInstance().sendEvent("draw", data);
 	}
-		
-	private BubbleState color;
-	public final short MAX_VELOCITY = 8;
 	
 	@Override
 	public boolean collide(Player p) {
@@ -139,6 +137,10 @@ public class Bubble extends Player implements TileObject {
 			if(v % 2 == 0) {
 				this.centerX+=this.radius;
 			}
+			
+			if(this.centerY < Bubble.top)
+				Bubble.top = this.centerY;
+			
 			return true;
 		} else if(n.equals("z")) {
 			this.z = v*(TileObject.TILE_SIZE*2);
@@ -160,6 +162,9 @@ public class Bubble extends Player implements TileObject {
 			default: break;
 			}
 			return true;
+		} else if(n.equals("free")) {
+			this.free = true;
+			return true;
 		} else
 			return super.setParam(name, value);
 	}
@@ -169,4 +174,10 @@ public class Bubble extends Player implements TileObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	private BubbleState color;
+	private boolean free;
+	
+	public final short MAX_VELOCITY = 8;
 }
