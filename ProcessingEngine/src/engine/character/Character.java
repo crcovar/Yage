@@ -14,6 +14,7 @@ public interface Character {
 	public int getX();
 	public int getY();
 	public int getRadius();
+	public String getName();
 	
 	public void setSpawn(SpawnPoint s);
 	public void death();
