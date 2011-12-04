@@ -117,11 +117,34 @@ public class Bubble extends Player implements TileObject {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public boolean collide(Bubble b) {
+		int a, dx, dy;
+		a = (b.radius+this.radius) * (b.radius+this.radius);
+		dx = this.centerX - b.centerX;
+		dy = this.centerY - b.centerY;
+		
+		if(a > (dx*dx) + (dy*dy)) {
+			// collided
+
+			return true;
+		} else
+			return false;
+		
+	}
 
 	@Override
 	public boolean setParam(String name, String value) {
 		String n = name.toLowerCase();
 		int v;
+		
+		if(n.equals("free")) {
+			if(value.equals("true"))
+				this.free = true;
+			else
+				this.free = false;
+			return true;
+		}
 		
 		try {
 			v = Integer.parseInt(value);
@@ -161,9 +184,6 @@ public class Bubble extends Player implements TileObject {
 				break;
 			default: break;
 			}
-			return true;
-		} else if(n.equals("free")) {
-			this.free = true;
 			return true;
 		} else
 			return super.setParam(name, value);

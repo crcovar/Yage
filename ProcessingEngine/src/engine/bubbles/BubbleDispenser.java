@@ -31,6 +31,7 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		b.setY(this.y*TileObject.TILE_SIZE - TileObject.TILE_SIZE);
 		b.setVelocityY((short) -(b.MAX_VELOCITY / 2));
 		b.setParam("flag", "" + atBat.ordinal());
+		b.setParam("free", "true");
 		
 		atBat = onDeck;
 		onDeck = BubbleState.values()[(int) (Math.random()*4)];

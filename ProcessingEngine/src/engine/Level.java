@@ -280,7 +280,11 @@ public class Level extends GameObject {
 			
 			if(b.isFree())
 				for(Bubble b2 : bubbles) {
-					b2.collide(b);
+					if(!b.equals(b2) && b2.collide(b)) {
+						this.bubbles.remove(b2);
+						this.bubbles.remove(b);
+						break;
+					}
 				}
 			
 			for(TileObject t : tiles) {
