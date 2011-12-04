@@ -4,6 +4,7 @@
 package engine.bubbles;
 
 import engine.GameObject;
+import engine.Level;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
@@ -21,8 +22,12 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		this.t_height = 1;
 		this.t_width = 40;
 		
+		this.velocityX = 0;
+		
 		this.atBat = BubbleState.values()[(int) (Math.random()*4)];
 		this.onDeck = BubbleState.values()[(int) (Math.random()*4)];
+		
+		EventManager.getInstance().registerListener(this, "move");
 	}
 	
 	public Bubble launchBubble() {
@@ -30,6 +35,7 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		b.setX(this.x*TileObject.TILE_SIZE +TileObject.TILE_SIZE);
 		b.setY(this.y*TileObject.TILE_SIZE - TileObject.TILE_SIZE);
 		b.setVelocityY((short) -(b.MAX_VELOCITY / 2));
+		b.setVelocityX((short) this.velocityX);
 		b.setParam("flag", "" + atBat.ordinal());
 		b.setParam("free", "true");
 		
@@ -37,6 +43,19 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		onDeck = BubbleState.values()[(int) (Math.random()*4)];
 		
 		return b;
+	}
+	
+	public void setVelocityX(int v) {
+		if(v < -TileObject.TILE_SIZE)
+			this.velocityX = -TileObject.TILE_SIZE;
+		else if(v > TileObject.TILE_SIZE)
+			this.velocityX = TileObject.TILE_SIZE;
+		else
+			this.velocityX = v;
+	}
+	
+	public int getVelocityX() {
+		return this.velocityX;
 	}
 	
 	@Override
@@ -55,6 +74,8 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		EventData onDeckData = new EventData("Bubble", this.x*TileObject.TILE_SIZE + TileObject.TILE_SIZE*3, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE*2);
 		onDeckData.setParam("value","" + onDeck.ordinal());
 		EventManager.getInstance().sendEvent("draw", onDeckData);
+		
+		EventManager.getInstance().sendEvent("text", new EventData(""+velocityX,this.x*TileObject.TILE_SIZE - TileObject.TILE_SIZE, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE));
 	}
 
 	@Override
@@ -104,11 +125,30 @@ public class BubbleDispenser extends GameObject implements TileObject {
 
 	@Override
 	public int getHeight() { return this.t_height; }
+	
+	public boolean adjustCannon(short direction) {
+		if(direction == Level.LEFT)
+			this.setVelocityX(velocityX-1);
+		else if(direction == Level.RIGHT)
+			this.setVelocityX(velocityX+1);
+		else
+			return false;
+		return true;
+	}
+	
+	public boolean processMessage(String name, EventData event) {
+		if(name.equals("move")) {
+			return adjustCannon((short) event.getValue());
+		}
+		return false;		
+	}
 
 	private int x;
 	private int y;
 	private int t_width;
 	private int t_height;
+	
+	private int velocityX;
 	
 	private BubbleState atBat;
 	private BubbleState onDeck;

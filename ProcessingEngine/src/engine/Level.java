@@ -205,6 +205,13 @@ public class Level extends GameObject {
 			
 			break;	// leave the loop because you moved the player you're looking for
 		}
+		
+		for(TileObject t : this.tiles) {
+			if(!(t instanceof BubbleDispenser))
+				continue;
+			((BubbleDispenser) t).adjustCannon(direction);
+			break;
+		}
 	}
 	
 	/**
@@ -224,7 +231,7 @@ public class Level extends GameObject {
 	@Override
 	public boolean processMessage(String name, EventData event) {
 		if(name.equals("move")) {
-			this.movePlayer(event.getMessage(),(short) event.getValue());
+			this.movePlayer(event.getMessage(),(short) event.getValue());			
 			return true;
 		} else if(name.equals("buildlevel")) {
 			this.buildLevel(event.getMessage());
@@ -235,8 +242,7 @@ public class Level extends GameObject {
 					continue;
 				p.collide(event.getX(), event.getY(), event.getWidth());	
 			}
-		}
-		if(name.equals("bubblelaunch")) {
+		} else if(name.equals("bubblelaunch")) {
 			for(TileObject t : this.tiles) {
 				if(!(t instanceof BubbleDispenser))
 					continue;
@@ -281,8 +287,8 @@ public class Level extends GameObject {
 			if(b.isFree())
 				for(Bubble b2 : bubbles) {
 					if(!b.equals(b2) && b2.collide(b)) {
-						this.bubbles.remove(b2);
-						this.bubbles.remove(b);
+						//this.bubbles.remove(b2);
+						//this.bubbles.remove(b);
 						break;
 					}
 				}

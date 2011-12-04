@@ -125,8 +125,17 @@ public class Bubble extends Player implements TileObject {
 		dy = this.centerY - b.centerY;
 		
 		if(a > (dx*dx) + (dy*dy)) {
-			// collided
-
+			if(this.centerX <= b.centerX)
+			{
+				b.centerX = this.centerX + this.radius;
+				b.centerY = this.centerY + this.radius * 2;
+			} else {
+				b.centerX = this.centerX - this.radius;
+				b.centerY = this.centerY + this.radius * 2;
+			}
+			b.velocityX = b.velocityY = 0;
+			b.free = false;
+			
 			return true;
 		} else
 			return false;
