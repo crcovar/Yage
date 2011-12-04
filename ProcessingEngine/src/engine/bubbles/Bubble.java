@@ -12,7 +12,7 @@ import engine.utils.ScriptingEngine;
  *
  */
 public class Bubble extends Player implements TileObject {
-	public static int top;
+	public static int top = Integer.MAX_VALUE;
 	public static int dropTimer;
 	
 	/**
@@ -22,7 +22,7 @@ public class Bubble extends Player implements TileObject {
 		super();
 	    this.radius = 16;
 		this.color = BubbleState.RED;
-		this.free = false;
+		this.free = true;
 	}
 
 	public void setX(int x) {
@@ -86,23 +86,20 @@ public class Bubble extends Player implements TileObject {
 		return;
 	}
 	
+	public void gravity() {
+		ScriptingEngine.getInstance().invokeFunction("inverseGravity", this, Bubble.top);
+	}
+	
 	public boolean isFree() { 
 		return this.free;
 	}
 
 	@Override
 	public void update() {
-		//gravity();
-		//if(!movement[Level.LEFT] && velocityX < 0) velocityX++;
-	    //if(!movement[Level.RIGHT] && velocityX > 0) velocityX--;
-	    //if(!movement[Level.UP] && velocityY < 0) velocityY++;
-	    
+		gravity();
+
 	    centerX += velocityX;
-	    centerY += velocityY;  
-	  
-	    movement[Level.LEFT] = false;
-	    movement[Level.RIGHT] = false;
-	    movement[Level.UP] = false;		
+	    centerY += velocityY;
 	}
 	
 	@Override
@@ -119,6 +116,10 @@ public class Bubble extends Player implements TileObject {
 	}
 	
 	public boolean collide(Bubble b) {
+		// check to make sure this isn't a loose bubble.
+		if(this.isFree())
+			return false;
+		
 		int a, dx, dy;
 		a = (b.radius+this.radius) * (b.radius+this.radius);
 		dx = this.centerX - b.centerX;
@@ -170,8 +171,10 @@ public class Bubble extends Player implements TileObject {
 				this.centerX+=this.radius;
 			}
 			
-			if(this.centerY < Bubble.top)
+			if(this.centerY <= Bubble.top) {
 				Bubble.top = this.centerY;
+				this.free = false;
+			}
 			
 			return true;
 		} else if(n.equals("z")) {

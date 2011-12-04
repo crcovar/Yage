@@ -273,14 +273,11 @@ public class Level extends GameObject {
 		/*
 		 * All of the remaining code in this method is for processing the bubble shooter.
 		 */
-		int newTop = Integer.MAX_VALUE;
 		Bubble.dropTimer--;
 		
 		for(Bubble b : bubbles) {
 			if(Bubble.dropTimer <= 0){
 				b.moveDown();
-				if(b.getY() < newTop)
-					newTop = b.getY();
 			}
 			b.update();
 			
@@ -299,13 +296,13 @@ public class Level extends GameObject {
 				}
 			}
 		}
-		Bubble.top = newTop;
 		if(Bubble.dropTimer <= 0) {
 			Platform p = new Platform();
 			p.setParam("x", "7");
 			p.setParam("width", "26");
 			p.setParam("y", ""+ drops);
 			this.tiles.add(p);
+			Bubble.top -= TileObject.TILE_SIZE;
 			this.drops++;
 			Bubble.dropTimer = Level.DROP_TIMER;
 		}
