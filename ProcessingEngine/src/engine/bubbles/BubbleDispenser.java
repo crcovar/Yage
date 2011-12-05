@@ -15,6 +15,8 @@ import engine.tileobject.TileObject;
  *
  */
 public class BubbleDispenser extends GameObject implements TileObject {
+	
+	public static final int TOTAL_VELOCITY = 16;
 
 	public BubbleDispenser() {
 		this.x = 0;
@@ -23,6 +25,7 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		this.t_width = 40;
 		
 		this.velocityX = 0;
+		this.velocityY = BubbleDispenser.TOTAL_VELOCITY;
 		
 		this.atBat = BubbleState.values()[(int) (Math.random()*4)];
 		this.onDeck = BubbleState.values()[(int) (Math.random()*4)];
@@ -33,8 +36,8 @@ public class BubbleDispenser extends GameObject implements TileObject {
 	public Bubble launchBubble() {
 		Bubble b = new Bubble();
 		b.setX(this.x*TileObject.TILE_SIZE +TileObject.TILE_SIZE);
-		b.setY(this.y*TileObject.TILE_SIZE - TileObject.TILE_SIZE);
-		b.setVelocityY((short) -(b.MAX_VELOCITY / 2));
+		b.setY(this.y*TileObject.TILE_SIZE);
+		b.setVelocityY((short) -this.velocityY);
 		b.setVelocityX((short) this.velocityX);
 		b.setParam("flag", "" + atBat.ordinal());
 		b.setParam("free", "true");
@@ -45,13 +48,17 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		return b;
 	}
 	
-	public void setVelocityX(int v) {
-		if(v < -TileObject.TILE_SIZE)
-			this.velocityX = -TileObject.TILE_SIZE;
-		else if(v > TileObject.TILE_SIZE)
-			this.velocityX = TileObject.TILE_SIZE;
-		else
+	public boolean setVelocityX(int v) {
+		if(v <= -BubbleDispenser.TOTAL_VELOCITY)
+			this.velocityX = -BubbleDispenser.TOTAL_VELOCITY+1;
+		else if(v >= BubbleDispenser.TOTAL_VELOCITY)
+			this.velocityX = BubbleDispenser.TOTAL_VELOCITY-1;
+		else {
 			this.velocityX = v;
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public int getVelocityX() {
@@ -76,6 +83,7 @@ public class BubbleDispenser extends GameObject implements TileObject {
 		EventManager.getInstance().sendEvent("draw", onDeckData);
 		
 		EventManager.getInstance().sendEvent("text", new EventData(""+velocityX,this.x*TileObject.TILE_SIZE - TileObject.TILE_SIZE, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE));
+		EventManager.getInstance().sendEvent("text", new EventData(""+velocityY,this.x*TileObject.TILE_SIZE + TileObject.TILE_SIZE*2, this.y*TileObject.TILE_SIZE + TileObject.TILE_SIZE));
 	}
 
 	@Override
@@ -127,10 +135,22 @@ public class BubbleDispenser extends GameObject implements TileObject {
 	public int getHeight() { return this.t_height; }
 	
 	public boolean adjustCannon(short direction) {
-		if(direction == Level.LEFT)
-			this.setVelocityX(velocityX-1);
-		else if(direction == Level.RIGHT)
-			this.setVelocityX(velocityX+1);
+		if(direction == Level.LEFT) {
+			if(this.setVelocityX(velocityX-1)) {
+				if(velocityX < 0)
+					velocityY--;
+				else if(velocityX > 0)
+					velocityY++;
+			}
+		}
+		else if(direction == Level.RIGHT) {
+			if(this.setVelocityX(velocityX+1)) {
+				if(velocityX < 0)
+					velocityY++;
+				else if(velocityX > 0)
+					velocityY--;
+			}
+		}
 		else
 			return false;
 		return true;
@@ -149,6 +169,7 @@ public class BubbleDispenser extends GameObject implements TileObject {
 	private int t_height;
 	
 	private int velocityX;
+	private int velocityY;
 	
 	private BubbleState atBat;
 	private BubbleState onDeck;

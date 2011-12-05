@@ -211,5 +211,5 @@ public class Bubble extends Player implements TileObject {
 	private BubbleState color;
 	private boolean free;
 	
-	public final short MAX_VELOCITY = 8;
+	public final short MAX_VELOCITY = 16;
 }
