@@ -23,6 +23,7 @@ public class Bubble extends Player implements TileObject {
 	    this.radius = 16;
 		this.color = BubbleState.RED;
 		this.free = true;
+		//this.bubble = null;
 	}
 
 	public void setX(int x) {
@@ -81,6 +82,11 @@ public class Bubble extends Player implements TileObject {
 		
 	}
 	
+//	public boolean popBubble(Bubble bubble, LinkedList<Bubble> bubbles) {
+//		return false;
+//	}
+	
+	
 	@Override
 	public void death() {
 		return;
@@ -136,6 +142,8 @@ public class Bubble extends Player implements TileObject {
 			}
 			b.velocityX = b.velocityY = 0;
 			b.free = false;
+			
+//			b.bubble = this;
 			
 			return true;
 		} else
@@ -210,6 +218,7 @@ public class Bubble extends Player implements TileObject {
 	
 	private BubbleState color;
 	private boolean free;
+	//private Bubble bubble;
 	
 	public final short MAX_VELOCITY = 16;
 }

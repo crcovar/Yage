@@ -141,8 +141,10 @@ public class Level extends GameObject {
 			p.setSpawn(spawn);
 			p.moveToSpawn();
 		}
-	   this.victory = false;
-	   this.defeat = false;
+		
+		this.start = false;
+	    this.victory = false;
+	    this.defeat = false;
 	   
 	   // record the platforms (since they only need to record once)
 /*	   for(TileObject t : this.tiles) {
@@ -243,6 +245,8 @@ public class Level extends GameObject {
 				p.collide(event.getX(), event.getY(), event.getWidth());	
 			}
 		} else if(name.equals("bubblelaunch")) {
+			if(!this.start)
+				this.start = true;
 			for(TileObject t : this.tiles) {
 				if(!(t instanceof BubbleDispenser))
 					continue;
@@ -283,7 +287,7 @@ public class Level extends GameObject {
 			
 			if(b.isFree())
 				for(Bubble b2 : bubbles) {
-					if(!b.equals(b2) && b2.collide(b)) {
+					if(!b.equals(b2) && b2.collide(b) && this.start) {
 						//this.bubbles.remove(b2);
 						//this.bubbles.remove(b);
 						break;
@@ -345,6 +349,8 @@ public class Level extends GameObject {
 	private LinkedList<Bubble> bubbles;
 	private int drops;
 	private LinkedList<TileObject> tiles;
+
+	private boolean start;
 	
 	private EventManager eventManager;
 	
