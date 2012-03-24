@@ -6,7 +6,6 @@ import engine.Level;
 import engine.events.EventData;
 import engine.events.EventManager;
 import engine.tileobject.SpawnPoint;
-import engine.utils.ScriptingEngine;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -53,7 +52,6 @@ public class Player extends GameObject implements Character {
 		
 		if(n.equals("name")) {
 			this.name = value;
-			ScriptingEngine.getInstance().addObject(this.name, this);
 			return true;
 		}
 		
@@ -185,7 +183,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the left
 	 */
 	public void moveLeft() {
-		ScriptingEngine.getInstance().invokeFunction("moveLeft", this);
+		if(velocityX > -MAX_VELOCITY) velocityX--;
 		movement[Level.LEFT] = true;
 	}
 	
@@ -193,7 +191,7 @@ public class Player extends GameObject implements Character {
 	 * Moves the player to the right
 	 */
 	public void moveRight() {
-		ScriptingEngine.getInstance().invokeFunction("moveRight", this);
+		if(velocityX < MAX_VELOCITY) velocityX++;
 		movement[Level.RIGHT] = true;
 	}
 	
@@ -201,19 +199,22 @@ public class Player extends GameObject implements Character {
 	 * Push the player down, due to gravity.
 	 */
 	public void gravity() {
-		ScriptingEngine.getInstance().invokeFunction("gravity", this);
+		if(velocityY < MAX_VELOCITY) velocityY++;
 	}
 	
 	/**
 	 * Move the player up provided they can still jump
 	 */
 	public void moveUp() {
-		ScriptingEngine.getInstance().invokeFunction("jump", this);
+		if(velocityY > -MAX_VELOCITY && jumpTimer > 0) { 
+			jumpTimer--;
+			velocityY-=MAX_VELOCITY/4; 
+		}
 		movement[Level.UP] = true;
 	}
 	
 	public void moveDown() {
-		ScriptingEngine.getInstance().invokeFunction("moveDown", this);
+		gravity();
 	}
 	
 	public int getTopBound() { return (centerY-this.radius); }

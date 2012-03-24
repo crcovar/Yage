@@ -7,7 +7,6 @@ import processing.core.PConstants;
 import processing.core.PImage;
 
 import engine.GameObject;
-import engine.bubbles.BubbleState;
 import engine.events.Event;
 import engine.events.EventData;
 import engine.events.EventManager;
@@ -72,9 +71,6 @@ public class Renderer extends GameObject {
 			if(event.getMessage().toLowerCase().equals("player")) {
 				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight(), event.getValue());
 				return true;
-			}
-			else if(event.getMessage().toLowerCase().equals("bubble")) {
-				this.drawBubble(event.getX(), event.getY(), event.getValue());
 			} else
 				return this.draw(event.getMessage(), event.getX(), event.getY(), event.getWidth(), event.getHeight());
 		} else if(name.equals("text") && event != null) {
@@ -102,26 +98,6 @@ public class Renderer extends GameObject {
 		parent.ellipse(x,y,w,h);
 	}
 	
-	private void drawBubble(int x, int y, int c) {
-		if(c == BubbleState.RED.ordinal()) {
-			parent.stroke(parent.color(255,0,0));
-			parent.fill(parent.color(255,0,0));
-		} else if(c == BubbleState.BLUE.ordinal()) {
-			parent.stroke(parent.color(0,0,255));
-			parent.fill(parent.color(0,0,255));
-		} else if(c == BubbleState.GREEN.ordinal()) {
-			parent.stroke(parent.color(0,255,0));
-			parent.fill(parent.color(0,255,0));
-		} else if(c == BubbleState.YELLOW.ordinal()) {
-			parent.stroke(parent.color(255,255,0));
-			parent.fill(parent.color(255,255,0));
-		} else
-			return;
-		
-		//parent.ellipseMode(PConstants.CORNER);
-		parent.ellipse(x, y, (TileObject.TILE_SIZE*2), (TileObject.TILE_SIZE*2));
-	}
-	
 	private boolean draw(String tileObject, int x, int y, int w, int h) {
 		String s = tileObject.toLowerCase();
 		
@@ -135,8 +111,6 @@ public class Renderer extends GameObject {
 			tileIndex = 2;
 		} else if (s.equals("victoryzone")) {
 			tileIndex = 3;
-		} else if (s.equals("bubbledispenser")) {
-			tileIndex = 4;
 		} else
 			return false;
 		

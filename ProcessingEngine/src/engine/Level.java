@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
 
-import engine.bubbles.Bubble;
-import engine.bubbles.BubbleDispenser;
 import engine.character.Player;
 import engine.events.EventData;
 import engine.events.EventManager;
@@ -38,9 +36,6 @@ public class Level extends GameObject {
 		super();
 		
 		this.players = players;
-		this.bubbles = new LinkedList<Bubble>();
-		Bubble.dropTimer = Level.DROP_TIMER;
-		this.drops = 1;
 		this.tiles = new LinkedList<TileObject>();
 		
 		this.eventManager = EventManager.getInstance();
@@ -48,7 +43,6 @@ public class Level extends GameObject {
 		this.eventManager.registerListener(this, "move");
 		this.eventManager.registerListener(this,"buildlevel");
 		this.eventManager.registerListener(this, "syncplayer");
-		this.eventManager.registerListener(this,"bubblelaunch");
 		
 		this.script = "";
 		
@@ -97,10 +91,6 @@ public class Level extends GameObject {
 						t = new VictoryZone();
 					else if(obj.equals("spawnpoint"))
 						t = new SpawnPoint();
-					else if(obj.equals("bubbledispenser"))
-						t = new BubbleDispenser();
-					else if(obj.equals("bubble"))
-						t = new Bubble();
 					else {
 						continue;
 					}
@@ -114,8 +104,6 @@ public class Level extends GameObject {
 					
 					if(t instanceof SpawnPoint)
 						this.spawn = (SpawnPoint) t;
-					else if(t instanceof Bubble)
-						this.bubbles.add((Bubble) t);
 					else
 						this.tiles.add(t);
 				}
@@ -142,8 +130,7 @@ public class Level extends GameObject {
 			p.moveToSpawn();
 		}
 		
-		this.start = false;
-	    this.victory = false;
+		this.victory = false;
 	    this.defeat = false;
 	   
 	   // record the platforms (since they only need to record once)
@@ -207,13 +194,6 @@ public class Level extends GameObject {
 			
 			break;	// leave the loop because you moved the player you're looking for
 		}
-		
-		for(TileObject t : this.tiles) {
-			if(!(t instanceof BubbleDispenser))
-				continue;
-			((BubbleDispenser) t).adjustCannon(direction);
-			break;
-		}
 	}
 	
 	/**
@@ -244,17 +224,8 @@ public class Level extends GameObject {
 					continue;
 				p.collide(event.getX(), event.getY(), event.getWidth());	
 			}
-		} else if(name.equals("bubblelaunch")) {
-			if(!this.start)
-				this.start = true;
-			for(TileObject t : this.tiles) {
-				if(!(t instanceof BubbleDispenser))
-					continue;
-				this.bubbles.add(((BubbleDispenser) t).launchBubble());
-				break;
-			}
-			return true;
 		}
+		
 		return false;
 	}
 	
@@ -273,44 +244,6 @@ public class Level extends GameObject {
 				}
 			}
 		}
-		
-		/*
-		 * All of the remaining code in this method is for processing the bubble shooter.
-		 */
-		Bubble.dropTimer--;
-		
-		for(Bubble b : bubbles) {
-			if(Bubble.dropTimer <= 0){
-				b.moveDown();
-			}
-			b.update();
-			
-			if(b.isFree())
-				for(Bubble b2 : bubbles) {
-					if(!b.equals(b2) && b2.collide(b) && this.start) {
-						//this.bubbles.remove(b2);
-						//this.bubbles.remove(b);
-						break;
-					}
-				}
-			
-			for(TileObject t : tiles) {
-				if(t.collide(b) && t instanceof DeathZone) {
-					this.defeat = true;
-				}
-			}
-		}
-		if(Bubble.dropTimer <= 0) {
-			Platform p = new Platform();
-			p.setParam("x", "7");
-			p.setParam("width", "26");
-			p.setParam("y", ""+ drops);
-			this.tiles.add(p);
-			Bubble.top -= TileObject.TILE_SIZE;
-			this.drops++;
-			Bubble.dropTimer = Level.DROP_TIMER;
-		}
-		
 	}
 	
 	/**
@@ -339,19 +272,12 @@ public class Level extends GameObject {
 		for(Player p : this.players) {
 			p.draw();
 		}
-		for(Bubble b : this.bubbles) {
-			b.draw();
-		}
 	}
 	
 	private SpawnPoint spawn;
 	private LinkedList<Player> players;
-	private LinkedList<Bubble> bubbles;
-	private int drops;
 	private LinkedList<TileObject> tiles;
 
-	private boolean start;
-	
 	private EventManager eventManager;
 	
 	private String script;
