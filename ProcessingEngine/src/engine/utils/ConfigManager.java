@@ -24,6 +24,10 @@ public class ConfigManager extends GameObject {
 		this.loadConfig("engine.config");
 	}
 	
+	/**
+	 * Gets the current <code>ConfigManager</code> instance, or creates a new one if first call.
+	 * @return instance of the <code>ConfigManager</code>
+	 */
 	public static ConfigManager getInstance()
 	{
 		if(instance == null)
@@ -31,6 +35,10 @@ public class ConfigManager extends GameObject {
 		return instance;
 	}
 	
+	/**
+	 * Loads a configuration file into the <code>ConfigManager</code> instance. 
+	 * @param configFilename
+	 */
 	public void loadConfig(String configFilename) {
 		try {
 			FileReader reader = new FileReader(configFilename);
@@ -52,6 +60,11 @@ public class ConfigManager extends GameObject {
 		}
 	}
 	
+	/**
+	 * Fetches the desired configuration value from the <code>ConfigManager</code> instance.
+	 * @param key The name of the desired property
+	 * @return
+	 */
 	public String getOption(String key) {
 		return this.options.get(key);
 	}
