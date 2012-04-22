@@ -10,6 +10,7 @@ import engine.utils.Recorder;
 import engine.utils.Renderer;
 import engine.utils.Replay;
 import processing.core.*;
+import processing.opengl.*;
 
 /**
  * @author Charles Covar (covar1@gmail.com)
@@ -35,8 +36,6 @@ public class ProcessingSketch extends PApplet {
 			player.setParam("name", name);
 		}
 
-
-		
 		this.server = new Server();
 		
 		this.nextLevelLock = false;
@@ -52,7 +51,7 @@ public class ProcessingSketch extends PApplet {
 		if(h != null)
 			height = Integer.parseInt(h);
 		
-		size(width, height, P2D);  // screen size of 640x480 gives 40x30 tilemap
+		size(width, height, OPENGL);  // screen size of 640x480 gives 40x30 tilemap
 		frameRate(30);
 		
 		this.renderer = new Renderer(this);
