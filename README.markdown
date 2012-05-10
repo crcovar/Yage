@@ -1,5 +1,5 @@
-ProcessingEngine
-================
+Yage - Yet Another Game Engine
+==============================
 
 This is the source code to the Game Engine I am building for N.C. State's CSC481 class. If you are in the class don't use it, build your own.
 
