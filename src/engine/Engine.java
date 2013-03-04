@@ -22,7 +22,20 @@ public class Engine extends BasicGame
     
     @Override
     public void init(GameContainer gc) throws SlickException {
+        ConfigManager cm = ConfigManager.getInstance();
+           
+        String w = cm.getOption("width");
+        String h = cm.getOption("height");
+    	
+		int width = 640;
+		int height = 480;
+		
+		if(w != null)
+			width = Integer.parseInt(w);
+		if(h != null)
+			height = Integer.parseInt(h);
         
+        gc.setDisplayMode(width, height, false);
     }
     
     @Override
@@ -36,21 +49,8 @@ public class Engine extends BasicGame
     }
     
     public static void main(String[] args) throws SlickException {
-        ConfigManager cm = ConfigManager.getInstance();
+        
         AppGameContainer app = new AppGameContainer(new Engine());
-        
-        String w = cm.getOption("width");
-        String h = cm.getOption("height");
-		
-		int width = 640;
-		int height = 480;
-		
-		if(w != null)
-			width = Integer.parseInt(w);
-		if(h != null)
-			height = Integer.parseInt(h);
-        
-        app.setDisplayMode(width, height, false);
         app.start();
     }
     
