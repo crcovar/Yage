@@ -23,12 +23,7 @@ public class Engine extends StateBasedGame
     public int getGameState() { return this.gameState; }
     
     @Override
-    public void update(GameContainer gc, int delta) throws SlickException {
-        
-    }
-    
-    @Override
-    public void render(GameContainer gc, Graphics g) throws SlickException {
+    public void postRenderState(GameContainer gc, Graphics g) throws SlickException {
         g.drawString("Hello World", 100, 100);
     }
     
