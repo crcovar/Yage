@@ -2,9 +2,7 @@ package engine.utils;
 
 import java.awt.Color;
 
-import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PImage;
+import org.newdawn.slick.*;
 
 import engine.GameObject;
 import engine.events.Event;
@@ -21,26 +19,9 @@ public class Renderer extends GameObject {
 	 * Constructor
 	 * @param p </code>PApplet</code> object from processing, handles the drawing
 	 */
-	public Renderer(PApplet p) {
-		this.parent = p;
-		PImage tilemap = this.parent.loadImage("assets/tilemap.png");
-		
-		// only support a single row tilemap right now
-		this.tiles = new PImage[tilemap.width/TileObject.TILE_SIZE];
-		tilemap.loadPixels();
-		
-		// build out the array of tiles from the tilemap
-		for(int i=0; i<this.tiles.length;i++) {
-			this.tiles[i] = this.parent.createImage(TileObject.TILE_SIZE, TileObject.TILE_SIZE, PConstants.RGB);
-			this.tiles[i].loadPixels();
-			for(int y=0;y<TileObject.TILE_SIZE;y++) {
-				for(int x=0;x<TileObject.TILE_SIZE;x++) {
-					this.tiles[i].pixels[x+y * this.tiles[i].width] = tilemap.pixels[(x + i*TileObject.TILE_SIZE) + y * tilemap.width];
-				}
-			}
-			
-			this.tiles[i].updatePixels();
-		}
+	public Renderer(Graphics g) {
+        this.graphics = g;
+		Image tiles = this.parent.loadImage("assets/tilemap.png");
 		
 		// register our events
 		EventManager.getInstance().registerListener(this, "draw");
@@ -65,14 +46,8 @@ public class Renderer extends GameObject {
 	 */
 	public boolean processMessage(String name, EventData event) {
 		if(name.equals("clear")) {
-			this.clear();
+			this.graphics.clear();
 			return true;
-		} else if(name.equals("draw")) {
-			if(event.getMessage().toLowerCase().equals("player")) {
-				this.drawEllipse(event.getX(), event.getY(), event.getWidth(), event.getHeight(), event.getValue());
-				return true;
-			} else
-				return this.draw(event.getMessage(), event.getX(), event.getY(), event.getWidth(), event.getHeight());
 		} else if(name.equals("text") && event != null) {
 			this.text(event.getMessage(), event.getX(), event.getY());
 			return true;
@@ -83,56 +58,14 @@ public class Renderer extends GameObject {
 		return false;
 	}
 	
-	/**
-	 * Used for processing the clear event. Draws the screen black
-	 */
-	private void clear() {
-		this.parent.background(34,155,221);
-	}
-	
-	private void drawEllipse(int x, int y, int w, int h, int c) {
-		Color color = new Color(c);
-		parent.stroke(parent.color(color.getRed(),color.getGreen(),color.getBlue()));
-		parent.fill(parent.color(color.getRed(),color.getGreen(),color.getBlue()));
-		parent.ellipseMode(PConstants.CENTER);
-		parent.ellipse(x,y,w,h);
-	}
-	
-	private boolean draw(String tileObject, int x, int y, int w, int h) {
-		String s = tileObject.toLowerCase();
-		
-		int tileIndex = 0;
-		
-		if (s.equals("platform")) {
-			tileIndex = 0;
-		} else if(s.equals("deathzone")) {
-			tileIndex = 1;
-		} else if (s.equals("spawnpoint")) {
-			tileIndex = 2;
-		} else if (s.equals("victoryzone")) {
-			tileIndex = 3;
-		} else
-			return false;
-		
-		for(int i=0; i<w; i++){
-			for(int j=0;j<h;j++) {
-				this.parent.image(this.tiles[tileIndex], x*TileObject.TILE_SIZE + (i*TileObject.TILE_SIZE),y*TileObject.TILE_SIZE + (j*TileObject.TILE_SIZE));
-			}
-		}
-		
-		return true;
-	}
-	
 	private void text(String text, int x, int y) {
-		this.parent.fill(255,255,255);
-		this.parent.text(text,x,y);
+		this.graphics.drawString(x, y, text, Color.White);
 	}
 	
 	private void selectedText(String text, int x, int y) {
-		this.parent.fill(255,255,0);
-		this.parent.text(text,x,y);
+		this.graphics.drawString(x, y, text, Color.Yellow);
 	}
 
-	private PApplet parent;
-	private PImage[] tiles;
+    private Graphics graphics;
+	private Image tiles;
 }
