@@ -7,17 +7,18 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import processing.core.*;
+import org.newdawn.slick.*;
+
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import engine.GameObject;
 
-public class Asset extends GameObject {
-	public Asset(String id, PApplet parent) {
+public class ArtAsset2d extends GameObject {
+	public Asset(String id) {
 		this.parent = parent;
 		
-		PImage image = this.parent.loadImage("assets/"+id+"/"+id+".png");
+		Image image = new Image("assets/"+id+"/"+id+".png");
 		image.loadPixels();
 		
 		try {
@@ -59,8 +60,7 @@ public class Asset extends GameObject {
 		}
 		
 	}
-	
-	private PApplet parent;
-	private PImage[] frames;
+
+	private Image[] frames;
 	private HashMap<String, int[]> info;
 }
