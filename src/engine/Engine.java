@@ -3,6 +3,7 @@ package engine;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
+import engine.states.*;
 import engine.utils.ConfigManager;
 
 public class Engine extends StateBasedGame
@@ -15,9 +16,11 @@ public class Engine extends StateBasedGame
     
     public Engine() {
         super("Yage");
-        
         this.gameState = GAME_STATE_MENU;
-
+        
+        this.addState(new MenuGameState());
+        
+        this.enterState(this.gameState);
     }
     
     public int getGameState() { return this.gameState; }
@@ -49,12 +52,12 @@ public class Engine extends StateBasedGame
         app.setDisplayMode(width, height, fullscreen);
         app.start();
     }
-    
-    private static short gameState;
 
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		// TODO Auto-generated method stub
-		
 	}
+    
+        
+    private static short gameState;
 }
