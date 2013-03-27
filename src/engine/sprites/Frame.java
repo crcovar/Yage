@@ -11,8 +11,8 @@ public class Frame implements Comparable {
     
     public int getID() { return this.id; }
     
-    public int compareTo(Frame f) {
-        return f.getID() - this.getID();
+    public int compareTo(Object f) {
+        return ((Frame) f).getID() - this.getID();
     }
     
     private int id;

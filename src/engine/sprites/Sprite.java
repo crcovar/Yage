@@ -1,4 +1,4 @@
-package engine.sprite;
+package engine.sprites;
 
 import java.util.*;
 
@@ -11,14 +11,15 @@ public class Sprite {
         this.numFrames = numFrames;
         
         this.frames = new ArrayList<Frame>();
-        this.animations = new LinkedList<Animation>();
+        this.animations = new HashMap<String, Animation>();
     }
     
-    public void addFrame(Frame f) {
+    @SuppressWarnings("unchecked")
+	public void addFrame(Frame f) {
         this.frames.add(f);
         
         if (this.frames.size() == this.numFrames) {
-            Collection.sort(this.frames);
+            Collections.sort(this.frames);
         }
     }
     
